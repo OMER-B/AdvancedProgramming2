@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-//using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ImageService
 {
     public class ImageModel : IImageModel
     {
         #region Members
-        private string m_OutputFolder;            // The Output Folder
-        private int m_thumbnailSize;              // The Size Of The Thumbnail Size
+        private string outputFolder;            // The Output Folder
+        private int thumbnailSize;              // The Size Of The Thumbnail Size
 
         string IImageModel.AddFile(string path, out bool result)
         {
@@ -25,9 +19,22 @@ namespace ImageService
 
         //TODO: function create directory, move file to directory, get date
 
+            /**
+           
+        private Regex r = new Regex(":");
 
+        private DateTime GetDateTakenFromImage(string path)
+        {
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            using (Image myImage = Image.FromStream(fs, false, false))
+            {
+                PropertyItem propItem = myImage.GetPropertyItem(36867);
+                string dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                return DateTime.Parse(dateTaken);
+            }
+        }
+    **/
 
         #endregion
-
     }
 }

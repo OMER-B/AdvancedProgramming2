@@ -29,7 +29,7 @@ namespace ImageService
 
         public void AddNewDirectoryHandler(string path)
         {
-            IDirectoryHandler dirHandler = new DirectoyHandler(path);
+            IDirectoryHandler dirHandler = new DirectoyHandler(path, controller, logger);
             SendCommand += dirHandler.OnCommandRecieved;
             dirHandler.DirectoryClose += CloseHandler;
             

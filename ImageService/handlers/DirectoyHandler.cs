@@ -18,9 +18,11 @@ namespace ImageService
         private string dirPath;                              // The Path of directory
         #endregion
 
-        public DirectoyHandler(string path)
+        public DirectoyHandler(string path, IImageController controller, ILogger logger)
         {
             this.dirPath = path;
+            this.imageController = controller;
+            this.logger = logger;
             StartHandleDirectory();
         }
 
@@ -28,12 +30,21 @@ namespace ImageService
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (e.DirPath == this.dirPath)
+            {
+                bool success;
+                string result = this.imageController.ExecuteCommand(e.CommandID, e.Args, out success);
+                if (!success)
+                {
+                    throw new Exception(result);
+                }
+            }
         }
 
         public void StartHandleDirectory()
         {
             this.dirWatcher = new FileSystemWatcher(dirPath);
+            // TODO add properties
         }
 
         // Implement Here!
