@@ -43,7 +43,6 @@ namespace ImageService {
             InitializeComponent();
             this.logger = new Logger();
             this.logger.MessageRecieved += OnMsg;
-
         }
 
         public void OnMsg(object sender, MessageRecievedEventArgs args)

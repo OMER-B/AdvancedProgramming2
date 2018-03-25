@@ -9,20 +9,28 @@ namespace ImageService
 {
     public class ImageController : IImageController
     {
-        private IImageModel model;                      // The Modal Object
+        private IImageModel model;
         private Dictionary<int, ICommand> commands;
 
         public ImageController(IImageModel model)
         {
-            this.model = model;                    // Storing the Modal Of The System
-            commands = new Dictionary<int, ICommand>()
+            this.model = model;
+            commands = new Dictionary<int, ICommand>
             {
-				// For Now will contain NEW_FILE_COMMAND
+                { 1, new NewFileCommand(model) }
             };
         }
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
         {
-            // Write Code Here
+            if (commands.ContainsKey(commandID))
+            {
+                ICommand command = commands[commandID];
+                return command.Execute(args, out resultSuccesful);
+            } else
+            {
+                resultSuccesful = false;
+                return "No Such Command";
+            }
         }
     }
 }

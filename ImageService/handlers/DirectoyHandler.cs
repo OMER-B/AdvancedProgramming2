@@ -37,5 +37,9 @@ namespace ImageService
         }
 
         // Implement Here!
+        public void CloseFileWatcher()
+        {
+            // when recieve close command close file watcher
+        }
     }
 }

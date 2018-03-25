@@ -27,10 +27,21 @@ namespace ImageService
             this.controller = new ImageController(imageModel);
         }
 
-        public void AddNewDirectory(string path)
+        public void AddNewDirectoryHandler(string path)
         {
             IDirectoryHandler dirHandler = new DirectoyHandler(path);
             SendCommand += dirHandler.OnCommandRecieved;
+            dirHandler.DirectoryClose += CloseHandler;
+            
+        }
+
+        public void CloseHandler(object sender, DirectoryCloseEventArgs args)
+        {
+            if(sender is IDirectoryHandler)
+            {
+                IDirectoryHandler h = (IDirectoryHandler)sender;
+                SendCommand -= h.OnCommandRecieved;
+            }
         }
 
         public void CloseAll()
