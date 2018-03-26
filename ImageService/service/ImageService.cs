@@ -34,7 +34,7 @@ namespace ImageService {
     };
 
     public partial class ImageService : ServiceBase {
-        private System.Diagnostics.EventLog eventLog;
+        private EventLog eventLog;
         private ILogger logger;
         private ImageServer server;
 
@@ -43,6 +43,7 @@ namespace ImageService {
             InitializeComponent();
             this.logger = new Logger();
             this.logger.MessageRecieved += OnMsg;
+            this.server = new ImageServer(logger);
         }
 
         public void OnMsg(object sender, MessageRecievedEventArgs args)

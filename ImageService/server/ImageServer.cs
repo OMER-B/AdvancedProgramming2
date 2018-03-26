@@ -12,6 +12,7 @@ namespace ImageService
 
         #region Properties
         public event EventHandler<CommandRecievedEventArgs> SendCommand;
+        
         #endregion
 
         #region Members

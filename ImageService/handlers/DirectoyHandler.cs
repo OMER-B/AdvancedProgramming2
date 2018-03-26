@@ -17,6 +17,8 @@ namespace ImageService
         private List<FileSystemWatcher> dirWatchers;             // The Watcher of the Dir
         private string dirPath;
         private readonly string[] extensions;
+
+        public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;
         // The Path of directory
         #endregion
 
@@ -30,18 +32,18 @@ namespace ImageService
             StartHandleDirectory();
         }
 
-        public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
 
         public void StartHandleDirectory()
         {
             for(int i = 0; i < extensions.Length; i++)
             {
-                FileSystemWatcher dirWatcher = new FileSystemWatcher();
-                dirWatcher.Path = dirPath;
+                FileSystemWatcher dirWatcher = new FileSystemWatcher(dirPath, extensions[i]);
                 dirWatcher.EnableRaisingEvents = true;
                 dirWatcher.Created += new FileSystemEventHandler(FileCreated);
                 dirWatchers.Add(dirWatcher);
             }
+
+            // go through all the files and send to "add file"
         }
 
         public void CloseFileWatcher()
@@ -54,13 +56,8 @@ namespace ImageService
             // call on command recieved
             string[] arguments = new string[] { args.FullPath };
             int commandID = (int)CommandTypeEnum.ADD_FILE;
-            bool result;
-            string error = imageController.ExecuteCommand(commandID, arguments, out result);
-            if (!result)
-            {
-                // TODO send to logger
-                throw new Exception(error);
-            }            
+            CommandRecievedEventArgs eventArgs = new CommandRecievedEventArgs(commandID, arguments, this.dirPath);
+
         }
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
@@ -69,12 +66,16 @@ namespace ImageService
             {
                 bool success;
                 string result = this.imageController.ExecuteCommand(e.CommandID, e.Args, out success);
-                if (!success)
+                if (success)
                 {
-                    // TODO print to logger
-                    throw new Exception(result);
+                    // TODO send to logger
+                } else
+                {
+
                 }
             }
         }
+
+        // TODO add close function
     }
 }

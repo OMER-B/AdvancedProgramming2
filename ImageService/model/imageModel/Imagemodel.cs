@@ -22,7 +22,7 @@ namespace ImageService
             DateTime date = File.GetCreationTime(path);
 
             result = true;
-            return null;
+            return "true";
         }
 
         //TODO: function create directory, move file to directory, get date
