@@ -76,6 +76,7 @@
     <Compile Include="tools\CommandRecievedEventArgs.cs" />
     <Compile Include="tools\DirectoryCloseEventArgs.cs" />
     <Compile Include="tools\MessageRecievedEventArgs.cs" />
+    <Compile Include="tools\CommandTypeEnum.cs" />
     <Compile Include="tools\MessageTypeEnum.cs" />
   </ItemGroup>
   <ItemGroup>

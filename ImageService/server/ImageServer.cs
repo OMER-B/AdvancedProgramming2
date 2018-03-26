@@ -18,6 +18,7 @@ namespace ImageService
         private IImageController controller;
         private IImageModel imageModel;
         private ILogger logger;
+        private readonly string[] extensions = { "*.jpg", "*.png", "*.gif", "*.bmp" };
         #endregion
 
         public ImageServer(ILogger logger)
@@ -29,7 +30,7 @@ namespace ImageService
 
         public void AddNewDirectoryHandler(string path)
         {
-            IDirectoryHandler dirHandler = new DirectoyHandler(path, controller, logger);
+            IDirectoryHandler dirHandler = new DirectoyHandler(path, controller, logger, extensions);
             SendCommand += dirHandler.OnCommandRecieved;
             dirHandler.DirectoryClose += CloseHandler;
             
