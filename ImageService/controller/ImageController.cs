@@ -17,7 +17,7 @@ namespace ImageService
             this.model = model;
             commands = new Dictionary<int, ICommand>
             {
-                { 1, new NewFileCommand(model) }
+                { (int)CommandTypeEnum.ADD_FILE, new NewFileCommand(model) }
             };
         }
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)

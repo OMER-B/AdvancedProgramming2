@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -59,6 +60,7 @@
     <Compile Include="model\loggingModel\ILogger.cs" />
     <Compile Include="model\loggingModel\Logger.cs" />
     <Compile Include="server\ImageServer.cs" />
+    <Compile Include="service\ConfigReader.cs" />
     <Compile Include="service\ImageService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -80,7 +82,7 @@
     <Compile Include="tools\MessageTypeEnum.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="tools\App.config" />
+    <None Include="service\App.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="service\ImageService.resx">

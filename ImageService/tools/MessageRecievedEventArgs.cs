@@ -10,5 +10,11 @@ namespace ImageService
     {
         public MessageTypeEnum Status { get; set; }
         public string Message { get; set; }
+        public MessageRecievedEventArgs(MessageTypeEnum status, string message)
+        {
+            this.Status = status;
+            this.Message = message;
+            
+        }
     }
 }

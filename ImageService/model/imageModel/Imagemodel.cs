@@ -11,6 +11,12 @@ namespace ImageService
         private string outputFolder;            // The Output Folder
         private int thumbnailSize;              // The Size Of The Thumbnail Size
 
+        public ImageModel(string output, int size)
+        {
+            this.outputFolder = output;
+            this.thumbnailSize = size;
+        }
+
         string IImageModel.AddFile(string path, out bool result)
         {
             if (!File.Exists(path))

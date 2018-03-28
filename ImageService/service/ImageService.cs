@@ -35,14 +35,13 @@ namespace ImageService {
 
     public partial class ImageService : ServiceBase {
         private EventLog eventLog;
-        private ILogger logger;
         private ImageServer server;
 
         public ImageService(string[] args)
         {
             InitializeComponent();
-            this.logger = new Logger();
-            this.logger.MessageRecieved += OnMsg;
+            ILogger logger = new Logger();
+            logger.MessageRecieved += OnMsg;
             this.server = new ImageServer(logger);
         }
 

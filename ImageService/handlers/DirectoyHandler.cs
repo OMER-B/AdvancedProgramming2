@@ -12,9 +12,9 @@ namespace ImageService
     public class DirectoyHandler : IDirectoryHandler
     {
         #region Members
-        private IImageController imageController;              // The Image Processing Controller
+        private IImageController imageController;
         private ILogger logger;
-        private List<FileSystemWatcher> dirWatchers;             // The Watcher of the Dir
+        private List<FileSystemWatcher> dirWatchers;
         private string dirPath;
         private readonly string[] extensions;
 
@@ -29,9 +29,7 @@ namespace ImageService
             this.logger = logger;
             this.extensions = extensions;
             this.dirWatchers = new List<FileSystemWatcher>();
-            StartHandleDirectory();
         }
-
 
         public void StartHandleDirectory()
         {
@@ -52,26 +50,26 @@ namespace ImageService
         }
 
         private void FileCreated(object sender, FileSystemEventArgs args)
-        {
+        { 
             // call on command recieved
-            string[] arguments = new string[] { args.FullPath };
+            string[] arguments = new string[] { args.FullPath, args.Name };
             int commandID = (int)CommandTypeEnum.ADD_FILE;
             CommandRecievedEventArgs eventArgs = new CommandRecievedEventArgs(commandID, arguments, this.dirPath);
-
+            OnCommandRecieved(sender, eventArgs);
         }
 
-        public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
+        public void OnCommandRecieved(object sender, CommandRecievedEventArgs args)
         {
-            if (e.DirPath.Equals(this.dirPath))
+            if ( args.DirPath.Equals(this.dirPath) || args.DirPath.Equals("*") )
             {
                 bool success;
-                string result = this.imageController.ExecuteCommand(e.CommandID, e.Args, out success);
+                string result = this.imageController.ExecuteCommand(args.CommandID, args.Args, out success);
                 if (success)
                 {
-                    // TODO send to logger
+                    logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, result));
                 } else
                 {
-
+                    logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.FAIL, result));
                 }
             }
         }
@@ -79,3 +77,4 @@ namespace ImageService
         // TODO add close function
     }
 }
+

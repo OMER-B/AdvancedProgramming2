@@ -17,28 +17,29 @@ namespace ImageService
 
         #region Members
         private IImageController controller;
-        private IImageModel imageModel;
         private ILogger logger;
-        private readonly string[] extensions = { "*.jpg", "*.png", "*.gif", "*.bmp" };
         #endregion
 
         public ImageServer(ILogger logger)
         {
             this.logger = logger;
-            this.imageModel = new ImageModel();
-            this.controller = new ImageController(imageModel);
+            // TODO update the variables
+            this.controller = new ImageController(new ImageModel(null, 0));
         }
 
         public void AddNewDirectoryHandler(string path)
         {
+            string[] extensions = { "*.jpg", "*.png", "*.gif", "*.bmp" };
             IDirectoryHandler dirHandler = new DirectoyHandler(path, controller, logger, extensions);
             SendCommand += dirHandler.OnCommandRecieved;
             dirHandler.DirectoryClose += CloseHandler;
+            dirHandler.StartHandleDirectory();
             
         }
 
         public void CloseHandler(object sender, DirectoryCloseEventArgs args)
         {
+            //args.DirectoryPath
             if(sender is IDirectoryHandler)
             {
                 IDirectoryHandler h = (IDirectoryHandler)sender;
@@ -50,9 +51,6 @@ namespace ImageService
         {
 
         }
-
-
-
        
     }
 }
