@@ -19,7 +19,7 @@ namespace ImageService
         public string Execute(string[] args, out bool result)
         {
             // The String Will Return the New Path if result = true, and will return the error message
-            return imageModel.AddFile(args[0], out result);
+            return imageModel.AddFile(args, out result);
         }
     }
 }
