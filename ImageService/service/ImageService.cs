@@ -39,12 +39,12 @@ namespace ImageService {
 
         public ImageService(string[] args)
         {
+            InitializeComponent();
             ConfigReader reader = new ConfigReader();
 
-            this.eventLog = new System.Diagnostics.EventLog();
-            if (!System.Diagnostics.EventLog.SourceExists(reader.LogName))
+            if (!EventLog.SourceExists(reader.LogName))
             {
-                System.Diagnostics.EventLog.CreateEventSource(
+                EventLog.CreateEventSource(
                     reader.SourceName, reader.LogName);
             }
             eventLog.Source = reader.SourceName;
