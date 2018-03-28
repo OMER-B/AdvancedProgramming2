@@ -11,6 +11,7 @@ namespace ImageService
         #region Members
         private string outputFolder;            // The Output Folder
         private int thumbnailSize;              // The Size Of The Thumbnail Size
+        #endregion
 
         public ImageModel(string output, int size)
         {
@@ -20,6 +21,8 @@ namespace ImageService
 
         public string AddFile(string[] args, out bool result)
         {
+
+
             if (args.Length != 2)
             {
                 result = false;
@@ -53,6 +56,5 @@ namespace ImageService
         }
 
 
-        #endregion
     }
 }

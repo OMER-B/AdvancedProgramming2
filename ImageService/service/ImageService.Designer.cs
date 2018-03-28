@@ -36,7 +36,6 @@
             // 
             this.ServiceName = "ImageService";
             ((System.ComponentModel.ISupportInitialize)(this.eventLog)).EndInit();
-
         }
 
         #endregion

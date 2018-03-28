@@ -24,6 +24,12 @@ namespace ImageService
         {
             this.logger = logger;
             this.controller = new ImageController(imageModel);
+
+
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO delete this
+            global.Instance.logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "in server constructor"));
+            ////////////////
+
         }
 
         public void AddNewDirectoryHandler(string path)
@@ -33,7 +39,12 @@ namespace ImageService
             SendCommand += dirHandler.OnCommandRecieved;
             dirHandler.DirectoryClose += CloseHandler;
             dirHandler.StartHandleDirectory();
-            
+
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO delete this
+            global.Instance.logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "created handlers"));
+            ////////////////
+
+
         }
 
         public void CloseHandler(object sender, DirectoryCloseEventArgs args)

@@ -29,6 +29,11 @@ namespace ImageService
             this.logger = logger;
             this.extensions = extensions;
             this.dirWatchers = new List<FileSystemWatcher>();
+
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO delete this
+            global.Instance.logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "in directory handler constructor. " + path));
+            ////////////////
+
         }
 
         public void StartHandleDirectory()
@@ -40,6 +45,11 @@ namespace ImageService
                 dirWatcher.Created += new FileSystemEventHandler(FileCreated);
                 dirWatchers.Add(dirWatcher);
             }
+
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO delete this
+            global.Instance.logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "in handler starting listening. " + dirPath));
+            ////////////////
+
 
             // go through all the files and send to "add file"
         }

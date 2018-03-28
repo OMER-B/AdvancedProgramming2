@@ -54,6 +54,7 @@
     <Compile Include="commands\NewFileCommand.cs" />
     <Compile Include="controller\IImageController.cs" />
     <Compile Include="controller\ImageController.cs" />
+    <Compile Include="global.cs" />
     <Compile Include="handlers\DirectoyHandler.cs" />
     <Compile Include="handlers\IDirectoryHandler.cs" />
     <Compile Include="model\imageModel\IImageModel.cs" />

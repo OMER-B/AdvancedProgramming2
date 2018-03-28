@@ -9,7 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
-namespace ImageService {
+namespace ImageService
+{
     public enum ServiceState
     {
         SERVICE_STOPPED = 0x00000001,
@@ -33,7 +34,8 @@ namespace ImageService {
         public int dwWaitHint;
     };
 
-    public partial class ImageService : ServiceBase {
+    public partial class ImageService : ServiceBase
+    {
         private EventLog eventLog;
         private ImageServer server;
 
@@ -51,14 +53,23 @@ namespace ImageService {
             eventLog.Log = reader.LogName;
 
             ImageModel imageModel = new ImageModel(reader.OutputDir, reader.ThumbnailSize);
-            
+
             ILogger logger = new Logger();
+            
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO delete this
+            global.Instance.logger = logger;
             logger.MessageRecieved += OnMsg;
 
             this.server = new ImageServer(logger, imageModel);
-            foreach (string path in reader.Handler){
+            foreach (string path in reader.Handler)
+            {
                 server.AddNewDirectoryHandler(path);
             }
+
+
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO delete this
+            global.Instance.logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "end of service constructor"));
+            ////////////////
         }
 
         public void OnMsg(object sender, MessageRecievedEventArgs args)
@@ -66,9 +77,10 @@ namespace ImageService {
             eventLog.WriteEntry(args.Message);
         }
 
-        protected override void OnStart(string[] args) {
+        protected override void OnStart(string[] args)
+        {
 
-            eventLog.WriteEntry("In OnStart");
+            eventLog.WriteEntry("The service started.");
 
             // Update the service state to Running.  
             ServiceStatus serviceStatus = new ServiceStatus();
@@ -79,14 +91,14 @@ namespace ImageService {
         protected override void OnStop()
         {
             // TODO: send commands to close all the handlers
-            eventLog.WriteEntry("In onStop.");
+            eventLog.WriteEntry("The service stopped.");
         }
 
         protected override void OnContinue()
         {
             eventLog.WriteEntry("In OnContinue.");
         }
-        
+
 
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
