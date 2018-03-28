@@ -29,13 +29,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.eventLog = new System.Diagnostics.EventLog();
-            ((System.ComponentModel.ISupportInitialize)(this.eventLog)).BeginInit();
             // 
             // ImageService
             // 
             this.ServiceName = "ImageService";
-            ((System.ComponentModel.ISupportInitialize)(this.eventLog)).EndInit();
 
         }
 

@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
-namespace ImageService.service
+namespace ImageService
 {
     class ConfigReader
     {
-        private string Handler;
-        private string OutputDir;
-        private string SourceName;
-        private string LogName;
-        private int ThumbnailSize;
+        public string[] Handler { get; }
+        public string OutputDir { get; }
+        public string SourceName { get; }
+        public string LogName { get; }
+        public int ThumbnailSize { get; }
 
         public ConfigReader()
         {
-            this.Handler = ConfigurationManager.AppSettings["Handler"];
+            this.Handler = ConfigurationManager.AppSettings["Handler"].Split(';');
             this.OutputDir = ConfigurationManager.AppSettings["OutputDir"];
             this.SourceName = ConfigurationManager.AppSettings["SourceName"];
             this.LogName = ConfigurationManager.AppSettings["LogName"];

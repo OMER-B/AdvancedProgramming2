@@ -20,11 +20,10 @@ namespace ImageService
         private ILogger logger;
         #endregion
 
-        public ImageServer(ILogger logger)
+        public ImageServer(ILogger logger, IImageModel imageModel)
         {
             this.logger = logger;
-            // TODO update the variables
-            this.controller = new ImageController(new ImageModel(null, 0));
+            this.controller = new ImageController(imageModel);
         }
 
         public void AddNewDirectoryHandler(string path)

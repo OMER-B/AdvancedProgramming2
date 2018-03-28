@@ -39,10 +39,26 @@ namespace ImageService {
 
         public ImageService(string[] args)
         {
-            InitializeComponent();
+            ConfigReader reader = new ConfigReader();
+
+            this.eventLog = new System.Diagnostics.EventLog();
+            if (!System.Diagnostics.EventLog.SourceExists(reader.LogName))
+            {
+                System.Diagnostics.EventLog.CreateEventSource(
+                    reader.SourceName, reader.LogName);
+            }
+            eventLog.Source = reader.SourceName;
+            eventLog.Log = reader.LogName;
+
+            ImageModel imageModel = new ImageModel(reader.OutputDir, reader.ThumbnailSize);
+            
             ILogger logger = new Logger();
             logger.MessageRecieved += OnMsg;
-            this.server = new ImageServer(logger);
+
+            this.server = new ImageServer(logger, imageModel);
+            foreach (string path in reader.Handler){
+                server.AddNewDirectoryHandler(path);
+            }
         }
 
         public void OnMsg(object sender, MessageRecievedEventArgs args)
