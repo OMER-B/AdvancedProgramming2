@@ -66,6 +66,8 @@ namespace ImageService
 
             result = true;
             string statusResult = "Image " + fileName + " was added to " + year + ", " + month + ".";
+            image.Dispose();
+            thumb.Dispose();
             return statusResult;
         }
 
