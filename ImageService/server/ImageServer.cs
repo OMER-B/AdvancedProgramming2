@@ -12,7 +12,7 @@ namespace ImageService
 
         #region Properties
         public event EventHandler<CommandRecievedEventArgs> SendCommand;
-        
+        public event EventHandler<DirectoryCloseEventArgs> StopHandler;
         #endregion
 
         #region Members
@@ -37,6 +37,7 @@ namespace ImageService
             string[] extensions = { "*.jpg", "*.png", "*.gif", "*.bmp" };
             IDirectoryHandler dirHandler = new DirectoyHandler(path, controller, logger, extensions);
             SendCommand += dirHandler.OnCommandRecieved;
+            StopHandler += dirHandler.CloseFileWatcher;
             dirHandler.DirectoryClose += CloseHandler;
             dirHandler.StartHandleDirectory();
 
@@ -50,7 +51,7 @@ namespace ImageService
         public void CloseHandler(object sender, DirectoryCloseEventArgs args)
         {
             //args.DirectoryPath
-            if(sender is IDirectoryHandler)
+            if (sender is IDirectoryHandler)
             {
                 IDirectoryHandler h = (IDirectoryHandler)sender;
                 SendCommand -= h.OnCommandRecieved;
@@ -59,8 +60,8 @@ namespace ImageService
 
         public void CloseAll()
         {
-
+            StopHandler.Invoke(this, new DirectoryCloseEventArgs("*", null));
         }
-       
+
     }
 }

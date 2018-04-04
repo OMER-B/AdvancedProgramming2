@@ -38,7 +38,7 @@ namespace ImageService
 
         public void StartHandleDirectory()
         {
-            for(int i = 0; i < extensions.Length; i++)
+            for (int i = 0; i < extensions.Length; i++)
             {
                 FileSystemWatcher dirWatcher = new FileSystemWatcher(dirPath, extensions[i]);
                 dirWatcher.EnableRaisingEvents = true;
@@ -54,13 +54,21 @@ namespace ImageService
             // go through all the files and send to "add file"
         }
 
-        public void CloseFileWatcher()
+        public void CloseFileWatcher(object sender, DirectoryCloseEventArgs args)
         {
-            // when recieve close command close file watcher
+            if (args.DirectoryPath.Equals(this.dirPath) || args.DirectoryPath.Equals("*"))
+            {
+                foreach (FileSystemWatcher watcher in dirWatchers)
+                {
+                    watcher.EnableRaisingEvents = false;
+                }
+                logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "Closed directory " + this.dirPath));
+
+            }
         }
 
         private void FileCreated(object sender, FileSystemEventArgs args)
-        { 
+        {
             // call on command recieved
             string[] arguments = new string[] { args.FullPath, args.Name };
             int commandID = (int)CommandTypeEnum.ADD_FILE;
@@ -70,14 +78,15 @@ namespace ImageService
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs args)
         {
-            if ( args.DirPath.Equals(this.dirPath) || args.DirPath.Equals("*") )
+            if (args.DirPath.Equals(this.dirPath) || args.DirPath.Equals("*"))
             {
                 bool success;
                 string result = this.imageController.ExecuteCommand(args.CommandID, args.Args, out success);
                 if (success)
                 {
                     logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, result));
-                } else
+                }
+                else
                 {
                     logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.FAIL, result));
                 }

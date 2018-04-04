@@ -38,17 +38,31 @@ namespace ImageService
 
             string year = File.GetCreationTime(filePath).Year.ToString();
             string month = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(File.GetCreationTime(filePath).Month).ToString();
-
+            // create new photo directory
             string dateOutputFolder = outputFolder + "\\" + year + "\\" + month;
             Directory.CreateDirectory(dateOutputFolder);
-
-            File.Copy(filePath, dateOutputFolder + "\\" + fileName);
-
+            //create thumb directory
             string outputThumbFolder = dateOutputFolder + "\\" + "thumbnails";
             Directory.CreateDirectory(outputThumbFolder);
+
+
+            string underscore = "_";
+            string newFileName = dateOutputFolder + "\\" + fileName;
+            string newThumbName = outputThumbFolder + "\\" + fileName;
+
+            // if a file with same name exists, add "_" to the name
+            while (File.Exists(newFileName))
+            {
+                newFileName += underscore;
+                newThumbName += underscore;
+            }
+
+            File.Copy(filePath, newFileName);
+
             Image image = Image.FromFile(filePath);
             Image thumb = image.GetThumbnailImage(thumbnailSize, thumbnailSize, () => false, IntPtr.Zero);
-            thumb.Save(Path.ChangeExtension(outputThumbFolder + "\\" + fileName, "thumb"));
+
+            thumb.Save(Path.ChangeExtension(newThumbName, "thumb"));
 
             result = true;
             string statusResult = "Image " + fileName + " was added to " + year + ", " + month + ".";
