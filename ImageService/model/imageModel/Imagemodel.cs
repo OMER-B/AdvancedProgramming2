@@ -42,7 +42,7 @@ namespace ImageService
             string dateOutputFolder = outputFolder + "\\" + year + "\\" + month;
             Directory.CreateDirectory(dateOutputFolder);
             //create thumb directory
-            string outputThumbFolder = dateOutputFolder + "\\" + "thumbnails";
+            string outputThumbFolder = outputFolder + "\\thumbnails\\" + year + "\\" + month;
             Directory.CreateDirectory(outputThumbFolder);
 
 
@@ -53,8 +53,8 @@ namespace ImageService
             // if a file with same name exists, add "_" to the name
             while (File.Exists(newFileName))
             {
-                newFileName += underscore;
-                newThumbName += underscore;
+                newFileName = underscore + newFileName;
+                newThumbName = underscore + newThumbName;
             }
 
             File.Copy(filePath, newFileName);

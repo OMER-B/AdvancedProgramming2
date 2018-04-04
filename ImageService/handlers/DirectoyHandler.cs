@@ -93,7 +93,6 @@ namespace ImageService
             }
         }
 
-        // TODO add close function
     }
 }
 
