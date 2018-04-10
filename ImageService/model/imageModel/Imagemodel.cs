@@ -47,22 +47,22 @@ namespace ImageService
 
 
                 string underscore = "_";
-                string newFileName = dateOutputFolder + "\\" + fileName;
-                string newThumbName = outputThumbFolder + "\\" + fileName;
+                string newFilePath = dateOutputFolder + "\\" + fileName;
+                string thumbPath = outputThumbFolder + "\\" + fileName;
 
                 // if a file with same name exists, add "_" to the name
-                while (File.Exists(newFileName))
+                while (File.Exists(newFilePath))
                 {
-                    newFileName = underscore + newFileName;
-                    newThumbName = underscore + newThumbName;
+                    newFilePath = underscore + newFilePath;
+                    thumbPath = underscore + thumbPath;
                 }
 
-                File.Move(filePath, newFileName);
+                File.Move(filePath, newFilePath);
 
-                Image image = Image.FromFile(newFileName);
+                Image image = Image.FromFile(newFilePath);
                 Image thumb = image.GetThumbnailImage(thumbnailSize, thumbnailSize, () => false, IntPtr.Zero);
 
-                thumb.Save(Path.ChangeExtension(newThumbName, "thumb"));
+                thumb.Save(Path.ChangeExtension(thumbPath, "thumb"));
 
                 result = true;
                 string statusResult = "Image " + fileName + " was added to " + year + ", " + month + ".";
