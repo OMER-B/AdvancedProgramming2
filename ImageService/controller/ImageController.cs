@@ -50,7 +50,7 @@ namespace ImageService
             else
             {
                 resultSuccesful = false;
-                return "No Such Command";
+                return "No such command.";
             }
         }
     }

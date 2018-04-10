@@ -56,8 +56,6 @@ namespace ImageService
 
             ILogger logger = new Logger();
             
-            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO delete this
-            global.Instance.logger = logger;
             logger.MessageRecieved += OnMsg;
 
             this.server = new ImageServer(logger, imageModel);
@@ -65,11 +63,6 @@ namespace ImageService
             {
                 server.AddNewDirectoryHandler(path);
             }
-
-
-            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO delete this
-            global.Instance.logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "end of service constructor"));
-            ////////////////
         }
 
         public void OnMsg(object sender, MessageRecievedEventArgs args)
@@ -80,7 +73,7 @@ namespace ImageService
         protected override void OnStart(string[] args)
         {
 
-            eventLog.WriteEntry("The service started.");
+            eventLog.WriteEntry("Service started.");
 
             // Update the service state to Running.  
             ServiceStatus serviceStatus = new ServiceStatus();
@@ -91,12 +84,12 @@ namespace ImageService
         protected override void OnStop()
         {
             // TODO: send commands to close all the handlers
-            eventLog.WriteEntry("The service stopped.");
+            eventLog.WriteEntry("Service stopped.");
         }
 
         protected override void OnContinue()
         {
-            eventLog.WriteEntry("In OnContinue.");
+            eventLog.WriteEntry("Service continued.");
         }
 
 
