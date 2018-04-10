@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ImageService;
+using Logic;
 
-namespace ImageService
+namespace Tools
 {
     public class DirectoryCloseEventArgs : EventArgs
     {

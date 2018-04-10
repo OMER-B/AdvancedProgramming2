@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using Tools;
+using Logic;
+
 namespace ImageService
 {
     class ConfigReader

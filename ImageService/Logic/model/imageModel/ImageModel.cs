@@ -3,8 +3,10 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Drawing;
+using Tools;
+using ImageService;
 
-namespace ImageService
+namespace Logic
 {
     public class ImageModel : IImageModel
     {
@@ -21,6 +23,7 @@ namespace ImageService
 
         public string AddFile(string[] args, out bool result)
         {
+            string newFilePath = " ";
             try
             {
                 if (args.Length != 2)
@@ -47,18 +50,19 @@ namespace ImageService
 
 
                 string underscore = "_";
-                string newFilePath = dateOutputFolder + "\\" + fileName;
-                string thumbPath = outputThumbFolder + "\\" + fileName;
+                newFilePath = dateOutputFolder + "\\" + fileName;
 
                 // if a file with same name exists, add "_" to the name
                 while (File.Exists(newFilePath))
                 {
-                    newFilePath = underscore + newFilePath;
-                    thumbPath = underscore + thumbPath;
+                    fileName = underscore + fileName;
+                    newFilePath = dateOutputFolder + "\\" + fileName;
                 }
 
-                File.Move(filePath, newFilePath);
+                string thumbPath = outputThumbFolder + "\\" + fileName;
 
+                File.Move(filePath, newFilePath);
+                
                 Image image = Image.FromFile(newFilePath);
                 Image thumb = image.GetThumbnailImage(thumbnailSize, thumbnailSize, () => false, IntPtr.Zero);
 
@@ -73,7 +77,7 @@ namespace ImageService
             catch (Exception ex)
             {
                 result = false;
-                return args[0] + ": " + ex.ToString();
+                return "Exception: " + newFilePath + ": " + ex.ToString();
             }
         }
 

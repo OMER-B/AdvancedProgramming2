@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.Linq;
 using System.Threading.Tasks;
+using Tools;
+using Logic;
 
 namespace ImageService
 {
