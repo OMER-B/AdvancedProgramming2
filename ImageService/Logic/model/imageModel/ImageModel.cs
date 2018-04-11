@@ -49,7 +49,6 @@ namespace Logic
                 string outputThumbFolder = outputFolder + "\\thumbnails\\" + year + "\\" + month;
                 Directory.CreateDirectory(outputThumbFolder);
 
-
                 string underscore = "_";
                 newFilePath = dateOutputFolder + "\\" + fileName;
 
