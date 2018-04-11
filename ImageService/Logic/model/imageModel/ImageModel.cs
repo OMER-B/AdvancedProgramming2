@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using Tools;
 using ImageService;
+using ImageService.Tools;
 
 namespace Logic
 {
@@ -39,8 +40,8 @@ namespace Logic
                     return "Path " + args[0] + " does not exist.";
                 }
 
-                string year = File.GetCreationTime(filePath).Year.ToString();
-                string month = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(File.GetCreationTime(filePath).Month).ToString();
+                string year = ImageProperties.GetDateTakenFromImage(filePath).Year.ToString();
+                string month = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(ImageProperties.GetDateTakenFromImage(filePath).Month).ToString();
                 // create new photo directory
                 string dateOutputFolder = outputFolder + "\\" + year + "\\" + month;
                 Directory.CreateDirectory(dateOutputFolder);
@@ -80,7 +81,6 @@ namespace Logic
                 return "Exception: " + newFilePath + ": " + ex.ToString();
             }
         }
-
 
     }
 }
