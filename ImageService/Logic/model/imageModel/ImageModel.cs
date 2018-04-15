@@ -40,6 +40,12 @@ namespace Logic
                     return "Path " + args[0] + " does not exist.";
                 }
 
+                if (!Directory.Exists(outputFolder)) 
+                { 
+                    DirectoryInfo di = Directory.CreateDirectory(outputFolder); 
+                    di.Attributes = FileAttributes.Directory | FileAttributes.Hidden; 
+                }
+
                 string year = ImageProperties.GetDateTakenFromImage(filePath).Year.ToString();
                 string month = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(ImageProperties.GetDateTakenFromImage(filePath).Month).ToString();
                 // create new photo directory
