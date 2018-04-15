@@ -54,7 +54,7 @@ namespace ImageService
             eventLog.Source = reader.SourceName;
             eventLog.Log = reader.LogName;
 
-            ImageModel imageModel = new ImageModel(reader.OutputDir, reader.ThumbnailSize);
+            IImageModel imageModel = new ImageModel(reader.OutputDir, reader.ThumbnailSize);
 
             ILogger logger = new Logger();
             
@@ -85,7 +85,7 @@ namespace ImageService
 
         protected override void OnStop()
         {
-            // TODO: send commands to close all the handlers
+            server.CloseAll();
             eventLog.WriteEntry("Service stopped.");
         }
 

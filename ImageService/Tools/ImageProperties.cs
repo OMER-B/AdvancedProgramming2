@@ -25,7 +25,7 @@ namespace ImageService.Tools
                     return DateTime.Parse(dateTaken);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return File.GetCreationTime(path);
             }

@@ -42,9 +42,6 @@ namespace Logic
                 dirWatcher.Created += new FileSystemEventHandler(FileCreated);
                 dirWatchers.Add(dirWatcher);
             }
-
-        
-            // go through all the files and send to "add file"
         }
 
         public void CloseFileWatcher(object sender, DirectoryCloseEventArgs args)
@@ -56,7 +53,7 @@ namespace Logic
                     watcher.EnableRaisingEvents = false;
                 }
                 logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "Closed directory " + this.dirPath));
-
+                DirectoryClose.Invoke(this, new DirectoryCloseEventArgs(this.dirPath, "Recieved close message"));
             }
         }
 
