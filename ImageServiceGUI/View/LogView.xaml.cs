@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace ImageServiceGUI.View
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for LogView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LogView : UserControl
     {
-        public MainWindow()
+        public LogView()
         {
             InitializeComponent();
         }

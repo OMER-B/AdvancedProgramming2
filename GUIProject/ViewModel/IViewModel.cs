@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageServiceGUI.ViewModel
+namespace GUIProject.ViewModel
 {
-    class SettingsViewModel
+    interface IViewModel
     {
     }
 }

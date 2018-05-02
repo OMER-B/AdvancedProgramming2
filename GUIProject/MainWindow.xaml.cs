@@ -10,18 +10,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ImageServiceGUI.View
+namespace GUIProject
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            ViewModel.SettingsVM test = new ViewModel.SettingsVM();
+        }
+
+        private void SettingsView_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
