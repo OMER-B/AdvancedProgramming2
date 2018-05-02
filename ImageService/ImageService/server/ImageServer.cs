@@ -18,6 +18,7 @@ namespace ImageService
         #endregion
 
         #region Members
+        private ServerCommunication communication;
         private IImageController controller;
         private ILogger logger;
         #endregion
@@ -26,6 +27,7 @@ namespace ImageService
         {
             this.logger = logger;
             this.controller = new ImageController(imageModel);
+            this.communication = new ServerCommunication(logger);
         }
 
         public void AddNewDirectoryHandler(string path)

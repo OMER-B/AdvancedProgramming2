@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageService\server\ServerCommunication.cs" />
     <Compile Include="Logic\commands\ICommand.cs" />
     <Compile Include="Logic\commands\NewFileCommand.cs" />
     <Compile Include="Logic\controller\IImageController.cs" />
