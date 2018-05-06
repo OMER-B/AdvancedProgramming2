@@ -8,10 +8,10 @@ namespace Tools
 {
     class ClientMessageArgs
     {
-        private CommandTypeEnum commandId;
+        private ImageCommandTypeEnum commandId;
         private string[] args;
 
-        public ClientMessageArgs(CommandTypeEnum id, string[] args)
+        public ClientMessageArgs(ImageCommandTypeEnum id, string[] args)
         {
             this.commandId = id;
             this.args = args;

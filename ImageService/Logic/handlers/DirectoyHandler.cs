@@ -61,7 +61,7 @@ namespace Logic
         {
             // call on command recieved
             string[] arguments = new string[] { args.FullPath, args.Name };
-            int commandID = (int)CommandTypeEnum.ADD_FILE;
+            int commandID = (int)ImageCommandTypeEnum.ADD_FILE;
             CommandRecievedEventArgs eventArgs = new CommandRecievedEventArgs(commandID, arguments, this.dirPath);
             OnCommandRecieved(sender, eventArgs);
         }

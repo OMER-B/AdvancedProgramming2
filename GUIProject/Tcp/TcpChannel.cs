@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunicationTools;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Tools;
+
 
 namespace GUIProject.Tcp
 {
@@ -33,7 +35,7 @@ namespace GUIProject.Tcp
         {
             if (!connected)
             {
-                bool result = Connect();
+                bool result = Connect();                
                 if (!result)
                 {
                     return false;

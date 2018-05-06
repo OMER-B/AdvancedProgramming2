@@ -82,7 +82,7 @@
     <Compile Include="Tools\CommandRecievedEventArgs.cs" />
     <Compile Include="Tools\DirectoryCloseEventArgs.cs" />
     <Compile Include="Tools\MessageRecievedEventArgs.cs" />
-    <Compile Include="Tools\CommandTypeEnum.cs" />
+    <Compile Include="Tools\ImageCommandTypeEnum.cs" />
     <Compile Include="Tools\MessageTypeEnum.cs" />
   </ItemGroup>
   <ItemGroup>

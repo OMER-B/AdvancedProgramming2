@@ -28,7 +28,7 @@ namespace Logic
             this.model = model;
             commands = new Dictionary<int, ICommand>
             {
-                { (int)CommandTypeEnum.ADD_FILE, new NewFileCommand(model) }
+                { (int)ImageCommandTypeEnum.ADD_FILE, new NewFileCommand(model) }
             };
         }
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)

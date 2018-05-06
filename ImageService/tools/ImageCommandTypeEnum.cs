@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace Tools
 {
-    public enum CommandTypeEnum : int
+    public enum ImageCommandTypeEnum : int
     {
-        ADD_FILE,
-        REMOVE_HANDLER,
-        LOG_UPDATE,
-        GET_APP_CONFIG
+        ADD_FILE
     }
 }
