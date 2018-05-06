@@ -1,25 +1,70 @@
-﻿using System;
+﻿using GUIProject.Model;
+using Microsoft.Practices.Prism.Commands;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace GUIProject.ViewModel
 {
     class SettingsVM : IViewModel
     {
-        private IList<KeyValuePair<String, String>> test;
+        private Model.SettingsModel model;
+        public ObservableCollection<ConfigHolder> ConfigList { get { return this.model.List; } }
+        public ObservableCollection<ConfigHolder> HandlersList { get { return this.model.HandlersList; } }
+        public ICommand RemoveCommand { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public SettingsVM()
+        public SettingsVM(Model.SettingsModel model)
         {
-            this.test = new List<KeyValuePair<String, String>>();
-            this.test.Add(new KeyValuePair<string, string>("Firstly, consider just", "using a"));
-            this.test.Add(new KeyValuePair<string, string>("S, just", "a ListBox"));
-            this.test.Add(new KeyValuePair<string, string>("T, no just", "ItemsControl"));
-            this.test.Add(new KeyValuePair<string, string>("F, consider just", "or"));
-            this.test.Add(new KeyValuePair<string, string>("F, that just", "using a ListBox"));
-            this.test.Add(new KeyValuePair<string, string>("S, a lot", "using ItemsControl"));
-            this.test.Add(new KeyValuePair<string, string>("S, XamlObjectWriter", "ListBox or ItemsControl"));
+            this.model = model;
+            this.RemoveCommand = new DelegateCommand<object>(this.OnRemove, this.CanRemove);
+            PropertyChanged += this.RemoveHandler;
+            this.model.PropertyChanged +=
+       delegate (Object sender, PropertyChangedEventArgs e)
+       {
+           NotifyPropertyChanged(e.PropertyName);
+       };
+
         }
+        private void RemoveHandler(object sender, PropertyChangedEventArgs e)
+        {
+            var command = this.RemoveCommand as DelegateCommand<object>;
+            command?.RaiseCanExecuteChanged();
+
+        }
+        public ConfigHolder SelectedHandler
+        {
+            get { return this.model.SelectedHandler; }
+            set
+            {
+                this.model.SelectedHandler = value;
+                NotifyPropertyChanged("SelectedHandler");
+            }
+        }
+
+        public void OnRemove(object obj)
+        {
+            // TODO: Here pass request to client to close the handler!
+            // Request chain is: viewmodel -> model -> client -> server -> handler manager ............
+            this.model.Remove(this.SelectedHandler);
+            this.model.SelectedHandler = null;
+        }
+
+        private bool CanRemove(object obj)
+        {
+            return this.model.HandlersList.Contains(SelectedHandler);
+        }
+
+        protected void NotifyPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
     }
 }

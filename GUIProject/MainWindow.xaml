@@ -6,20 +6,16 @@
         xmlns:local="clr-namespace:GUIProject"
         xmlns:views="clr-namespace:GUIProject.View"
         mc:Ignorable="d"
-        Title="ex2" Height="450" Width="800">
-    <Grid>
-        <TabControl HorizontalAlignment="Left"  VerticalAlignment="Top" Height="420" Width="794">
-            <TabItem Header="Settings">
-                <Grid Background="#FFE5E5E5">
-                    <views:SettingsView />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Log">
-                <Grid Background="#FFE5E5E5">
-                    <views:LogView />
-                </Grid>
-            </TabItem>
-        </TabControl>
+        Title="GUI" Height="450" Width="600" MinHeight="350">
 
-    </Grid>
+    <!--#region Tabs-->
+    <TabControl VerticalAlignment="Top" HorizontalAlignment="Stretch">
+        <TabItem Header="Settings">
+            <views:SettingsView />
+        </TabItem>
+        <TabItem Header="Log">
+            <views:LogView />
+        </TabItem>
+    </TabControl>
+    <!--#endregion-->
 </Window>

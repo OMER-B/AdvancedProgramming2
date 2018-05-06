@@ -23,12 +23,6 @@ namespace GUIProject
         public MainWindow()
         {
             InitializeComponent();
-            ViewModel.SettingsVM test = new ViewModel.SettingsVM();
-        }
-
-        private void SettingsView_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

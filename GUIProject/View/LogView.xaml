@@ -3,19 +3,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GUIProject.View"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:local="clr-namespace:GUIProject.ViewModel"
+             mc:Ignorable="d">
     <Grid>
-        <ListView HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn>
-                        <Button Content="??" />
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <!--#region Grid Set-up-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--#endregion-->
 
+        <!--#region Title-->
+        <TextBlock Grid.Row="0"
+                   FontSize="60"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center">Logs</TextBlock>
+        <!--#endregion-->
+
+        <!--#region Log-->
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding LogList}"
+                  CanUserResizeColumns="False"
+                  IsReadOnly="True"
+                  CanUserReorderColumns="False"
+                  CanUserSortColumns="False"
+                  AutoGenerateColumns="False"
+                  GridLinesVisibility="Horizontal">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}" FontWeight="DemiBold">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Background" Value="{Binding Color}" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="1*" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--#endregion-->
     </Grid>
 </UserControl>

@@ -23,6 +23,7 @@ namespace GUIProject.View
         public LogView()
         {
             InitializeComponent();
+            this.DataContext = new ViewModel.LogVM(new Model.LogModel());
         }
     }
 }

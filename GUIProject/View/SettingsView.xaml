@@ -3,25 +3,64 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GUIProject.View"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:local="clr-namespace:GUIProject.ViewModel"
+             mc:Ignorable="d">
     <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition />
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
-        <RowDefinition />
-        <RowDefinition />
-       
-        <RowDefinition />
-        <RowDefinition />
-      </Grid.RowDefinitions>
+        <!--#region Grid Set-up-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--#endregion-->
 
-        <TextBlock FontSize="60" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Grid.Row="0">Settings</TextBlock>
-        <ListBox Grid.Row="1" ItemsSource="{StaticResource ViewModel.SettingsVM.test}"></ListBox>
-        <Button Content="Remove" Grid.Row="2"></Button>
-        <TextBlock FontSize="20" FontWeight="Bold" Grid.Row="3">2005 Products Shipped</TextBlock>
+        <!--#region Title-->
+        <TextBlock Grid.Row="0"
+                   FontSize="60"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center">Settings</TextBlock>
+        <!--#endregion-->
 
+        <!--#region Config-->
+        <ItemsControl Grid.Row="1"
+                      ItemsSource="{Binding ConfigList}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid VerticalAlignment="Center" Margin="5">
+                        <TextBlock>
+                            <Run Text="{Binding Key, Mode=OneWay}" />
+                            <Run Text="{Binding Value, Mode=OneWay}" FontWeight="Bold" />
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <!--#endregion-->
+
+        <!--#region Remove Button-->
+        <Button Grid.Row="2"
+                x:Name="buttonRemove"
+                Command="{Binding RemoveCommand}"
+                Padding="10" Content="Remove" FontSize="15">
+        </Button>
+        <!--#endregion -->
+
+        <!--#region Handlers-->
+        <ListView Grid.Row="3"
+                  ItemsSource="{Binding HandlersList}"
+                  SelectedItem="{Binding SelectedHandler, Mode=TwoWay}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="2">
+                        <TextBlock Text="{Binding Value}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ListView>
+        <!--#endregion-->
     </Grid>
 </UserControl>
