@@ -14,8 +14,7 @@ namespace Tools
         public MessageRecievedEventArgs(MessageTypeEnum status, string message)
         {
             this.Status = status;
-            this.Message = message;
-            
+            this.Message = message;            
         }
     }
 }

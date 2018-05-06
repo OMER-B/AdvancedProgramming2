@@ -54,11 +54,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\ImageService\tools\ClientMessageArgs.cs">
+      <Link>Tcp\ClientMessageArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\ImageService\tools\CommandTypeEnum.cs">
+      <Link>Tcp\CommandTypeEnum.cs</Link>
+    </Compile>
     <Compile Include="Model\ConfigHolder.cs" />
     <Compile Include="Model\IModel.cs" />
     <Compile Include="Model\Log.cs" />
     <Compile Include="Model\LogModel.cs" />
     <Compile Include="Model\SettingsModel.cs" />
+    <Compile Include="Tcp\TcpChannel.cs" />
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\DelegateCommandBase.cs" />
     <Compile Include="ViewModel\IViewModel.cs" />

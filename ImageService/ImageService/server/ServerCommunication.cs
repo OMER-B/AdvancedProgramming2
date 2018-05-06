@@ -1,10 +1,12 @@
 ﻿using Logic;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Tools;
 
@@ -15,40 +17,74 @@ namespace ImageService
         // TODO make a list of clients
         private List<TcpClient> clients;
         private ILogger logger;
+        private IPEndPoint ep;
+        private TcpListener listener;
+        private bool connected;
 
         public ServerCommunication(ILogger logger)
         {
             this.logger = logger;
             this.clients = new List<TcpClient>();
+            ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
+            listener = new TcpListener(ep);
+            connected = false;
         }
 
-        public bool Connect()
+        public void MessageClients(string message)
         {
-            try
+            // TODO be invoked by the logger
+            foreach(TcpClient client in clients)
             {
-                IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
-                TcpListener listener = new TcpListener(ep);
-                listener.Start();
-                Console.WriteLine("Waiting for client connections...");
-                TcpClient client = listener.AcceptTcpClient();
-                logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "Connection established with: " + client.ToString()));
-                clients.Add(client);
-
-                using (NetworkStream stream = client.GetStream())
-                //using (BinaryReader reader = new BinaryReader(stream))
-                //using (BinaryWriter writer = new BinaryWriter(stream))
-
-                client.Close();
-                listener.Stop();
-                return true;
-            }catch(Exception e)
-            {
-                //TODO write to log
-                Console.WriteLine(e.Message);
-                return false;
+                using (StreamWriter writer = new StreamWriter(client.GetStream(), Encoding.ASCII))
+                {
+                    writer.Write(message);
+                }              
             }
-            
+        }
 
+        public void ListenToClient(TcpClient client)
+        {
+            using (StreamReader reader = new StreamReader(client.GetStream()))
+            {
+                string message = reader.ReadLine();
+            }
+        }
+
+
+        public void Connect()
+        {
+            listener.Start();
+            connected = true;
+            Task task = new Task(() => {
+                while (true)
+                {
+                    try
+                    {
+                        TcpClient client = listener.AcceptTcpClient();
+                        Console.WriteLine("Got new connection");
+                        logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "Connection established with: " + client.ToString()));
+                        clients.Add(client);
+                        Task t = Task.Factory.StartNew(() => ListenToClient(client));
+                        Thread.Sleep(1000);
+                    }
+                    catch (SocketException)
+                    {
+                        break;
+                    }
+                }
+                Console.WriteLine("Server stopped");
+            });
+            task.Start();
+        }
+
+        public void Disconnect()
+        {
+            foreach (TcpClient client in clients)
+            {
+                client.Close();
+            }
+            listener.Stop();
+            connected = false;
         }
 
     }
