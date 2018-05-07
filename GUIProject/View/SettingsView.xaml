@@ -30,10 +30,10 @@
                       ItemsSource="{Binding ConfigList}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid VerticalAlignment="Center" Margin="5">
-                        <TextBlock>
-                            <Run Text="{Binding Key, Mode=OneWay}" />
-                            <Run Text="{Binding Value, Mode=OneWay}" FontWeight="Bold" />
+                    <Grid>
+                        <TextBlock Margin="5">
+                            <Run Text="{Binding Title, Mode=OneWay}" />
+                            <Run Text="{Binding Content, Mode=OneWay}" FontWeight="Bold" />
                         </TextBlock>
                     </Grid>
                 </DataTemplate>
@@ -56,7 +56,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="2">
-                        <TextBlock Text="{Binding Value}" />
+                        <TextBlock Text="{Binding Content}" />
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

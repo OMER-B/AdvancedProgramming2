@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CommunicationTools;
+using GUIProject.Tcp;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,24 +11,27 @@ using System.Threading.Tasks;
 
 namespace GUIProject.Model
 {
-    class LogModel : IModel<Log>, INotifyPropertyChanged
+    class LogModel : IModel, INotifyPropertyChanged
     {
         public LogModel()
         {
-            this.list = new ObservableCollection<Log>();
-            this.list.Add(new Log("INFO", "no problem"));
-            this.list.Add(new Log("WARNING", "problem"));
-            this.list.Add(new Log("FAIL", "ok"));
-            this.list.Add(new Log("FAIL", "not good"));
-            this.list.Add(new Log("INFO", "very bad"));
-            this.list.Add(new Log("FAIL", "good"));
-            this.list.Add(new Log("INFO", "stop"));
-            this.list.Add(new Log("FAIL", "good"));
-            this.list.Add(new Log("INFO", "oll korrect"));
+            this.list = new ObservableCollection<TitleAndContent>();
+            TitleAndContent test = new TitleAndContent("info", "ok");
+            TitleAndContent test2 = new TitleAndContent("warning", "bad");
+            List<TitleAndContent> listt = new List<TitleAndContent>();
+            listt.Add(test);
+            listt.Add(test2);
+
+
+            TACHolder tac = new TACHolder(MessageTypeEnum.SEND_HISTORY, listt);
+
+            string output = JsonConvert.SerializeObject(tac);
+            GUIDistributionParser p = new GUIDistributionParser(output, null, this);
+            p.passToModel();
         }
 
-        private ObservableCollection<Log> list;
-        public ObservableCollection<Log> List { get { return this.list; } }
+        private ObservableCollection<TitleAndContent> list;
+        public ObservableCollection<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

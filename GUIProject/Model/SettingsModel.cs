@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CommunicationTools;
+using GUIProject.Tcp;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,36 +11,46 @@ using System.Threading.Tasks;
 
 namespace GUIProject.Model
 {
-    class SettingsModel : IModel<ConfigHolder>, INotifyPropertyChanged
+    class SettingsModel : IModel, INotifyPropertyChanged
     {
         public SettingsModel()
         {
-            string[] a = { "Output Directory", "C:\\Users\\Omer\\Desktop\\test" };
-            string[] b = { "Source Name", "ImageServiceSource" };
-            string[] c = { "Log Name", "ImageServiceLog" };
-            string[] d = { "Thumbnail Size", "120" };
-            this.list = new ObservableCollection<ConfigHolder>();
-            this.list.Add(new ConfigHolder(a[0], a[1]));
-            this.list.Add(new ConfigHolder(b[0], b[1]));
-            this.list.Add(new ConfigHolder(c[0], c[1]));
-            this.list.Add(new ConfigHolder(d[0], d[1]));
 
+            this.list = new ObservableCollection<TitleAndContent>();
+            List<TitleAndContent> listt = new List<TitleAndContent>();
+            listt.Add(new TitleAndContent("Output Directory", "C:\\Users\\Omer\\Desktop\\test"));
+            listt.Add(new TitleAndContent("Source Name", "ImageServiceSource"));
+            listt.Add(new TitleAndContent("Log Name", "ImageServiceLog"));
+            listt.Add(new TitleAndContent("Thumbnail Size", "120"));
 
-            this.handlersList = new ObservableCollection<ConfigHolder>();
-            this.handlersList.Add(new ConfigHolder("Path", "C:\\Users\\Omer\\Desktopaeyi7"));
-            this.handlersList.Add(new ConfigHolder("Path", "C:\\Users\\Omer\\absd"));
-            this.handlersList.Add(new ConfigHolder("Path", "C:\\Users\\Omer\\D345y"));
-            this.handlersList.Add(new ConfigHolder("Path", "C:\\Users\\Omer\\hsdfg3"));
-            this.handlersList.Add(new ConfigHolder("Path", "C:\\Users\\Omer\\g55y"));
-            this.handlersList.Add(new ConfigHolder("Path", "C:\\Users\\Omer\\546h"));
-            this.handlersList.Add(new ConfigHolder("Path", "C:\\Users\\Omer\\bdfh"));
+            TACHolder tac = new TACHolder(CommunicationTools.MessageTypeEnum.SEND_CONFIG, listt);
+            string output = JsonConvert.SerializeObject(tac);
+            GUIDistributionParser p = new GUIDistributionParser(output, this, null);
+            p.passToModel();
+
+            this.handlersList = new ObservableCollection<TitleAndContent>();
+            List<TitleAndContent> listt2 = new List<TitleAndContent>();
+
+            listt2.Add(new TitleAndContent("Path", "C:"));
+            listt2.Add(new TitleAndContent("Path", "C:\\Users"));
+            listt2.Add(new TitleAndContent("Path", "C:\\Users\\Omer"));
+            listt2.Add(new TitleAndContent("Path", "C:\\Users\\Omer\\Desktop\\test"));
+            listt2.Add(new TitleAndContent("Path", "D:"));
+            listt2.Add(new TitleAndContent("Path", "D:\\Downloads"));
+            listt2.Add(new TitleAndContent("Path", "D:\\Files"));
+
+            TACHolder tac2 = new TACHolder(CommunicationTools.MessageTypeEnum.SEND_CONFIG, listt2);
+            string output2 = JsonConvert.SerializeObject(tac2);
+            GUIDistributionParser p2 = new GUIDistributionParser(output2, this, null);
+            p2.passToModel();
+
 
         }
 
-        private ObservableCollection<ConfigHolder> list;
-        public ObservableCollection<ConfigHolder> List { get { return this.list; } }
+        private ObservableCollection<TitleAndContent> list;
+        public ObservableCollection<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
 
-        internal void Remove(ConfigHolder selectedHandler)
+        internal void Remove(TitleAndContent selectedHandler)
         {
             // TODO: Here need to call the client to remove from the server! If successful then do
             try
@@ -47,11 +60,11 @@ namespace GUIProject.Model
             catch { }
         }
 
-        private ObservableCollection<ConfigHolder> handlersList;
-        public ObservableCollection<ConfigHolder> HandlersList { get { return this.handlersList; } }
+        private ObservableCollection<TitleAndContent> handlersList;
+        public ObservableCollection<TitleAndContent> HandlersList { get { return this.handlersList; } }
 
-        private ConfigHolder selectedHandler;
-        public ConfigHolder SelectedHandler
+        private TitleAndContent selectedHandler;
+        public TitleAndContent SelectedHandler
         {
             get { return selectedHandler; }
             set

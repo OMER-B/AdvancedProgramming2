@@ -7,7 +7,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Tools;
 
 
 namespace GUIProject.Tcp
@@ -17,7 +16,7 @@ namespace GUIProject.Tcp
         private TcpClient client;
         private IPEndPoint ep;
         private bool connected;
-        public event EventHandler<ClientMessageArgs> DataRecieved;
+        public event EventHandler<MessageTypeEnum> DataRecieved;
         private BinaryWriter writer;
         private BinaryReader reader;
 

@@ -77,13 +77,13 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\ClientMessageArgs.cs" />
     <Compile Include="Tools\ImageProperties.cs" />
     <Compile Include="Tools\CommandRecievedEventArgs.cs" />
     <Compile Include="Tools\DirectoryCloseEventArgs.cs" />
     <Compile Include="Tools\MessageRecievedEventArgs.cs" />
     <Compile Include="Tools\ImageCommandTypeEnum.cs" />
     <Compile Include="Tools\MessageTypeEnum.cs" />
+    <Compile Include="Tools\ClientMessageArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ImageService\service\App.config" />

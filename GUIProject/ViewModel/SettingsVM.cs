@@ -1,4 +1,5 @@
-﻿using GUIProject.Model;
+﻿using CommunicationTools;
+using GUIProject.Model;
 using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,8 @@ namespace GUIProject.ViewModel
     class SettingsVM : IViewModel
     {
         private Model.SettingsModel model;
-        public ObservableCollection<ConfigHolder> ConfigList { get { return this.model.List; } }
-        public ObservableCollection<ConfigHolder> HandlersList { get { return this.model.HandlersList; } }
+        public ObservableCollection<TitleAndContent> ConfigList { get { return this.model.List; } }
+        public ObservableCollection<TitleAndContent> HandlersList { get { return this.model.HandlersList; } }
         public ICommand RemoveCommand { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -38,7 +39,7 @@ namespace GUIProject.ViewModel
             command?.RaiseCanExecuteChanged();
 
         }
-        public ConfigHolder SelectedHandler
+        public TitleAndContent SelectedHandler
         {
             get { return this.model.SelectedHandler; }
             set

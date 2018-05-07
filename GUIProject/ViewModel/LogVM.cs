@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.Commands;
+﻿using CommunicationTools;
+using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,16 +13,15 @@ namespace GUIProject.ViewModel
 {
     class LogVM : IViewModel
     {
-        private Model.IModel<Model.Log> model;
-        public ObservableCollection<Model.Log> LogList { get { return this.model.List; } }
+        private Model.IModel model;
+        public ObservableCollection<TitleAndContent> LogList { get { return this.model.List; } }
         public ICommand RemoveCommand { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public LogVM(Model.IModel<Model.Log> model)
+        public LogVM(Model.IModel model)
         {
             this.model = model;
             model.PropertyChanged +=
-
             delegate (Object sender, PropertyChangedEventArgs e)
             {
                 NotifyPropertyChanged(e.PropertyName);

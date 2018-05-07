@@ -1,24 +1,27 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace GUIProject.Model
+
+namespace CommunicationTools
 {
-    class Log
+    class TitleAndContent
     {
-        public Log(string type, string msg)
+        public TitleAndContent(string title, string content)
         {
-            this.type = type;
-            this.message = msg;
+            this.title = title;
+            this.content = content;
             this.color = ParseColor();
         }
 
         private Brush ParseColor()
         {
-            switch (this.type.ToLower())
+            switch (this.title.ToLower())
             {
                 case "info":
                     return Brushes.LawnGreen;
@@ -31,11 +34,17 @@ namespace GUIProject.Model
             }
         }
 
-        private string type;
-        private string message;
+        private string title;
+        private string content;
         private Brush color;
-        public string Type { get { return this.type; } set { this.type = value; } }
-        public string Message { get { return this.message; } set { this.message = value; } }
+
+        [JsonProperty("Title")]
+        public string Title { get { return this.title; } set { this.title = value; } }
+
+        [JsonProperty("Content")]
+        public string Content { get { return this.content; } set { this.content = value; } }
+
+        [JsonProperty("Color")]
         public Brush Color { get { return this.color; } set { this.color = value; } }
     }
 }

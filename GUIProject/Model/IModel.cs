@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunicationTools;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace GUIProject.Model
 {
-    interface IModel<T>
+    interface IModel
     {
         #region Notify Changed
         event PropertyChangedEventHandler PropertyChanged;
         void OnPropertyChanged(string name);
         #endregion
-        ObservableCollection<T> List { get; }
+        ObservableCollection<TitleAndContent> List { get; set; }
     }
 }

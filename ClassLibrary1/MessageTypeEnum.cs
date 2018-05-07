@@ -2,25 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CommunicationTools
+namespace CommunicationLibrary
 {
     public enum MessageTypeEnum : int
     {
         REQ_HISTORY,
-        SEND_HISTORY,
-
         REQ_CONFIG,
-        SEND_CONFIG,
-
         CLOSE_HANDLER,
+        SEND_HISTORY,
         SEND_LOG,
-
+        SEND_CONFIG,
         SUCCESS,
         FAIL,
-
-        REQ_SERVICE_STATUS,
-        SEND_SERVICE_STATUS,
-
         DISCONNECT
     }
 }
