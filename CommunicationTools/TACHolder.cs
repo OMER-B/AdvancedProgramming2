@@ -31,5 +31,10 @@ namespace CommunicationTools
             this.commandID = tac.CommandID;
         }
         public TACHolder() { }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

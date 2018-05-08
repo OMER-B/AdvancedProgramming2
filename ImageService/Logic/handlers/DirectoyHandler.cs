@@ -52,7 +52,7 @@ namespace Logic
                 {
                     watcher.EnableRaisingEvents = false;
                 }
-                logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "Closed directory " + this.dirPath));
+                logger.Log(this, new MessageRecievedEventArgs(LogMessageTypeEnum.INFO, "Closed directory " + this.dirPath));
                 DirectoryClose.Invoke(this, new DirectoryCloseEventArgs(this.dirPath, "Recieved close message"));
             }
         }
@@ -74,11 +74,11 @@ namespace Logic
                 string result = this.imageController.ExecuteCommand(args.CommandID, args.Args, out success);
                 if (success)
                 {
-                    logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, result));
+                    logger.Log(this, new MessageRecievedEventArgs(LogMessageTypeEnum.INFO, result));
                 }
                 else
                 {
-                    logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.FAIL, result));
+                    logger.Log(this, new MessageRecievedEventArgs(LogMessageTypeEnum.FAIL, result));
                 }
             }
         }

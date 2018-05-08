@@ -9,9 +9,9 @@ namespace Tools
 {
     public class MessageRecievedEventArgs : EventArgs
     {
-        public MessageTypeEnum Status { get; set; }
+        public LogMessageTypeEnum Status { get; set; }
         public string Message { get; set; }
-        public MessageRecievedEventArgs(MessageTypeEnum status, string message)
+        public MessageRecievedEventArgs(LogMessageTypeEnum status, string message)
         {
             this.Status = status;
             this.Message = message;            

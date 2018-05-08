@@ -28,6 +28,7 @@ namespace ImageService
             this.logger = logger;
             this.controller = new ImageController(imageModel);
             this.communication = new ServerCommunication(logger);
+            logger.MessageRecieved += communication.SendClientsLog;
         }
 
         public void AddNewDirectoryHandler(string path)

@@ -11,6 +11,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommunicationTools", "Commu
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		CommunicationTools\CommunicationTools.projitems*{3b5e0e2c-8cbf-4ecb-a176-81b17d68aade}*SharedItemsImports = 4
 		CommunicationTools\CommunicationTools.projitems*{58f8de67-251f-46ac-a6ed-1f942bd22fa8}*SharedItemsImports = 13
 		CommunicationTools\CommunicationTools.projitems*{72afd413-5a4c-4d0f-a9f9-0c74126018e1}*SharedItemsImports = 4
 	EndGlobalSection

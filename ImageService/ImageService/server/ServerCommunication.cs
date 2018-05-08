@@ -1,4 +1,5 @@
-﻿using Logic;
+﻿using CommunicationTools;
+using Logic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +15,6 @@ namespace ImageService
 {
     class ServerCommunication
     {
-        // TODO make a list of clients
         private List<TcpClient> clients;
         private ILogger logger;
         private IPEndPoint ep;
@@ -30,9 +30,15 @@ namespace ImageService
             connected = false;
         }
 
-        public void MessageClients(string message)
+        public void SendClientsLog(object sender, MessageRecievedEventArgs args)
         {
-            // TODO be invoked by the logger
+            List<TitleAndContent> tacList = new List<TitleAndContent>
+            {
+                new TitleAndContent(args.Status.ToString(), args.Message)
+            };
+            TACHolder tac = new TACHolder(MessageTypeEnum.SEND_LOG, tacList);
+
+            string message = tac.ToJson();
             foreach(TcpClient client in clients)
             {
                 using (StreamWriter writer = new StreamWriter(client.GetStream(), Encoding.ASCII))
@@ -56,13 +62,13 @@ namespace ImageService
             listener.Start();
             connected = true;
             Task task = new Task(() => {
-                while (true)
+                while (connected)
                 {
                     try
                     {
                         TcpClient client = listener.AcceptTcpClient();
                         Console.WriteLine("Got new connection");
-                        logger.Log(this, new MessageRecievedEventArgs(MessageTypeEnum.INFO, "Connection established with: " + client.ToString()));
+                        logger.Log(this, new MessageRecievedEventArgs(LogMessageTypeEnum.INFO, "Connection established with: " + client.ToString()));
                         clients.Add(client);
                         Task t = Task.Factory.StartNew(() => ListenToClient(client));
                         Thread.Sleep(1000);

@@ -44,7 +44,6 @@ namespace GUIProject.Model
             GUIDistributionParser p2 = new GUIDistributionParser(output2, this, null);
             p2.passToModel();
 
-
         }
 
         private ObservableCollection<TitleAndContent> list;
