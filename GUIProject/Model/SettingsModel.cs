@@ -78,5 +78,10 @@ namespace GUIProject.Model
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        public void GetData(object sender, ClientMessage data)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

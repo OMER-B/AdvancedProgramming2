@@ -13,7 +13,7 @@ namespace Logic
     public class DirectoyHandler : IDirectoryHandler
     {
         #region Members
-        private IImageController imageController;
+        private IController imageController;
         private ILogger logger;
         private List<FileSystemWatcher> dirWatchers;
         private string dirPath;
@@ -23,14 +23,18 @@ namespace Logic
         // The Path of directory
         #endregion
 
-        public DirectoyHandler(string path, IImageController controller, ILogger logger, string[] extensions)
+        public DirectoyHandler(string path, IController controller, ILogger logger, string[] extensions)
         {
             this.dirPath = path;
             this.imageController = controller;
             this.logger = logger;
             this.extensions = extensions;
             this.dirWatchers = new List<FileSystemWatcher>();
-           
+        }
+
+        private void Temp(string message)
+        {
+            logger.Log(this, new MessageRecievedEventArgs(LogMessageTypeEnum.INFO, message));
         }
 
         public void StartHandleDirectory()
@@ -41,6 +45,7 @@ namespace Logic
                 dirWatcher.EnableRaisingEvents = true;
                 dirWatcher.Created += new FileSystemEventHandler(FileCreated);
                 dirWatchers.Add(dirWatcher);
+                Temp("Dir: " + dirPath + ", extention: " + extensions[i]);
             }
         }
 
@@ -59,7 +64,7 @@ namespace Logic
 
         private void FileCreated(object sender, FileSystemEventArgs args)
         {
-            // call on command recieved
+            Temp("in file created");
             string[] arguments = new string[] { args.FullPath, args.Name };
             int commandID = (int)ImageCommandTypeEnum.ADD_FILE;
             CommandRecievedEventArgs eventArgs = new CommandRecievedEventArgs(commandID, arguments, this.dirPath);

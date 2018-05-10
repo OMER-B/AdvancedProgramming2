@@ -16,5 +16,6 @@ namespace GUIProject.Model
         void OnPropertyChanged(string name);
         #endregion
         ObservableCollection<TitleAndContent> List { get; set; }
+        void GetData(object sender, ClientMessage data);
     }
 }

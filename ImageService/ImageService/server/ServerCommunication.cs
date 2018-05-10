@@ -41,21 +41,20 @@ namespace ImageService
             string message = tac.ToJson();
             foreach(TcpClient client in clients)
             {
-                using (StreamWriter writer = new StreamWriter(client.GetStream(), Encoding.ASCII))
-                {
-                    writer.Write(message);
-                }              
+                StreamWriter writer = new StreamWriter(client.GetStream(), Encoding.ASCII);
+                writer.Write(message);              
             }
         }
 
         public void ListenToClient(TcpClient client)
         {
-            using (StreamReader reader = new StreamReader(client.GetStream()))
+            StreamReader reader = new StreamReader(client.GetStream());
+            while (client.Connected)
             {
                 string message = reader.ReadLine();
+                // TODO activate event in server
             }
         }
-
 
         public void Connect()
         {
@@ -67,30 +66,35 @@ namespace ImageService
                     try
                     {
                         TcpClient client = listener.AcceptTcpClient();
-                        Console.WriteLine("Got new connection");
-                        logger.Log(this, new MessageRecievedEventArgs(LogMessageTypeEnum.INFO, "Connection established with: " + client.ToString()));
                         clients.Add(client);
                         Task t = Task.Factory.StartNew(() => ListenToClient(client));
-                        Thread.Sleep(1000);
                     }
                     catch (SocketException)
                     {
                         break;
                     }
                 }
-                Console.WriteLine("Server stopped");
             });
             task.Start();
         }
 
         public void Disconnect()
         {
-            foreach (TcpClient client in clients)
+            if(clients.Count != 0)
             {
-                client.Close();
+                foreach (TcpClient client in clients)
+                {
+                    client.Close();
+                }
             }
             listener.Stop();
             connected = false;
+        }
+
+        private void WriteToLog(string toWrite)
+        {
+            logger.Log(this, new MessageRecievedEventArgs(LogMessageTypeEnum.INFO, toWrite));
+
         }
 
     }

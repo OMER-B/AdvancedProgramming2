@@ -16,18 +16,31 @@ namespace GUIProject.Tcp
         private TcpClient client;
         private IPEndPoint ep;
         private bool connected;
-        public event EventHandler<MessageTypeEnum> DataRecieved;
-        private BinaryWriter writer;
-        private BinaryReader reader;
+        public event EventHandler<ClientMessage> DataRecieved;
+        private StreamWriter writer;
+        private StreamReader reader;
 
-        // TODO: the log and settings should get the data recieved
+        // The tcp channel is a singleton
+        private static TcpChannel instance;
+        public static TcpChannel Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new TcpChannel();
+                }
+                return instance;
+            }
+        }
 
-        public TcpChannel()
+        private TcpChannel()
         {
             // TODO recieve the connection data in constructor
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
-            TcpClient client = new TcpClient();
+            ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
+            client = new TcpClient();
             connected = false;
+            Connect();
         }
 
         public bool SendMessage(string message)
@@ -49,9 +62,9 @@ namespace GUIProject.Tcp
         {
             while (connected)
             {
-                string message = reader.ReadString();
-                string[] args = message.Split();
-                    //DataRecieved.Invoke(this, new ClientMessageArgs()
+                // message is TacHolder in json
+                string message = reader.ReadLine();
+                DataRecieved.Invoke(this, new ClientMessage(message));
             }
         }
 
@@ -62,8 +75,9 @@ namespace GUIProject.Tcp
                 client.Connect(ep);
                 Console.WriteLine("You are connected");
                 connected = true;
-                writer = new BinaryWriter(client.GetStream());
-                reader = new BinaryReader(client.GetStream());
+
+                writer = new StreamWriter(client.GetStream());
+                reader = new StreamReader(client.GetStream());
                 Task t = new Task(() => ListenToServer());
                 t.Start();
                 return true;
@@ -77,6 +91,8 @@ namespace GUIProject.Tcp
         public void Disconnect()
         {
             client.Close();
+            writer.Close();
+            reader.Close();
             connected = false;
         }
 

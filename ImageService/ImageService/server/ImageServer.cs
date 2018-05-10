@@ -19,22 +19,23 @@ namespace ImageService
 
         #region Members
         private ServerCommunication communication;
-        private IImageController controller;
+        private IController imageController;
         private ILogger logger;
+        private string[] extensions = { "*.jpg", "*.png", "*.gif", "*.bmp", "*.jpeg" };
         #endregion
 
         public ImageServer(ILogger logger, IImageModel imageModel)
         {
             this.logger = logger;
-            this.controller = new ImageController(imageModel);
+            this.imageController = new ImageController(imageModel);
             this.communication = new ServerCommunication(logger);
             logger.MessageRecieved += communication.SendClientsLog;
+            communication.Connect();
         }
 
         public void AddNewDirectoryHandler(string path)
         {
-            string[] extensions = { "*.jpg", "*.png", "*.gif", "*.bmp" };
-            IDirectoryHandler dirHandler = new DirectoyHandler(path, controller, logger, extensions);
+            IDirectoryHandler dirHandler = new DirectoyHandler(path, imageController, logger, extensions);
             SendCommand += dirHandler.OnCommandRecieved;
             StopHandler += dirHandler.CloseFileWatcher;
             dirHandler.DirectoryClose += CloseHandler;
@@ -54,6 +55,17 @@ namespace ImageService
         public void CloseAll()
         {
             StopHandler.Invoke(this, new DirectoryCloseEventArgs("*", null));
+        }
+
+        public void EndServer()
+        {
+            CloseAll();
+            communication.Disconnect();
+        }
+
+        ~ImageServer()
+        {
+            EndServer();
         }
 
     }

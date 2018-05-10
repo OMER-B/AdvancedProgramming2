@@ -9,6 +9,7 @@
     <Import_RootNamespace>CommunicationTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ClientMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogMessageTypeEnum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TACHolder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TitleAndContent.cs" />

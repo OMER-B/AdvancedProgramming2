@@ -9,7 +9,7 @@ using ImageService;
 
 namespace Logic
 {
-    public class ImageController : IImageController
+    public class ImageController : IController
     {
         private IImageModel model;
         private Dictionary<int, ICommand> commands;
