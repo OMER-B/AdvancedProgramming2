@@ -15,7 +15,9 @@ namespace GUIProject.Model
     {
         public LogModel()
         {
+
             TcpChannel.Instance.DataRecieved += GetData;
+
             this.list = new ObservableCollection<TitleAndContent>();
 
             TitleAndContent test = new TitleAndContent("info", "ok");

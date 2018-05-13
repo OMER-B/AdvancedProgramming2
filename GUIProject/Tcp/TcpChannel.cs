@@ -43,23 +43,15 @@ namespace GUIProject.Tcp
             ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
             client = new TcpClient();
             connected = false;
-            Connect();
-            SendMessage("test");
         }
 
-        public bool SendMessage(string message)
+        public void SendMessage(string message)
         {
             if (!connected)
             {
-                bool result = Connect();                
-                if (!result)
-                {
-                    return false;
-                }
+                Connect();
             }
             writer.Write(message);
-           
-            return true;
         }
 
         public void ListenToServer()
@@ -71,32 +63,29 @@ namespace GUIProject.Tcp
             }
         }
 
-        public bool Connect()
+        public void Connect()
         {
             client.Connect(ep);
             netStream = client.GetStream();
             reader = new BinaryReader(netStream);
             writer = new BinaryWriter(netStream);
-            Console.WriteLine("You are connected");
             connected = true;
-            netStream = client.GetStream();
-            try
-            {
-                Task t = new Task(() => ListenToServer());
-                t.Start();
-                return true;
-            } catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            Task t = new Task(() => ListenToServer());
+            t.Start();
         }
 
         public void Disconnect()
         {
-            client.Close();
+            if (connected)
+            {
+            TACHolder holder = new TACHolder(MessageTypeEnum.DISCONNECT, null);
+            writer.Write(holder.ToJson());
+            writer.Close();
+            reader.Close();
             netStream.Close();
             connected = false;
+            }
+            client.Close();
         }
 
         ~TcpChannel()

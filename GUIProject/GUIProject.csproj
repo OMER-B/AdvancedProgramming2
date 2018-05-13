@@ -74,6 +74,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\IModel.cs" />
     <Compile Include="Model\LogModel.cs" />
+    <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="Model\SettingsModel.cs" />
     <Compile Include="Tcp\GUIDistributionParser.cs" />
     <Compile Include="Tcp\TcpChannel.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="ViewModel\DelegateCommandBase.cs" />
     <Compile Include="ViewModel\IViewModel.cs" />
     <Compile Include="ViewModel\LogVM.cs" />
+    <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\SettingsVM.cs" />
     <Compile Include="ViewModel\WeakEventHandlerManager.cs" />
     <Compile Include="View\LogView.xaml.cs">

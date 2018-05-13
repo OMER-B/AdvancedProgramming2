@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUIProject"
+        xmlns:viewModel = "clr-namespace:GUIProject.ViewModel" 
         xmlns:views="clr-namespace:GUIProject.View"
         mc:Ignorable="d"
-        Title="GUI" Height="450" Width="600" MinHeight="350">
-
+        Title="GUI" Height="450" Width="600" MinHeight="350"
+          Closing="DataWindow_Closing">
     <!--#region Tabs-->
     <TabControl VerticalAlignment="Top" HorizontalAlignment="Stretch">
         <TabItem Header="Settings">
@@ -15,6 +16,8 @@
         </TabItem>
         <TabItem Header="Log">
             <views:LogView />
+        </TabItem>
+        <TabItem Header="{Binding viewModel:MainWindowVM.StatusColor}" >
         </TabItem>
     </TabControl>
     <!--#endregion-->

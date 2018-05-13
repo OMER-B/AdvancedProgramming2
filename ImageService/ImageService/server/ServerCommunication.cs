@@ -39,7 +39,6 @@ namespace ImageService
             TACHolder tac = new TACHolder(MessageTypeEnum.SEND_LOG, tacList);
 
             string message = tac.ToJson();
-            byte[] bytes = Encoding.ASCII.GetBytes(message);
             foreach (TcpClient client in clients)
             {
                 NetworkStream nwStream = client.GetStream();

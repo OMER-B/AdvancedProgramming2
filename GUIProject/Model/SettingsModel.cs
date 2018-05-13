@@ -15,6 +15,8 @@ namespace GUIProject.Model
     {
         public SettingsModel()
         {
+            TcpChannel.Instance.DataRecieved += GetData;
+
 
             this.list = new ObservableCollection<TitleAndContent>();
             List<TitleAndContent> listt = new List<TitleAndContent>();
