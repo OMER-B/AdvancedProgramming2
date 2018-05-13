@@ -43,7 +43,8 @@ namespace ImageService
             foreach (TcpClient client in clients)
             {
                 NetworkStream nwStream = client.GetStream();
-                nwStream.Write(bytes, 0, bytes.Length);
+                BinaryWriter writer = new BinaryWriter(nwStream);
+                writer.Write(message);
             }
         }
 
@@ -52,16 +53,12 @@ namespace ImageService
             NetworkStream nwStream = client.GetStream();
             while (client.Connected)
             {
-                byte[] buffer = new byte[client.ReceiveBufferSize];
-                //---read incoming stream---
-                int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
-                if(bytesRead > 0)
+                BinaryReader reader = new BinaryReader(nwStream);
+                string line;
+                while ((line = reader.ReadString()) != null)
                 {
-                    //---convert the data received into a string---
-                    string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    // TODO activate event in server
-                    WriteToLog("Got message: " + message + " num of bytes: " + bytesRead.ToString());
-                }
+                    WriteToLog("Got message: " + line);
+                }       
             }
         }
 

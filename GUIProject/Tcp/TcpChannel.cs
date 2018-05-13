@@ -18,6 +18,10 @@ namespace GUIProject.Tcp
         private bool connected;
         public event EventHandler<ClientMessage> DataRecieved;
         NetworkStream netStream;
+        BinaryReader reader;
+        BinaryWriter writer;
+
+        public bool Connected{ get { return this.connected; } }
 
         // The tcp channel is a singleton
         private static TcpChannel instance;
@@ -53,11 +57,8 @@ namespace GUIProject.Tcp
                     return false;
                 }
             }
-            if (netStream.CanWrite)
-            {
-                Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
-                netStream.Write(sendBytes, 0, sendBytes.Length);
-            }
+            writer.Write(message);
+           
             return true;
         }
 
@@ -65,29 +66,22 @@ namespace GUIProject.Tcp
         {
             while (connected)
             {
-                // message is TacHolder in json
-                if (netStream.CanRead)
-                {
-                    byte[] bytes = new byte[client.ReceiveBufferSize];
-                    int numbytes = netStream.Read(bytes, 0, (int)client.ReceiveBufferSize);
-                    if(numbytes > 0)
-                    {
-                        string message = Encoding.ASCII.GetString(bytes);
-                        DataRecieved.Invoke(this, new ClientMessage(message));
-                    }
-                }
+                string message = reader.ReadString();
+                DataRecieved.Invoke(this, new ClientMessage(message));
             }
         }
 
         public bool Connect()
         {
             client.Connect(ep);
+            netStream = client.GetStream();
+            reader = new BinaryReader(netStream);
+            writer = new BinaryWriter(netStream);
             Console.WriteLine("You are connected");
             connected = true;
             netStream = client.GetStream();
             try
             {
-  
                 Task t = new Task(() => ListenToServer());
                 t.Start();
                 return true;

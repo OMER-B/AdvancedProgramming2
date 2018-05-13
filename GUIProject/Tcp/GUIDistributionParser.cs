@@ -50,7 +50,10 @@ namespace GUIProject.Tcp
 
         private void JSONIsHistory()
         {
-            this.logModel.List = this.list;
+            foreach (TitleAndContent tac in this.list)
+            {
+                this.logModel.List.Add(tac);
+            }
         }
 
         private void JSONIsLog()
