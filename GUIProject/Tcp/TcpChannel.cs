@@ -41,6 +41,7 @@ namespace GUIProject.Tcp
             client = new TcpClient();
             connected = false;
             Connect();
+            SendMessage("test");
         }
 
         public bool SendMessage(string message)

@@ -53,6 +53,7 @@ namespace ImageService
             {
                 string message = reader.ReadLine();
                 // TODO activate event in server
+                WriteToLog("God message: " + message);
             }
         }
 
