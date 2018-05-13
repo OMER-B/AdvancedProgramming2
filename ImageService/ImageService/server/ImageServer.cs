@@ -11,7 +11,6 @@ namespace ImageService
 {
     public class ImageServer
     {
-
         #region Properties
         public event EventHandler<CommandRecievedEventArgs> SendCommand;
         public event EventHandler<DirectoryCloseEventArgs> StopHandler;

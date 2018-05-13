@@ -19,10 +19,8 @@ namespace GUIProject.Model
             this.list = new ObservableCollection<TitleAndContent>();
 
             TitleAndContent test = new TitleAndContent("info", "ok");
-            TitleAndContent test2 = new TitleAndContent("warning", "bad");
             List<TitleAndContent> listt = new List<TitleAndContent>();
             listt.Add(test);
-            listt.Add(test2);
 
 
             TACHolder tac = new TACHolder(MessageTypeEnum.SEND_HISTORY, listt);
@@ -44,9 +42,9 @@ namespace GUIProject.Model
 
         public void GetData(object sender, ClientMessage data)
         {
-            // TODO invoke iproperty changed
             GUIDistributionParser p = new GUIDistributionParser(data.Message, null, this);
             p.passToModel();
+            
         }
     }
 }

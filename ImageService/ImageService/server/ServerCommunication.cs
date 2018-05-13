@@ -39,21 +39,29 @@ namespace ImageService
             TACHolder tac = new TACHolder(MessageTypeEnum.SEND_LOG, tacList);
 
             string message = tac.ToJson();
-            foreach(TcpClient client in clients)
+            byte[] bytes = Encoding.ASCII.GetBytes(message);
+            foreach (TcpClient client in clients)
             {
-                StreamWriter writer = new StreamWriter(client.GetStream(), Encoding.ASCII);
-                writer.Write(message);              
+                NetworkStream nwStream = client.GetStream();
+                nwStream.Write(bytes, 0, bytes.Length);
             }
         }
 
         public void ListenToClient(TcpClient client)
         {
-            StreamReader reader = new StreamReader(client.GetStream());
+            NetworkStream nwStream = client.GetStream();
             while (client.Connected)
             {
-                string message = reader.ReadLine();
-                // TODO activate event in server
-                WriteToLog("God message: " + message);
+                byte[] buffer = new byte[client.ReceiveBufferSize];
+                //---read incoming stream---
+                int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
+                if(bytesRead > 0)
+                {
+                    //---convert the data received into a string---
+                    string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    // TODO activate event in server
+                    WriteToLog("Got message: " + message + " num of bytes: " + bytesRead.ToString());
+                }
             }
         }
 
@@ -67,6 +75,7 @@ namespace ImageService
                     try
                     {
                         TcpClient client = listener.AcceptTcpClient();
+                        WriteToLog("connection with: " + client.ToString());
                         clients.Add(client);
                         Task t = Task.Factory.StartNew(() => ListenToClient(client));
                     }

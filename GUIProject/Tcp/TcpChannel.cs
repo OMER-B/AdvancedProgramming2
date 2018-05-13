@@ -17,8 +17,7 @@ namespace GUIProject.Tcp
         private IPEndPoint ep;
         private bool connected;
         public event EventHandler<ClientMessage> DataRecieved;
-        private StreamWriter writer;
-        private StreamReader reader;
+        NetworkStream netStream;
 
         // The tcp channel is a singleton
         private static TcpChannel instance;
@@ -54,8 +53,11 @@ namespace GUIProject.Tcp
                     return false;
                 }
             }
-
-            writer.Write(message);
+            if (netStream.CanWrite)
+            {
+                Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
+                netStream.Write(sendBytes, 0, sendBytes.Length);
+            }
             return true;
         }
 
@@ -64,21 +66,28 @@ namespace GUIProject.Tcp
             while (connected)
             {
                 // message is TacHolder in json
-                string message = reader.ReadLine();
-                DataRecieved.Invoke(this, new ClientMessage(message));
+                if (netStream.CanRead)
+                {
+                    byte[] bytes = new byte[client.ReceiveBufferSize];
+                    int numbytes = netStream.Read(bytes, 0, (int)client.ReceiveBufferSize);
+                    if(numbytes > 0)
+                    {
+                        string message = Encoding.ASCII.GetString(bytes);
+                        DataRecieved.Invoke(this, new ClientMessage(message));
+                    }
+                }
             }
         }
 
         public bool Connect()
         {
+            client.Connect(ep);
+            Console.WriteLine("You are connected");
+            connected = true;
+            netStream = client.GetStream();
             try
             {
-                client.Connect(ep);
-                Console.WriteLine("You are connected");
-                connected = true;
-
-                writer = new StreamWriter(client.GetStream());
-                reader = new StreamReader(client.GetStream());
+  
                 Task t = new Task(() => ListenToServer());
                 t.Start();
                 return true;
@@ -92,8 +101,7 @@ namespace GUIProject.Tcp
         public void Disconnect()
         {
             client.Close();
-            writer.Close();
-            reader.Close();
+            netStream.Close();
             connected = false;
         }
 
