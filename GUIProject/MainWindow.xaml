@@ -10,15 +10,26 @@
         Title="GUI" Height="450" Width="600" MinHeight="350"
           Closing="DataWindow_Closing">
     <!--#region Tabs-->
-    <TabControl VerticalAlignment="Top" HorizontalAlignment="Stretch">
-        <TabItem Header="Settings">
-            <views:SettingsView />
-        </TabItem>
-        <TabItem Header="Log">
-            <views:LogView />
-        </TabItem>
-        <TabItem Header="{Binding viewModel:MainWindowVM.StatusColor}" >
-        </TabItem>
-    </TabControl>
+    <Grid Background="{Binding StatusColor}">
+        <!--#region Grid Set-up-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!--#endregion-->
+
+        <TabControl VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <TabItem Header="Settings">
+                <views:SettingsView />
+            </TabItem>
+            <TabItem Header="Log">
+                <views:LogView />
+            </TabItem>
+        </TabControl>
+        
+    </Grid>
     <!--#endregion-->
 </Window>

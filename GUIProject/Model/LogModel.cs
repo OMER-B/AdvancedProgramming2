@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GUIProject.Model
 {
@@ -44,6 +45,7 @@ namespace GUIProject.Model
 
         public void GetData(object sender, ClientMessage data)
         {
+            MessageBox.Show("Recieved log");
             GUIDistributionParser p = new GUIDistributionParser(data.Message, null, this);
             p.passToModel();
             

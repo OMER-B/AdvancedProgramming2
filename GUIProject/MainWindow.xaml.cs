@@ -12,6 +12,7 @@ namespace GUIProject
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = new ViewModel.MainWindowVM();
         }
 
         void DataWindow_Closing(object sender, EventArgs e)

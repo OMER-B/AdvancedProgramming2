@@ -21,7 +21,7 @@ namespace GUIProject.Tcp
         BinaryReader reader;
         BinaryWriter writer;
 
-        public bool Connected{ get { return this.connected; } }
+        public bool Connected { get { return this.connected; } }
 
         // The tcp channel is a singleton
         private static TcpChannel instance;
@@ -49,6 +49,8 @@ namespace GUIProject.Tcp
         {
             if (!connected)
             {
+                System.Windows.MessageBox.Show("Sending message to server");
+
                 Connect();
             }
             writer.Write(message);
@@ -56,6 +58,7 @@ namespace GUIProject.Tcp
 
         public void ListenToServer()
         {
+            System.Windows.MessageBox.Show("Listening to server");
             while (connected)
             {
                 string message = reader.ReadString();
@@ -69,6 +72,7 @@ namespace GUIProject.Tcp
             netStream = client.GetStream();
             reader = new BinaryReader(netStream);
             writer = new BinaryWriter(netStream);
+            System.Windows.MessageBox.Show("Connected to server");
             connected = true;
             Task t = new Task(() => ListenToServer());
             t.Start();
@@ -78,13 +82,15 @@ namespace GUIProject.Tcp
         {
             if (connected)
             {
-            TACHolder holder = new TACHolder(MessageTypeEnum.DISCONNECT, null);
-            writer.Write(holder.ToJson());
-            writer.Close();
-            reader.Close();
-            netStream.Close();
-            connected = false;
+                TACHolder holder = new TACHolder(MessageTypeEnum.DISCONNECT, null);
+                writer.Write(holder.ToJson());
+                writer.Close();
+                reader.Close();
+                netStream.Close();
+                connected = false;
+                System.Windows.MessageBox.Show("Disconnected");
             }
+
             client.Close();
         }
 

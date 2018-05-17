@@ -9,7 +9,7 @@ namespace GUIProject.ViewModel
     class MainWindowVM
     {
         private Model.MainWindowModel model;
-        public string StatusColor { get { return "Yellow"; } }
+        public string StatusColor { get { return isConnected(); } }
 
         public MainWindowVM()
         {
@@ -20,8 +20,9 @@ namespace GUIProject.ViewModel
         {
             try
             {
+                System.Windows.MessageBox.Show("Connecting");
                 Tcp.TcpChannel.Instance.Connect();
-                return "MistyRose";
+                return "White";
             }
             catch (Exception e)
             {
