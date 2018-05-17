@@ -9,7 +9,7 @@ using Logic;
 
 namespace ImageService
 {
-    class ConfigReader
+    public class ConfigReader
     {
         public string[] Handler { get; }
         public string OutputDir { get; }

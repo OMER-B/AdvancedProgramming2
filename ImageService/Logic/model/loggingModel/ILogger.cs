@@ -10,7 +10,9 @@ namespace Logic
 {
     public interface ILogger
     {
-        event EventHandler<MessageRecievedEventArgs> MessageRecieved;
-        void Log(object sender, MessageRecievedEventArgs args);           // Logging the Message
+        List<LogMessageArgs> History { get; set; }
+
+        event EventHandler<LogMessageArgs> MessageRecieved;
+        void Log(object sender, LogMessageArgs args);           // Logging the Message
     }
 }

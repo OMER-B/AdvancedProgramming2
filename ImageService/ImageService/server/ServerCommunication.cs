@@ -21,6 +21,8 @@ namespace ImageService
         private TcpListener listener;
         private bool connected;
 
+        public event EventHandler<ClientMessage> MessageFromClient;
+
         public ServerCommunication(ILogger logger)
         {
             this.logger = logger;
@@ -28,10 +30,39 @@ namespace ImageService
             ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
             listener = new TcpListener(ep);
             connected = false;
+            
         }
 
-        public void SendClientsLog(object sender, MessageRecievedEventArgs args)
+        public void MessageClients(object sender, ClientMessage message)
         {
+            if (!connected)
+            {
+                Connect();
+            }
+            if (clients.Count == 0)
+            {
+                return;
+            }
+            foreach (TcpClient client in clients)
+            {
+                try
+                {
+                    NetworkStream nwStream = client.GetStream();
+                    BinaryWriter writer = new BinaryWriter(nwStream);
+                    writer.Write(message.Message);
+                } catch (Exception e)
+                {
+                    logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
+                }
+            }
+        }
+
+        public void SendClientsLog(object sender, LogMessageArgs args)
+        {
+            if(clients.Count == 0)
+            {
+                return;
+            }
             List<TitleAndContent> tacList = new List<TitleAndContent>
             {
                 new TitleAndContent(args.Status.ToString(), args.Message)
@@ -39,12 +70,7 @@ namespace ImageService
             TACHolder tac = new TACHolder(MessageTypeEnum.SEND_LOG, tacList);
 
             string message = tac.ToJson();
-            foreach (TcpClient client in clients)
-            {
-                NetworkStream nwStream = client.GetStream();
-                BinaryWriter writer = new BinaryWriter(nwStream);
-                writer.Write(message);
-            }
+            MessageClients(this, new ClientMessage(message));
         }
 
         public void ListenToClient(TcpClient client)
@@ -57,6 +83,7 @@ namespace ImageService
                 while ((line = reader.ReadString()) != null)
                 {
                     WriteToLog("Got message: " + line);
+                    MessageFromClient.Invoke(this, new ClientMessage(line));
                 }       
             }
         }
@@ -99,7 +126,7 @@ namespace ImageService
 
         private void WriteToLog(string toWrite)
         {
-            logger.Log(this, new MessageRecievedEventArgs(LogMessageTypeEnum.INFO, toWrite));
+            logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, toWrite));
 
         }
 

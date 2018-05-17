@@ -7,11 +7,11 @@ using ImageService;
 
 namespace Tools
 {
-    public class MessageRecievedEventArgs : EventArgs
+    public class LogMessageArgs : EventArgs
     {
         public LogMessageTypeEnum Status { get; set; }
         public string Message { get; set; }
-        public MessageRecievedEventArgs(LogMessageTypeEnum status, string message)
+        public LogMessageArgs(LogMessageTypeEnum status, string message)
         {
             this.Status = status;
             this.Message = message;            

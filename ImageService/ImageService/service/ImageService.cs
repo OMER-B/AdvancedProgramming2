@@ -40,6 +40,7 @@ namespace ImageService
     {
         private EventLog eventLog;
         private ImageServer server;
+        public delegate List<string> GetLog();
 
         public ImageService(string[] args)
         {
@@ -55,19 +56,17 @@ namespace ImageService
             eventLog.Log = reader.LogName;
 
             IImageModel imageModel = new ImageModel(reader.OutputDir, reader.ThumbnailSize);
-
             ILogger logger = new Logger();
-            
             logger.MessageRecieved += OnMsg;
 
-            this.server = new ImageServer(logger, imageModel);
+            this.server = new ImageServer(logger, imageModel, reader);
             foreach (string path in reader.Handler)
             {
                 server.AddNewDirectoryHandler(path);
             }
         }
 
-        public void OnMsg(object sender, MessageRecievedEventArgs args)
+        public void OnMsg(object sender, LogMessageArgs args)
         {
             eventLog.WriteEntry(args.Message);
         }

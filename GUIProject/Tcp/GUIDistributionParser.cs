@@ -15,21 +15,13 @@ namespace GUIProject.Tcp
         private IModel logModel;
         private SettingsModel settingModel;
         private string json;
-        private TACHolder holder;
-        private MessageTypeEnum type;
         private ObservableCollection<TitleAndContent> list;
+
         public GUIDistributionParser(string json, SettingsModel settm, IModel logm)
         {
             this.settingModel = settm;
             this.logModel = logm;
             this.json = json;
-        }
-
-        private void ParseJSON()
-        {
-            this.holder = new TACHolder(JsonConvert.DeserializeObject<TACHolder>(this.json));
-            this.type = this.holder.CommandID;
-            this.list = new ObservableCollection<TitleAndContent>(this.holder.List);
         }
 
         private void JSONIsConfig()
@@ -66,8 +58,9 @@ namespace GUIProject.Tcp
 
         public void passToModel()
         {
-            ParseJSON();
-            switch (this.type)
+            TACHolder holder = MessageParser.ParseJsonToTAC(json);
+            this.list = new ObservableCollection<TitleAndContent>(holder.List);
+            switch (holder.CommandID)
             {
                 case MessageTypeEnum.SEND_CONFIG:
                     JSONIsConfig();

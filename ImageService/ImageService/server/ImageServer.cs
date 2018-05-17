@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Tools;
 using Logic;
+using ImageService.Logic.controller;
+using CommunicationTools;
 
 namespace ImageService
 {
@@ -19,17 +21,36 @@ namespace ImageService
         #region Members
         private ServerCommunication communication;
         private IController imageController;
+        private IController serverController;
         private ILogger logger;
         private string[] extensions = { "*.jpg", "*.png", "*.gif", "*.bmp", "*.jpeg" };
         #endregion
 
-        public ImageServer(ILogger logger, IImageModel imageModel)
+        public ImageServer(ILogger logger, IImageModel imageModel, ConfigReader reader)
         {
             this.logger = logger;
             this.imageController = new ImageController(imageModel);
+
             this.communication = new ServerCommunication(logger);
             logger.MessageRecieved += communication.SendClientsLog;
             communication.Connect();
+
+            // Creating the commands
+            CloseHandlerCommand closeHandler = new CloseHandlerCommand();
+            closeHandler.CloseDirectory += RemoveHandler;
+            GetLogHistoryCommand getLogCommmand = new GetLogHistoryCommand(logger);
+            getLogCommmand.SendHistory += communication.MessageClients;
+            GetConfigCommand configCommand = new GetConfigCommand(reader);
+            configCommand.SendConfig += communication.MessageClients;
+
+            // create the controller with the commands
+            this.serverController = new ServerController(closeHandler, getLogCommmand, configCommand);
+        }
+
+        private void ExecCommandFromClient(object sender, ClientMessage message)
+        {
+            Tuple<int, string[]> args = MessageParser.parseMessageToCommand(message);
+            serverController.ExecuteCommand(args.Item1, args.Item2, out bool result);
         }
 
         public void AddNewDirectoryHandler(string path)
@@ -37,11 +58,16 @@ namespace ImageService
             IDirectoryHandler dirHandler = new DirectoyHandler(path, imageController, logger, extensions);
             SendCommand += dirHandler.OnCommandRecieved;
             StopHandler += dirHandler.CloseFileWatcher;
-            dirHandler.DirectoryClose += CloseHandler;
+            dirHandler.DirectoryClose += HandlerClosed;
             dirHandler.StartHandleDirectory();
         }
 
-        public void CloseHandler(object sender, DirectoryCloseEventArgs args)
+        public void RemoveHandler(object sender, DirectoryCloseEventArgs args)
+        {
+            StopHandler.Invoke(this, args);
+        }
+
+        public void HandlerClosed(object sender, DirectoryCloseEventArgs args)
         {
             //args.DirectoryPath
             if (sender is IDirectoryHandler)

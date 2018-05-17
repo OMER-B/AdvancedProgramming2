@@ -54,10 +54,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageService\server\ServerCommunication.cs" />
+    <Compile Include="Logic\commands\CloseHandlerCommand.cs" />
+    <Compile Include="Logic\commands\GetConfigCommand.cs" />
+    <Compile Include="Logic\commands\GetLogHistoryCommand.cs" />
     <Compile Include="Logic\commands\ICommand.cs" />
     <Compile Include="Logic\commands\NewFileCommand.cs" />
     <Compile Include="Logic\controller\IController.cs" />
     <Compile Include="Logic\controller\ImageController.cs" />
+    <Compile Include="Logic\controller\ServerController.cs" />
     <Compile Include="Logic\handlers\DirectoyHandler.cs" />
     <Compile Include="Logic\handlers\IDirectoryHandler.cs" />
     <Compile Include="Logic\model\imageModel\IImageModel.cs" />
@@ -83,7 +87,8 @@
     <Compile Include="Tools\ImageProperties.cs" />
     <Compile Include="Tools\CommandRecievedEventArgs.cs" />
     <Compile Include="Tools\DirectoryCloseEventArgs.cs" />
-    <Compile Include="Tools\MessageRecievedEventArgs.cs" />
+    <Compile Include="Tools\ListStringArgs.cs" />
+    <Compile Include="Tools\LogMessageArgs.cs" />
     <Compile Include="Tools\ImageCommandTypeEnum.cs" />
   </ItemGroup>
   <ItemGroup>

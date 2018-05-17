@@ -10,11 +10,24 @@ namespace Logic
 {
     public class Logger : ILogger
     {
-        public event EventHandler<MessageRecievedEventArgs> MessageRecieved;
-        public void Log(object sender, MessageRecievedEventArgs args)
+        private List<LogMessageArgs> history;
+        public List<LogMessageArgs> History
+        {
+            get { return this.history; }
+            set { }
+        }
+
+        public event EventHandler<LogMessageArgs> MessageRecieved;
+
+        public Logger()
+        {
+            this.history = new List<LogMessageArgs>();
+        }
+
+        public void Log(object sender, LogMessageArgs args)
         {
             MessageRecieved.Invoke(sender, args);
-            //string message, MessageTypeEnum type
+            history.Add(args);
         }
     }
 }

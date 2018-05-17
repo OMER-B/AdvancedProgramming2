@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ClientMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogMessageTypeEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TACHolder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TitleAndContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageTypeEnum.cs" />

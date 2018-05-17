@@ -49,10 +49,9 @@ namespace GUIProject.Tcp
         {
             if (!connected)
             {
-                System.Windows.MessageBox.Show("Sending message to server");
-
                 Connect();
             }
+            System.Windows.MessageBox.Show("Sending message to server");
             writer.Write(message);
         }
 
