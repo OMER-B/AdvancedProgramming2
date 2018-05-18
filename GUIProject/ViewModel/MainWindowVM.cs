@@ -18,16 +18,13 @@ namespace GUIProject.ViewModel
 
         public string isConnected()
         {
-            try
-            {
-                System.Windows.MessageBox.Show("Connecting");
-                Tcp.TcpChannel.Instance.Connect();
+
+            System.Windows.MessageBox.Show("Connecting");
+            if (Tcp.TcpChannel.Instance.Connect())
                 return "White";
-            }
-            catch
-            {
-                return "Gray";
-            }
+
+            return "Gray";
+
         }
     }
 }

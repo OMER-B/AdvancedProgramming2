@@ -16,21 +16,9 @@ namespace GUIProject.Model
     {
         public LogModel()
         {
-
             TcpChannel.Instance.DataRecieved += GetData;
-
             this.list = new ObservableCollection<TitleAndContent>();
-
-            TitleAndContent test = new TitleAndContent("info", "ok");
-            List<TitleAndContent> listt = new List<TitleAndContent>();
-            listt.Add(test);
-
-
-            TACHolder tac = new TACHolder(MessageTypeEnum.LOG_HISTORY, listt);
-
-            string output = JsonConvert.SerializeObject(tac);
-            GUIDistributionParser p = new GUIDistributionParser(output, null, this);
-            p.passToModel();
+            TcpChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.LOG_HISTORY, null).ToJson());
         }
 
         private ObservableCollection<TitleAndContent> list;
@@ -45,10 +33,22 @@ namespace GUIProject.Model
 
         public void GetData(object sender, ClientMessage data)
         {
-            MessageBox.Show("Recieved log");
-            GUIDistributionParser p = new GUIDistributionParser(data.Message, null, this);
-            p.passToModel();
-            
+            TACHolder tac = CommunicationTools.MessageParser.ParseJsonToTAC(data.Message);
+            switch (tac.CommandID)
+            {
+
+                case MessageTypeEnum.LOG_HISTORY:
+                case MessageTypeEnum.SEND_LOG:
+                    foreach (TitleAndContent t in tac.List)
+                    {
+                        this.list.Add(t);
+                    }
+                    break;
+
+                default: break;
+            }
+            throw new NotImplementedException();
+
         }
     }
 }

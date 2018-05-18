@@ -16,36 +16,9 @@ namespace GUIProject.Model
         public SettingsModel()
         {
             TcpChannel.Instance.DataRecieved += GetData;
-
-
             this.list = new ObservableCollection<TitleAndContent>();
-            List<TitleAndContent> listt = new List<TitleAndContent>();
-            listt.Add(new TitleAndContent("Output Directory", "C:\\Users\\Omer\\Desktop\\test"));
-            listt.Add(new TitleAndContent("Source Name", "ImageServiceSource"));
-            listt.Add(new TitleAndContent("Log Name", "ImageServiceLog"));
-            listt.Add(new TitleAndContent("Thumbnail Size", "120"));
-
-            TACHolder tac = new TACHolder(CommunicationTools.MessageTypeEnum.APP_CONFIG, listt);
-            string output = JsonConvert.SerializeObject(tac);
-            GUIDistributionParser p = new GUIDistributionParser(output, this, null);
-            p.passToModel();
-
             this.handlersList = new ObservableCollection<TitleAndContent>();
-            List<TitleAndContent> listt2 = new List<TitleAndContent>();
-
-            listt2.Add(new TitleAndContent("Path", "C:"));
-            listt2.Add(new TitleAndContent("Path", "C:\\Users"));
-            listt2.Add(new TitleAndContent("Path", "C:\\Users\\Omer"));
-            listt2.Add(new TitleAndContent("Path", "C:\\Users\\Omer\\Desktop\\test"));
-            listt2.Add(new TitleAndContent("Path", "D:"));
-            listt2.Add(new TitleAndContent("Path", "D:\\Downloads"));
-            listt2.Add(new TitleAndContent("Path", "D:\\Files"));
-
-            TACHolder tac2 = new TACHolder(CommunicationTools.MessageTypeEnum.APP_CONFIG, listt2);
-            string output2 = JsonConvert.SerializeObject(tac2);
-            GUIDistributionParser p2 = new GUIDistributionParser(output2, this, null);
-            p2.passToModel();
-
+            TcpChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
         }
 
         private ObservableCollection<TitleAndContent> list;
@@ -83,6 +56,36 @@ namespace GUIProject.Model
 
         public void GetData(object sender, ClientMessage data)
         {
+            TACHolder tac = CommunicationTools.MessageParser.ParseJsonToTAC(data.Message);
+            switch (tac.CommandID)
+            {
+                case MessageTypeEnum.APP_CONFIG:
+                    foreach (TitleAndContent t in tac.List)
+                    {
+                        switch (t.Title.ToLower())
+                        {
+                            case "path":
+                                this.handlersList.Add(t);
+                                break;
+                            default:
+                                this.list.Add(t);
+                                break;
+                        }
+                    }
+                    break;
+
+                case MessageTypeEnum.CLOSE_HANDLER:
+                    foreach (TitleAndContent t in tac.List)
+                    {
+                        if (this.handlersList.Contains(t))
+                        {
+                            this.handlersList.Remove(t);
+                        }
+                    }
+                    break;
+
+                default: break;
+            }
             throw new NotImplementedException();
         }
     }

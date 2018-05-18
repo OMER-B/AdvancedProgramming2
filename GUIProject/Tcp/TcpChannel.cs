@@ -47,12 +47,16 @@ namespace GUIProject.Tcp
 
         public void SendMessage(string message)
         {
-            if (!connected)
+            try
             {
-                Connect();
+                if (!connected)
+                {
+                    Connect();
+                }
+                System.Windows.MessageBox.Show("Sending message to server");
+                writer.Write(message);
             }
-            System.Windows.MessageBox.Show("Sending message to server");
-            writer.Write(message);
+            catch { }
         }
 
         public void ListenToServer()
@@ -65,16 +69,21 @@ namespace GUIProject.Tcp
             }
         }
 
-        public void Connect()
+        public bool Connect()
         {
-            client.Connect(ep);
-            netStream = client.GetStream();
-            reader = new BinaryReader(netStream);
-            writer = new BinaryWriter(netStream);
-            System.Windows.MessageBox.Show("Connected to server");
-            connected = true;
-            Task t = new Task(() => ListenToServer());
-            t.Start();
+            try
+            {
+                client.Connect(ep);
+                netStream = client.GetStream();
+                reader = new BinaryReader(netStream);
+                writer = new BinaryWriter(netStream);
+                System.Windows.MessageBox.Show("Connected to server");
+                connected = true;
+                Task t = new Task(() => ListenToServer());
+                t.Start();
+                return true;
+            }
+            catch { return false; }
         }
 
         public void Disconnect()

@@ -76,7 +76,6 @@
     <Compile Include="Model\LogModel.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="Model\SettingsModel.cs" />
-    <Compile Include="Tcp\GUIDistributionParser.cs" />
     <Compile Include="Tcp\TcpChannel.cs" />
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\DelegateCommandBase.cs" />
