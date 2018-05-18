@@ -16,8 +16,11 @@ namespace GUIProject.Model
     {
         public LogModel()
         {
-            TcpChannel.Instance.DataRecieved += GetData;
             this.list = new ObservableCollection<TitleAndContent>();
+            Object locker = new Object();
+            System.Windows.Data.BindingOperations.EnableCollectionSynchronization(list, locker);
+            TcpChannel.Instance.DataRecieved += GetData;
+            System.Threading.Thread.Sleep(500);
             TcpChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.LOG_HISTORY, null).ToJson());
         }
 
@@ -36,19 +39,22 @@ namespace GUIProject.Model
             TACHolder tac = CommunicationTools.MessageParser.ParseJsonToTAC(data.Message);
             switch (tac.CommandID)
             {
-
-                case MessageTypeEnum.LOG_HISTORY:
                 case MessageTypeEnum.SEND_LOG:
+                    MessageBox.Show("Recieved log");
                     foreach (TitleAndContent t in tac.List)
                     {
                         this.list.Add(t);
                     }
                     break;
-
+                case MessageTypeEnum.LOG_HISTORY:
+                    foreach (TitleAndContent t in tac.List)
+                    {
+                        this.list.Add(t);
+                    }
+                    break;
                 default: break;
             }
-            throw new NotImplementedException();
-
+            OnPropertyChanged("list");
         }
     }
 }

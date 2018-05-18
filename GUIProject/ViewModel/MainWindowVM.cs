@@ -8,21 +8,16 @@ namespace GUIProject.ViewModel
 {
     class MainWindowVM
     {
-        private Model.MainWindowModel model;
         public string StatusColor { get { return isConnected(); } }
 
-        public MainWindowVM()
-        {
-            this.model = new Model.MainWindowModel();
-        }
 
         public string isConnected()
         {
 
-            System.Windows.MessageBox.Show("Connecting");
-            if (Tcp.TcpChannel.Instance.Connect())
+            if (Tcp.TcpChannel.Instance.Connected)
+            {
                 return "White";
-
+            }
             return "Gray";
 
         }

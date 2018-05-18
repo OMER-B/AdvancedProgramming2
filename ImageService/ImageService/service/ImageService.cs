@@ -45,8 +45,6 @@ namespace ImageService
         public ImageService(string[] args)
         {
             InitializeComponent();
-            eventLog.Clear();
-            eventLog.Dispose();
             ConfigReader reader = new ConfigReader();
 
             if (!EventLog.SourceExists(reader.LogName))

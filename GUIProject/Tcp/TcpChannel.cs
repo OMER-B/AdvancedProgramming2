@@ -20,7 +20,7 @@ namespace GUIProject.Tcp
         NetworkStream netStream;
         BinaryReader reader;
         BinaryWriter writer;
-
+        private static System.Threading.Mutex mutex = new System.Threading.Mutex();
         public bool Connected { get { return this.connected; } }
 
         // The tcp channel is a singleton
@@ -43,6 +43,7 @@ namespace GUIProject.Tcp
             ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
             client = new TcpClient();
             connected = false;
+            Connect();
         }
 
         public void SendMessage(string message)
@@ -53,23 +54,33 @@ namespace GUIProject.Tcp
                 {
                     Connect();
                 }
-                System.Windows.MessageBox.Show("Sending message to server");
+                mutex.WaitOne();
                 writer.Write(message);
+                mutex.ReleaseMutex();
             }
             catch { }
         }
 
         public void ListenToServer()
         {
-            System.Windows.MessageBox.Show("Listening to server");
-            while (connected)
+            string message;
+            try
             {
-                string message = reader.ReadString();
-                DataRecieved.Invoke(this, new ClientMessage(message));
+                while (client.Connected)
+                {
+                    if ((message = reader.ReadString()) != null)
+                    {
+                        DataRecieved.Invoke(this, new ClientMessage(message));
+                    }
+                }
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Connection disabled");
             }
         }
 
-        public bool Connect()
+        public void Connect()
         {
             try
             {
@@ -77,18 +88,16 @@ namespace GUIProject.Tcp
                 netStream = client.GetStream();
                 reader = new BinaryReader(netStream);
                 writer = new BinaryWriter(netStream);
-                System.Windows.MessageBox.Show("Connected to server");
                 connected = true;
                 Task t = new Task(() => ListenToServer());
                 t.Start();
-                return true;
             }
-            catch { return false; }
+            catch { connected = false; }
         }
 
         public void Disconnect()
         {
-            if (connected)
+             if (connected)
             {
                 TACHolder holder = new TACHolder(MessageTypeEnum.DISCONNECT, null);
                 writer.Write(holder.ToJson());
@@ -96,10 +105,10 @@ namespace GUIProject.Tcp
                 reader.Close();
                 netStream.Close();
                 connected = false;
-                System.Windows.MessageBox.Show("Disconnected");
             }
-
             client.Close();
+
+
         }
 
         ~TcpChannel()

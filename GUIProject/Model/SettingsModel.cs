@@ -18,6 +18,9 @@ namespace GUIProject.Model
             TcpChannel.Instance.DataRecieved += GetData;
             this.list = new ObservableCollection<TitleAndContent>();
             this.handlersList = new ObservableCollection<TitleAndContent>();
+            Object locker = new Object();
+            System.Windows.Data.BindingOperations.EnableCollectionSynchronization(handlersList, locker);
+            System.Threading.Thread.Sleep(500);
             TcpChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
         }
 
@@ -26,9 +29,12 @@ namespace GUIProject.Model
 
         internal void Remove(TitleAndContent selectedHandler)
         {
-            // TODO: Here need to call the client to remove from the server! If successful then do
+            TACHolder tac = new TACHolder(MessageTypeEnum.CLOSE_HANDLER, new List<TitleAndContent> { selectedHandler });
+            string json = tac.ToJson();
+
             try
             {
+                TcpChannel.Instance.SendMessage(json);
                 this.handlersList.Remove(selectedHandler);
             }
             catch { }
@@ -62,18 +68,17 @@ namespace GUIProject.Model
                 case MessageTypeEnum.APP_CONFIG:
                     foreach (TitleAndContent t in tac.List)
                     {
-                        switch (t.Title.ToLower())
+                        if (t.Title.ToLower() != "path")
                         {
-                            case "path":
-                                this.handlersList.Add(t);
-                                break;
-                            default:
-                                this.list.Add(t);
-                                break;
+                            this.list.Add(t);
                         }
+                        else
+                        {
+                            this.handlersList.Add(t);
+                        }
+
                     }
                     break;
-
                 case MessageTypeEnum.CLOSE_HANDLER:
                     foreach (TitleAndContent t in tac.List)
                     {
@@ -82,11 +87,10 @@ namespace GUIProject.Model
                             this.handlersList.Remove(t);
                         }
                     }
+                    OnPropertyChanged("handlersList");
                     break;
-
                 default: break;
             }
-            throw new NotImplementedException();
         }
     }
 }

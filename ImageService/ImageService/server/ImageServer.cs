@@ -34,6 +34,7 @@ namespace ImageService
             this.communication = new ServerCommunication(logger);
             logger.MessageRecieved += communication.SendClientsLog;
             communication.Connect();
+            communication.MessageFromClient += ExecCommandFromClient;
 
             // Creating the commands
             CloseHandlerCommand closeHandler = new CloseHandlerCommand();
@@ -85,7 +86,7 @@ namespace ImageService
         public void EndServer()
         {
             CloseAll();
-            communication.Disconnect();
+            communication.DisconnectAll();
         }
 
         ~ImageServer()

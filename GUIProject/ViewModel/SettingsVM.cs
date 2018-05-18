@@ -51,8 +51,6 @@ namespace GUIProject.ViewModel
 
         public void OnRemove(object obj)
         {
-            // TODO: Here pass request to client to close the handler!
-            // Request chain is: viewmodel -> model -> client -> server -> handler manager ............
             this.model.Remove(this.SelectedHandler);
             this.model.SelectedHandler = null;
         }
