@@ -62,16 +62,14 @@ namespace GUIProject.Tcp
             this.list = new ObservableCollection<TitleAndContent>(holder.List);
             switch (holder.CommandID)
             {
-                case MessageTypeEnum.SEND_CONFIG:
+                case MessageTypeEnum.APP_CONFIG:
                     JSONIsConfig();
                     break;
-                case MessageTypeEnum.SEND_HISTORY:
+                case MessageTypeEnum.LOG_HISTORY:
                     JSONIsHistory();
                     break;
                 case MessageTypeEnum.SEND_LOG:
-                case MessageTypeEnum.REQ_HISTORY:
-                    JSONIsHistory();
-                    break;
+
                 case MessageTypeEnum.SUCCESS:
                 case MessageTypeEnum.FAIL:
                     break;

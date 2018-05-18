@@ -15,8 +15,8 @@ namespace ImageService.Logic.controller
         {
             this.commands = new Dictionary<int, ICommand>();
             commands[(int)MessageTypeEnum.CLOSE_HANDLER] = removeHandler;
-            commands[(int)MessageTypeEnum.REQ_HISTORY] = logHistory;
-            commands[(int)MessageTypeEnum.REQ_CONFIG] = config;
+            commands[(int)MessageTypeEnum.LOG_HISTORY] = logHistory;
+            commands[(int)MessageTypeEnum.APP_CONFIG] = config;
         }
 
         public string ExecuteCommand(int commandID, string[] args, out bool result)

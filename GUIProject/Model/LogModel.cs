@@ -26,7 +26,7 @@ namespace GUIProject.Model
             listt.Add(test);
 
 
-            TACHolder tac = new TACHolder(MessageTypeEnum.SEND_HISTORY, listt);
+            TACHolder tac = new TACHolder(MessageTypeEnum.LOG_HISTORY, listt);
 
             string output = JsonConvert.SerializeObject(tac);
             GUIDistributionParser p = new GUIDistributionParser(output, null, this);

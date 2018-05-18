@@ -29,7 +29,7 @@ namespace Logic
                 {
                     list.Add(new TitleAndContent(s.Status.ToString(), s.Message));
                 }
-                TACHolder holder = new TACHolder(MessageTypeEnum.SEND_HISTORY, list);
+                TACHolder holder = new TACHolder(MessageTypeEnum.LOG_HISTORY, list);
                 string stringHistory = holder.ToJson();
                 SendHistory.Invoke(this, new ClientMessage(stringHistory));
                 result = true;

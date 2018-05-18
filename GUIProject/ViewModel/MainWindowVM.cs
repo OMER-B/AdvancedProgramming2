@@ -24,7 +24,7 @@ namespace GUIProject.ViewModel
                 Tcp.TcpChannel.Instance.Connect();
                 return "White";
             }
-            catch (Exception e)
+            catch
             {
                 return "Gray";
             }

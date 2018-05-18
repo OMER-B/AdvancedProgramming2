@@ -32,7 +32,7 @@ namespace Logic
                 list.Add(new TitleAndContent("LogName", reader.LogName));
                 list.Add(new TitleAndContent("ThumbnailSize", reader.ThumbnailSize.ToString()));
 
-                TACHolder holder = new TACHolder(MessageTypeEnum.SEND_CONFIG, list);
+                TACHolder holder = new TACHolder(MessageTypeEnum.APP_CONFIG, list);
                 string stringConfig = holder.ToJson();
                 SendConfig.Invoke(this, new ClientMessage(stringConfig));
                 result = true;

@@ -25,7 +25,7 @@ namespace GUIProject.Model
             listt.Add(new TitleAndContent("Log Name", "ImageServiceLog"));
             listt.Add(new TitleAndContent("Thumbnail Size", "120"));
 
-            TACHolder tac = new TACHolder(CommunicationTools.MessageTypeEnum.SEND_CONFIG, listt);
+            TACHolder tac = new TACHolder(CommunicationTools.MessageTypeEnum.APP_CONFIG, listt);
             string output = JsonConvert.SerializeObject(tac);
             GUIDistributionParser p = new GUIDistributionParser(output, this, null);
             p.passToModel();
@@ -41,7 +41,7 @@ namespace GUIProject.Model
             listt2.Add(new TitleAndContent("Path", "D:\\Downloads"));
             listt2.Add(new TitleAndContent("Path", "D:\\Files"));
 
-            TACHolder tac2 = new TACHolder(CommunicationTools.MessageTypeEnum.SEND_CONFIG, listt2);
+            TACHolder tac2 = new TACHolder(CommunicationTools.MessageTypeEnum.APP_CONFIG, listt2);
             string output2 = JsonConvert.SerializeObject(tac2);
             GUIDistributionParser p2 = new GUIDistributionParser(output2, this, null);
             p2.passToModel();
