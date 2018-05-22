@@ -23,7 +23,7 @@ namespace Logic
             try
             {
                 List<TitleAndContent> list = new List<TitleAndContent>();
-                for(int i = 0; i < reader.Handler.LongLength; i++)
+                for(int i = 0; i < reader.Handler.Count; i++)
                 {
                     list.Add(new TitleAndContent("Path", reader.Handler[i]));
                 }

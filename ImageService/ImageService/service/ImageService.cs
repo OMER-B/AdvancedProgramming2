@@ -45,7 +45,7 @@ namespace ImageService
         public ImageService(string[] args)
         {
             InitializeComponent();
-            ConfigReader reader = new ConfigReader();
+            reader = new ConfigReader();
 
             if (!EventLog.SourceExists(reader.LogName))
             {
@@ -64,11 +64,18 @@ namespace ImageService
             {
                 server.AddNewDirectoryHandler(path);
             }
+            server.StopHandler += RemoveHandler;
         }
 
         public void OnMsg(object sender, LogMessageArgs args)
         {
             eventLog.WriteEntry(args.Message);
+        }
+
+        private ConfigReader reader;
+        public void RemoveHandler(object sender, DirectoryCloseEventArgs args)
+        {
+            reader.Remove(args.DirectoryPath);
         }
 
         protected override void OnStart(string[] args)
