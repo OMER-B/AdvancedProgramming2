@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tools;
 
 namespace Logic
 {
@@ -41,6 +42,7 @@ namespace Logic
             catch (Exception e)
             {
                 result = false;
+                DebugLogger.Instance.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
                 return e.Message;
             }
         }

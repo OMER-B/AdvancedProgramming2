@@ -8,7 +8,7 @@
         xmlns:views="clr-namespace:GUIProject.View"
         mc:Ignorable="d"
         Title="GUI" Height="450" Width="600" MinHeight="350"
-          Closing="DataWindow_Closing">
+         >
     <!--#region Tabs-->
     <Grid Background="{Binding StatusColor}">
         <!--#region Grid Set-up-->

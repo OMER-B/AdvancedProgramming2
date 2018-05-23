@@ -58,6 +58,7 @@ namespace ImageService
             IImageModel imageModel = new ImageModel(reader.OutputDir, reader.ThumbnailSize);
             ILogger logger = new Logger();
             logger.MessageRecieved += OnMsg;
+            DebugLogger.Instance.MessageRecieved += OnMsg;
 
             this.server = new ImageServer(logger, imageModel, reader);
             foreach (string path in reader.Handler)

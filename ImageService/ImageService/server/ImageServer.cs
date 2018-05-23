@@ -32,9 +32,10 @@ namespace ImageService
             this.imageController = new ImageController(imageModel);
 
             this.communication = new ServerCommunication(logger);
-            logger.MessageRecieved += communication.SendClientsLog;
+            logger.MessageRecieved += communication.OnClientsLog;
             communication.Connect();
             communication.MessageFromClient += ExecCommandFromClient;
+            StopHandler += communication.OnClientRemoveHandler;
 
             // Creating the commands
             CloseHandlerCommand closeHandler = new CloseHandlerCommand();

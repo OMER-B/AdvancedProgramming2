@@ -38,6 +38,7 @@ namespace Logic
             catch (Exception e)
             {
                 result = false;
+                DebugLogger.Instance.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
                 return e.Message;
             }
         }

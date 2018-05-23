@@ -10,7 +10,6 @@ namespace GUIProject.ViewModel
     {
         public string StatusColor { get { return isConnected(); } }
 
-
         public string isConnected()
         {
 
@@ -20,6 +19,11 @@ namespace GUIProject.ViewModel
             }
             return "Gray";
 
+        }
+
+        void DataWindow_Closing(object sender, EventArgs e)
+        {
+            Tcp.TcpChannel.Instance.Disconnect();
         }
     }
 }

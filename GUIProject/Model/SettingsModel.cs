@@ -13,6 +13,12 @@ namespace GUIProject.Model
 {
     class SettingsModel : IModel, INotifyPropertyChanged
     {
+
+        private ObservableCollection<TitleAndContent> handlersList;
+        public ObservableCollection<TitleAndContent> HandlersList { get { return this.handlersList; } }
+
+        private TitleAndContent selectedHandler;
+        private bool recievedData = false;
         public SettingsModel()
         {
             TcpChannel.Instance.DataRecieved += GetData;
@@ -20,7 +26,6 @@ namespace GUIProject.Model
             this.handlersList = new ObservableCollection<TitleAndContent>();
             Object locker = new Object();
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(handlersList, locker);
-            System.Threading.Thread.Sleep(500);
             TcpChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
         }
 
@@ -35,15 +40,14 @@ namespace GUIProject.Model
             try
             {
                 TcpChannel.Instance.SendMessage(json);
-                this.handlersList.Remove(selectedHandler);
+                App.Current.Dispatcher.Invoke((System.Action)delegate
+                {
+                    this.handlersList.Remove(selectedHandler);
+                });
             }
             catch { }
         }
 
-        private ObservableCollection<TitleAndContent> handlersList;
-        public ObservableCollection<TitleAndContent> HandlersList { get { return this.handlersList; } }
-
-        private TitleAndContent selectedHandler;
         public TitleAndContent SelectedHandler
         {
             get { return selectedHandler; }
@@ -66,27 +70,45 @@ namespace GUIProject.Model
             switch (tac.CommandID)
             {
                 case MessageTypeEnum.APP_CONFIG:
+                    if (recievedData)
+                    {
+                        break;
+                    }
+                    recievedData = true;
                     foreach (TitleAndContent t in tac.List)
                     {
                         if (t.Title.ToLower() != "path")
                         {
-                            this.list.Add(t);
+                            App.Current.Dispatcher.Invoke((System.Action)delegate
+                            {
+                                this.list.Add(t);
+                            });
                         }
                         else
                         {
-                            this.handlersList.Add(t);
+                            App.Current.Dispatcher.Invoke((System.Action)delegate
+                            {
+                                this.handlersList.Add(t);
+                            });
                         }
 
                     }
                     break;
                 case MessageTypeEnum.CLOSE_HANDLER:
-                    foreach (TitleAndContent t in tac.List)
+                    TitleAndContent input = tac.List[0];
+
+                    for (int i = 0; i < this.handlersList.Count; i++)
                     {
-                        if (this.handlersList.Contains(t))
+                        if (input.Content.Equals(handlersList[i].Content))
                         {
-                            this.handlersList.Remove(t);
+                            App.Current.Dispatcher.Invoke((System.Action)delegate
+                            {
+                                this.handlersList.Remove(handlersList[i]);
+                            });
+                            break;
                         }
                     }
+
                     OnPropertyChanged("handlersList");
                     break;
                 default: break;

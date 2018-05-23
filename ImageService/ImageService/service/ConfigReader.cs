@@ -33,17 +33,6 @@ namespace ImageService
                 Handler.Remove(directoryPath);
             }
 
-            StringBuilder builder = new StringBuilder();
-            foreach (string path in Handler)
-            {
-                builder.Append(path).Append(";");
-            }
-            string newHandler = builder.ToString().TrimEnd(';');
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings.Remove("Handler");
-            config.AppSettings.Settings.Add("Handler", newHandler);
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }

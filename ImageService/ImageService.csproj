@@ -66,6 +66,7 @@
     <Compile Include="Logic\handlers\IDirectoryHandler.cs" />
     <Compile Include="Logic\model\imageModel\IImageModel.cs" />
     <Compile Include="Logic\model\imageModel\ImageModel.cs" />
+    <Compile Include="Logic\model\loggingModel\DebugLogger.cs" />
     <Compile Include="Logic\model\loggingModel\ILogger.cs" />
     <Compile Include="Logic\model\loggingModel\Logger.cs" />
     <Compile Include="ImageService\server\ImageServer.cs" />
@@ -98,9 +99,11 @@
   <ItemGroup>
     <EmbeddedResource Include="ImageService\service\ImageService.resx">
       <DependentUpon>ImageService.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageService\service\ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

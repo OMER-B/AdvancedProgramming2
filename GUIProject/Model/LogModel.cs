@@ -14,6 +14,11 @@ namespace GUIProject.Model
 {
     class LogModel : IModel, INotifyPropertyChanged
     {
+        private ObservableCollection<TitleAndContent> list;
+        public ObservableCollection<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private bool recievedHistory = false;
+
         public LogModel()
         {
             this.list = new ObservableCollection<TitleAndContent>();
@@ -23,12 +28,7 @@ namespace GUIProject.Model
             System.Threading.Thread.Sleep(500);
             TcpChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.LOG_HISTORY, null).ToJson());
         }
-
-        private ObservableCollection<TitleAndContent> list;
-        public ObservableCollection<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        
         public void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -40,16 +40,28 @@ namespace GUIProject.Model
             switch (tac.CommandID)
             {
                 case MessageTypeEnum.SEND_LOG:
-                    MessageBox.Show("Recieved log");
+                    System.Windows.MessageBox.Show("Recieved Log");
                     foreach (TitleAndContent t in tac.List)
                     {
-                        this.list.Add(t);
+                        App.Current.Dispatcher.Invoke((System.Action)delegate
+                        {
+                            this.list.Add(t);
+                        });
                     }
                     break;
                 case MessageTypeEnum.LOG_HISTORY:
+                    if (recievedHistory)
+                    {
+                        break;
+                    }
+                    recievedHistory = true;
                     foreach (TitleAndContent t in tac.List)
                     {
-                        this.list.Add(t);
+                        App.Current.Dispatcher.Invoke((System.Action)delegate
+                        {
+                            this.list.Add(t);
+                        });
+
                     }
                     break;
                 default: break;

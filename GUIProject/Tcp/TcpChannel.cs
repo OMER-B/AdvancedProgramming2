@@ -58,7 +58,10 @@ namespace GUIProject.Tcp
                 writer.Write(message);
                 mutex.ReleaseMutex();
             }
-            catch { }
+            catch (Exception e)
+            {
+                System.Windows.MessageBox.Show("Error in sending message: " + e.Message);
+            }
         }
 
         public void ListenToServer()
@@ -74,9 +77,10 @@ namespace GUIProject.Tcp
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-                System.Windows.MessageBox.Show("Connection disabled");
+                System.Windows.MessageBox.Show("Error in recieving message: " + e.Message);
+                //connected = false;
             }
         }
 
@@ -92,12 +96,16 @@ namespace GUIProject.Tcp
                 Task t = new Task(() => ListenToServer());
                 t.Start();
             }
-            catch { connected = false; }
+            catch (Exception e)
+            {
+                System.Windows.MessageBox.Show("Error in recieving message: " + e.Message);
+                connected = false;
+            }
         }
 
         public void Disconnect()
         {
-             if (connected)
+            if (connected)
             {
                 TACHolder holder = new TACHolder(MessageTypeEnum.DISCONNECT, null);
                 writer.Write(holder.ToJson());

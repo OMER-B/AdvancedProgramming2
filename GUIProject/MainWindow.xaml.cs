@@ -14,10 +14,5 @@ namespace GUIProject
             InitializeComponent();
             this.DataContext = new ViewModel.MainWindowVM();
         }
-
-        void DataWindow_Closing(object sender, EventArgs e)
-        {
-            Tcp.TcpChannel.Instance.Disconnect();
-        }
     }
 }

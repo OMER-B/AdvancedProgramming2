@@ -21,6 +21,7 @@ namespace ImageService
         private TcpListener listener;
         private bool connected;
         private static Mutex mutex = new Mutex();
+        private object locker = new object();
 
         public event EventHandler<ClientMessage> MessageFromClient;
 
@@ -44,6 +45,7 @@ namespace ImageService
             {
                 return;
             }
+            WriteToLog("Number of clients: " + clients.Count);
             foreach (TcpClient client in clients)
             {
                 if (!client.Connected)
@@ -52,6 +54,10 @@ namespace ImageService
                 {
                     NetworkStream nwStream = client.GetStream();
                     BinaryWriter writer = new BinaryWriter(nwStream);
+                    //lock (locker)
+                    //{
+                    //    writer.Write(message.Message);
+                    //}
                     mutex.WaitOne();
                     writer.Write(message.Message);
                     mutex.ReleaseMutex();
@@ -63,7 +69,14 @@ namespace ImageService
             }
         }
 
-        public void SendClientsLog(object sender, LogMessageArgs args)
+        public void OnClientRemoveHandler(object sender, DirectoryCloseEventArgs args)
+        {
+            string path = args.DirectoryPath;
+            TACHolder holder = new TACHolder(MessageTypeEnum.CLOSE_HANDLER, new List<TitleAndContent> { new TitleAndContent("Path", path) });
+            MessageClients(sender, new ClientMessage(holder.ToJson()));
+        }
+
+        public void OnClientsLog(object sender, LogMessageArgs args)
         {
             if (clients.Count == 0)
             {
@@ -95,20 +108,25 @@ namespace ImageService
                     }
                 }
             }
-            catch { DisconnectClient(client); }
+            catch (Exception e)
+            {
+                WriteToLog(e.Message);
+            }
         }
 
         public void Connect()
         {
             listener.Start();
             connected = true;
+            WriteToLog("waiting for clients");
             Task task = new Task(() =>
             {
                 while (connected)
                 {
                     TcpClient client = listener.AcceptTcpClient();
                     clients.Add(client);
-                    Task t = Task.Factory.StartNew(() => ListenToClient(client));
+                    Task t = new Task(() => ListenToClient(client));
+                    t.Start();
                 }
             });
             task.Start();
@@ -116,7 +134,6 @@ namespace ImageService
 
         public void DisconnectClient(TcpClient client)
         {
-
             client.Close();
             if (clients.Contains(client))
             {
@@ -140,8 +157,7 @@ namespace ImageService
 
         private void WriteToLog(string toWrite)
         {
-            logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, toWrite));
-
+            DebugLogger.Instance.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, toWrite));
         }
 
     }
