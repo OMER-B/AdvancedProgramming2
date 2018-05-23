@@ -19,6 +19,14 @@ namespace Logic
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Extract the log history from the logger history
+        /// put it in the message holder for the client
+        /// and invoke an event to update client.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public string Execute(string[] args, out bool result)
         {
             try

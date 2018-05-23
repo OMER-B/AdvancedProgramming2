@@ -34,13 +34,21 @@ namespace GUIProject.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        /// <summary>
+        /// The function called by the event of the tcp-channel.
+        /// when a message is recieved check if it is relevant to
+        /// the log model (send log or log history)
+        /// activate the on property changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="data"></param>
         public void GetData(object sender, ClientMessage data)
         {
-            TACHolder tac = CommunicationTools.MessageParser.ParseJsonToTAC(data.Message);
+            TACHolder tac = MessageParser.ParseJsonToTAC(data.Message);
             switch (tac.CommandID)
             {
                 case MessageTypeEnum.SEND_LOG:
-                    System.Windows.MessageBox.Show("Recieved Log");
+                    //System.Windows.MessageBox.Show("Recieved Log");
                     foreach (TitleAndContent t in tac.List)
                     {
                         App.Current.Dispatcher.Invoke((System.Action)delegate

@@ -11,6 +11,12 @@ namespace Logic
     {
         public event EventHandler<DirectoryCloseEventArgs> CloseDirectory;
         
+        /// <summary>
+        /// find the path of the directory to close and invoke an event to update client.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public string Execute(string[] args, out bool result)
         {
             DirectoryCloseEventArgs commandargs = new DirectoryCloseEventArgs(args[1], null);

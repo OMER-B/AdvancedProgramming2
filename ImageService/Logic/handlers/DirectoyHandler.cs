@@ -32,6 +32,9 @@ namespace Logic
             this.dirWatchers = new List<FileSystemWatcher>();
         }
 
+        /// <summary>
+        /// Create file system watchers for the directory path.
+        /// </summary>
         public void StartHandleDirectory()
         {
             for (int i = 0; i < extensions.Length; i++)
@@ -43,6 +46,11 @@ namespace Logic
             }
         }
 
+        /// <summary>
+        /// Disable the file system watchers.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args">the path of the directory that need to close the watcher</param>
         public void CloseFileWatcher(object sender, DirectoryCloseEventArgs args)
         {
             if (args.DirectoryPath.Equals(this.dirPath) || args.DirectoryPath.Equals("*"))
@@ -56,6 +64,11 @@ namespace Logic
             }
         }
 
+        /// <summary>
+        /// Activated by the file system watcher on create event - when a new file is added.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void FileCreated(object sender, FileSystemEventArgs args)
         {
             string[] arguments = new string[] { args.FullPath, args.Name };
@@ -64,6 +77,11 @@ namespace Logic
             OnCommandRecieved(sender, eventArgs);
         }
 
+        /// <summary>
+        /// Execute a ned command from the server.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs args)
         {
             if (args.DirPath.Equals(this.dirPath) || args.DirPath.Equals("*"))

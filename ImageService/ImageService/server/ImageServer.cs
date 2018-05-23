@@ -49,12 +49,21 @@ namespace ImageService
             this.serverController = new ServerController(closeHandler, getLogCommmand, configCommand);
         }
 
+        /// <summary>
+        /// pass a command from the client to the controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message">The message to pass</param>
         private void ExecCommandFromClient(object sender, ClientMessage message)
         {
             Tuple<int, string[]> args = MessageParser.parseMessageToCommand(message);
             serverController.ExecuteCommand(args.Item1, args.Item2, out bool result);
         }
 
+        /// <summary>
+        /// Add a new Direcotry handler and register the apropriate events.
+        /// </summary>
+        /// <param name="path">The path of the new directory to monitor</param>
         public void AddNewDirectoryHandler(string path)
         {
             IDirectoryHandler dirHandler = new DirectoyHandler(path, imageController, logger, extensions);
@@ -64,26 +73,42 @@ namespace ImageService
             dirHandler.StartHandleDirectory();
         }
 
+        /// <summary>
+        /// Stop a directory handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         public void RemoveHandler(object sender, DirectoryCloseEventArgs args)
         {
             StopHandler.Invoke(this, args);
         }
 
+        /// <summary>
+        /// The message that the handler itself sends the server
+        /// to let it know that the directory is closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         public void HandlerClosed(object sender, DirectoryCloseEventArgs args)
         {
             //args.DirectoryPath
-            if (sender is IDirectoryHandler)
+            if (sender is IDirectoryHandler h)
             {
-                IDirectoryHandler h = (IDirectoryHandler)sender;
                 SendCommand -= h.OnCommandRecieved;
             }
         }
 
+        /// <summary>
+        /// Close all the  handlers
+        /// </summary>
         public void CloseAll()
         {
             StopHandler.Invoke(this, new DirectoryCloseEventArgs("*", null));
         }
 
+        /// <summary>
+        /// Close the handlers and disconnect communication.
+        /// </summary>
         public void EndServer()
         {
             CloseAll();

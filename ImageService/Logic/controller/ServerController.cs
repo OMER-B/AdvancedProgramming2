@@ -19,6 +19,14 @@ namespace ImageService.Logic.controller
             commands[(int)MessageTypeEnum.APP_CONFIG] = config;
         }
 
+        /// <summary>
+        /// Execute the command from the client
+        /// by moving it to the right command in the command dictionary
+        /// </summary>
+        /// <param name="commandID">ID of the command</param>
+        /// <param name="args"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public string ExecuteCommand(int commandID, string[] args, out bool result)
         {
             string resultString;

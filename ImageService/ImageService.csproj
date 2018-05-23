@@ -88,7 +88,6 @@
     <Compile Include="Tools\ImageProperties.cs" />
     <Compile Include="Tools\CommandRecievedEventArgs.cs" />
     <Compile Include="Tools\DirectoryCloseEventArgs.cs" />
-    <Compile Include="Tools\ListStringArgs.cs" />
     <Compile Include="Tools\LogMessageArgs.cs" />
     <Compile Include="Tools\ImageCommandTypeEnum.cs" />
   </ItemGroup>

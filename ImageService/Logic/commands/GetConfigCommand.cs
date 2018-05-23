@@ -19,6 +19,14 @@ namespace Logic
             this.reader = reader;
         }
 
+        /// <summary>
+        /// Extract the configuration from the config reader
+        /// and prepair args to contain the properties in a list
+        /// Invoke an event to update the client
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public string Execute(string[] args, out bool result)
         {
             try

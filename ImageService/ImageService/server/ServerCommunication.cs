@@ -34,7 +34,12 @@ namespace ImageService
             connected = false;
 
         }
-
+        
+        /// <summary>
+        /// Sending a message to all of the clients
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
         public void MessageClients(object sender, ClientMessage message)
         {
             if (!connected)
@@ -45,7 +50,6 @@ namespace ImageService
             {
                 return;
             }
-            WriteToLog("Number of clients: " + clients.Count);
             foreach (TcpClient client in clients)
             {
                 if (!client.Connected)
@@ -54,10 +58,6 @@ namespace ImageService
                 {
                     NetworkStream nwStream = client.GetStream();
                     BinaryWriter writer = new BinaryWriter(nwStream);
-                    //lock (locker)
-                    //{
-                    //    writer.Write(message.Message);
-                    //}
                     mutex.WaitOne();
                     writer.Write(message.Message);
                     mutex.ReleaseMutex();
@@ -69,6 +69,12 @@ namespace ImageService
             }
         }
 
+        /// <summary>
+        /// Get notified by the remove handler command that a handler was removed
+        /// then need too send the message to all of the client.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         public void OnClientRemoveHandler(object sender, DirectoryCloseEventArgs args)
         {
             string path = args.DirectoryPath;
@@ -76,6 +82,12 @@ namespace ImageService
             MessageClients(sender, new ClientMessage(holder.ToJson()));
         }
 
+        /// <summary>
+        /// Get notified when the logger gets a new messgae
+        /// then send the message to the clients.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         public void OnClientsLog(object sender, LogMessageArgs args)
         {
             if (clients.Count == 0)
@@ -87,12 +99,15 @@ namespace ImageService
                 new TitleAndContent(args.Status.ToString(), args.Message)
             };
             TACHolder tac = new TACHolder(MessageTypeEnum.SEND_LOG, tacList);
-
             string message = tac.ToJson();
-
             MessageClients(this, new ClientMessage(message));
         }
 
+        /// <summary>
+        /// A task happening in a different thread.
+        /// This task is listening to *each* client and notifies the server for each new message.
+        /// </summary>
+        /// <param name="client"></param>
         public void ListenToClient(TcpClient client)
         {
             NetworkStream nwStream = client.GetStream();
@@ -110,21 +125,26 @@ namespace ImageService
             }
             catch (Exception e)
             {
-                WriteToLog(e.Message);
+                logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
             }
         }
 
+        /// <summary>
+        /// activate the listener, and accept client in a new task.
+        /// then, for each new connected client create a new task to handle it
+        /// and continue listening to new clients.
+        /// </summary>
         public void Connect()
         {
             listener.Start();
             connected = true;
-            WriteToLog("waiting for clients");
             Task task = new Task(() =>
             {
                 while (connected)
                 {
                     TcpClient client = listener.AcceptTcpClient();
                     clients.Add(client);
+                    logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Connected to: " + client.Client.ToString()));
                     Task t = new Task(() => ListenToClient(client));
                     t.Start();
                 }
@@ -132,6 +152,10 @@ namespace ImageService
             task.Start();
         }
 
+        /// <summary>
+        /// Close a client socket and remove it from client list.
+        /// </summary>
+        /// <param name="client"></param>
         public void DisconnectClient(TcpClient client)
         {
             client.Close();
@@ -141,6 +165,9 @@ namespace ImageService
             }
         }
 
+        /// <summary>
+        /// Close all the client socket and clear the client list.
+        /// </summary>
         public void DisconnectAll()
         {
             if (clients.Count != 0)
@@ -148,13 +175,17 @@ namespace ImageService
                 foreach (TcpClient client in clients)
                 {
                     client.Close();
-                    WriteToLog("Disconnected from: " + client.ToString());
                 }
             }
             listener.Stop();
             connected = false;
         }
 
+        /// <summary>
+        /// For debugging purposes:
+        /// Send to a debug log error and inormation messages.
+        /// </summary>
+        /// <param name="toWrite"></param>
         private void WriteToLog(string toWrite)
         {
             DebugLogger.Instance.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, toWrite));

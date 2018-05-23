@@ -14,14 +14,15 @@ namespace GUIProject.Tcp
     class TcpChannel
     {
         private TcpClient client;
-        private IPEndPoint ep;
-        private bool connected;
-        public event EventHandler<ClientMessage> DataRecieved;
-        NetworkStream netStream;
-        BinaryReader reader;
-        BinaryWriter writer;
+        private IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
+        private NetworkStream netStream;
+        private BinaryReader reader;
+        private BinaryWriter writer;
         private static System.Threading.Mutex mutex = new System.Threading.Mutex();
+        private bool connected;
         public bool Connected { get { return this.connected; } }
+
+        public event EventHandler<ClientMessage> DataRecieved;
 
         // The tcp channel is a singleton
         private static TcpChannel instance;
@@ -37,15 +38,20 @@ namespace GUIProject.Tcp
             }
         }
 
+        /// <summary>
+        /// Constructor, initialize a connection with the server.
+        /// </summary>
         private TcpChannel()
         {
-            // TODO recieve the connection data in constructor
-            ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
             client = new TcpClient();
             connected = false;
             Connect();
         }
 
+        /// <summary>
+        /// Send a message from the model to the server.
+        /// </summary>
+        /// <param name="message"></param>
         public void SendMessage(string message)
         {
             try
@@ -54,16 +60,22 @@ namespace GUIProject.Tcp
                 {
                     Connect();
                 }
+                // use a mutex when sending a message.
                 mutex.WaitOne();
                 writer.Write(message);
                 mutex.ReleaseMutex();
             }
             catch (Exception e)
             {
+                // POP-UP window of the error message.
                 System.Windows.MessageBox.Show("Error in sending message: " + e.Message);
             }
         }
 
+        /// <summary>
+        /// A task to listen to the server in a different thread
+        /// and invoke the event of data-recieved.
+        /// </summary>
         public void ListenToServer()
         {
             string message;
@@ -80,10 +92,13 @@ namespace GUIProject.Tcp
             catch (Exception e)
             {
                 System.Windows.MessageBox.Show("Error in recieving message: " + e.Message);
-                //connected = false;
             }
         }
 
+        /// <summary>
+        /// Create a connection with the server
+        /// if successfull, create a task to listen to updates from the server.
+        /// </summary>
         public void Connect()
         {
             try
@@ -98,11 +113,15 @@ namespace GUIProject.Tcp
             }
             catch (Exception e)
             {
-                System.Windows.MessageBox.Show("Error in recieving message: " + e.Message);
+                System.Windows.MessageBox.Show("Error in Connection: " + e.Message);
                 connected = false;
             }
         }
 
+        /// <summary>
+        /// Disconnet: close the socket, update the server,
+        /// close the networkstream, reader and writer.
+        /// </summary>
         public void Disconnect()
         {
             if (connected)
@@ -119,6 +138,9 @@ namespace GUIProject.Tcp
 
         }
 
+        /// <summary>
+        /// Destructor: call disconnect.
+        /// </summary>
         ~TcpChannel()
         {
             Disconnect();

@@ -16,9 +16,13 @@ namespace GUIProject.Model
 
         private ObservableCollection<TitleAndContent> handlersList;
         public ObservableCollection<TitleAndContent> HandlersList { get { return this.handlersList; } }
+        private ObservableCollection<TitleAndContent> list;
+        public ObservableCollection<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private TitleAndContent selectedHandler;
         private bool recievedData = false;
+
         public SettingsModel()
         {
             TcpChannel.Instance.DataRecieved += GetData;
@@ -29,9 +33,10 @@ namespace GUIProject.Model
             TcpChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
         }
 
-        private ObservableCollection<TitleAndContent> list;
-        public ObservableCollection<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
-
+        /// <summary>
+        /// Remove a path handler from the handlers list.
+        /// </summary>
+        /// <param name="selectedHandler"></param>
         internal void Remove(TitleAndContent selectedHandler)
         {
             TACHolder tac = new TACHolder(MessageTypeEnum.CLOSE_HANDLER, new List<TitleAndContent> { selectedHandler });
@@ -58,12 +63,19 @@ namespace GUIProject.Model
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        /// <summary>
+        /// The function activated by the recieve data of the tcp-channel.
+        /// determine if the type of the message is relevant (app config or remove handler)
+        /// and acitivate on property changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="data"></param>
         public void GetData(object sender, ClientMessage data)
         {
             TACHolder tac = CommunicationTools.MessageParser.ParseJsonToTAC(data.Message);
