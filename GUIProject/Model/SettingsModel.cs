@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GUIProject.Model
 {
-    class SettingsModel : IModel, INotifyPropertyChanged
+    class SettingsModel : ISettingsModel, INotifyPropertyChanged
     {
 
         private ObservableCollection<TitleAndContent> handlersList;
@@ -23,6 +23,9 @@ namespace GUIProject.Model
         private TitleAndContent selectedHandler;
         private bool recievedData = false;
 
+        /// <summary>
+        /// Constructor for SettingsModel.
+        /// </summary>
         public SettingsModel()
         {
             TcpChannel.Instance.DataRecieved += GetData;
@@ -36,8 +39,8 @@ namespace GUIProject.Model
         /// <summary>
         /// Remove a path handler from the handlers list.
         /// </summary>
-        /// <param name="selectedHandler"></param>
-        internal void Remove(TitleAndContent selectedHandler)
+        /// <param name="selectedHandler">What to remove from list.</param>
+        public void Remove(TitleAndContent selectedHandler)
         {
             TACHolder tac = new TACHolder(MessageTypeEnum.CLOSE_HANDLER, new List<TitleAndContent> { selectedHandler });
             string json = tac.ToJson();
@@ -53,6 +56,9 @@ namespace GUIProject.Model
             catch { }
         }
 
+        /// <summary>
+        /// Property for Selected Handler.
+        /// </summary>
         public TitleAndContent SelectedHandler
         {
             get { return selectedHandler; }
@@ -64,6 +70,10 @@ namespace GUIProject.Model
         }
 
 
+        /// <summary>
+        /// OnPropertyChanged method to update when selection is not available.
+        /// </summary>
+        /// <param name="name">String changed.</param>
         public void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

@@ -19,12 +19,21 @@ namespace CommunicationTools
         [JsonProperty("CommandID")]
         public MessageTypeEnum CommandID { get { return this.commandID; } set { this.commandID = value; } }
 
+        /// <summary>
+        /// Constructor for TACHolder.
+        /// </summary>
+        /// <param name="cmdID">Command ID</param>
+        /// <param name="list">List to send.</param>
         public TACHolder(MessageTypeEnum cmdID, List<TitleAndContent> list)
         {
             this.list = list;
             this.commandID = cmdID;
         }
 
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="tac">TACHolder to copy from.</param>
         public TACHolder(TACHolder tac)
         {
             this.list = tac.List;
@@ -32,6 +41,10 @@ namespace CommunicationTools
         }
         public TACHolder() { }
 
+        /// <summary>
+        /// Converts to json
+        /// </summary>
+        /// <returns>String of JSON.</returns>
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this);

@@ -24,8 +24,11 @@ namespace GUIProject.Tcp
 
         public event EventHandler<ClientMessage> DataRecieved;
 
-        // The tcp channel is a singleton
         private static TcpChannel instance;
+
+        /// <summary>
+        /// TCP Channel is a singleton.
+        /// </summary>
         public static TcpChannel Instance
         {
             get

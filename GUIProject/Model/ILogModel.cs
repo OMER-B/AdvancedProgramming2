@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GUIProject.Model
 {
-    interface IModel
+    interface ILogModel
     {
         #region Notify Changed
         event PropertyChangedEventHandler PropertyChanged;

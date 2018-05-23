@@ -23,7 +23,8 @@ namespace GUIProject.View
         public SettingsView()
         {
             InitializeComponent();
-            this.DataContext = new ViewModel.SettingsVM(new Model.SettingsModel());
+            Model.ISettingsModel model = new Model.SettingsModel();
+            this.DataContext = new ViewModel.SettingsVM(model);
         }
     }
 }

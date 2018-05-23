@@ -7,8 +7,7 @@
         xmlns:viewModel = "clr-namespace:GUIProject.ViewModel" 
         xmlns:views="clr-namespace:GUIProject.View"
         mc:Ignorable="d"
-        Title="GUI" Height="450" Width="600" MinHeight="350"
-         >
+        Title="GUI" Height="450" Width="600" MinHeight="350">
     <!--#region Tabs-->
     <Grid Background="{Binding StatusColor}">
         <!--#region Grid Set-up-->
@@ -29,7 +28,7 @@
                 <views:LogView />
             </TabItem>
         </TabControl>
-        
+
     </Grid>
     <!--#endregion-->
 </Window>

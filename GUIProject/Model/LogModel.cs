@@ -12,13 +12,16 @@ using System.Windows;
 
 namespace GUIProject.Model
 {
-    class LogModel : IModel, INotifyPropertyChanged
+    class LogModel : ILogModel, INotifyPropertyChanged
     {
         private ObservableCollection<TitleAndContent> list;
         public ObservableCollection<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
         public event PropertyChangedEventHandler PropertyChanged;
         private bool recievedHistory = false;
 
+        /// <summary>
+        /// Constructor for LogModel.
+        /// </summary>
         public LogModel()
         {
             this.list = new ObservableCollection<TitleAndContent>();
@@ -29,6 +32,10 @@ namespace GUIProject.Model
             TcpChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.LOG_HISTORY, null).ToJson());
         }
         
+        /// <summary>
+        /// OnPropertyChanged method to update when selection is not available.
+        /// </summary>
+        /// <param name="name">String changed.</param>
         public void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

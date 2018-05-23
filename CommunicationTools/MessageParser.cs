@@ -7,12 +7,22 @@ namespace CommunicationTools
 {
     class MessageParser
     {
+        /// <summary>
+        /// Constructor method for MessageParser.
+        /// </summary>
+        /// <param name="json">json to pare.</param>
+        /// <returns>Holder class with message and Enum (Deserialized json)</returns>
         public static TACHolder ParseJsonToTAC(string json)
         {
             TACHolder tac = new TACHolder(JsonConvert.DeserializeObject<TACHolder>(json));
             return tac;
         }
 
+        /// <summary>
+        /// Returns a tuple of the message with complicated computations.
+        /// </summary>
+        /// <param name="message">Message of the tuple.</param>
+        /// <returns>Tuple with number and string.</returns>
         public static Tuple<int, string[]> parseMessageToCommand(ClientMessage message)
         {
             TACHolder holder = MessageParser.ParseJsonToTAC(message.Message);

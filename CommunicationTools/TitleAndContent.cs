@@ -12,6 +12,11 @@ namespace CommunicationTools
 {
     class TitleAndContent
     {
+        /// <summary>
+        /// Constructor for the TitleAndContent holder class.
+        /// </summary>
+        /// <param name="title">Title of the message</param>
+        /// <param name="content">Content of the message.</param>
         public TitleAndContent(string title, string content)
         {
             this.title = title;
@@ -19,6 +24,10 @@ namespace CommunicationTools
             this.color = ParseColor();
         }
 
+        /// <summary>
+        /// Parse the color for the background color.
+        /// </summary>
+        /// <returns>String of background color.</returns>
         private string ParseColor()
         {
             switch (this.title.ToLower())

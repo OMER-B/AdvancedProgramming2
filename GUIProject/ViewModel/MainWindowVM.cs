@@ -10,6 +10,10 @@ namespace GUIProject.ViewModel
     {
         public string StatusColor { get { return isConnected(); } }
 
+        /// <summary>
+        /// Checks if service is online to set background color.
+        /// </summary>
+        /// <returns>Background color as string</returns>
         public string isConnected()
         {
 
@@ -21,6 +25,11 @@ namespace GUIProject.ViewModel
 
         }
 
+        /// <summary>
+        /// Disconnect when window closes.
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">event args</param>
         void DataWindow_Closing(object sender, EventArgs e)
         {
             Tcp.TcpChannel.Instance.Disconnect();
