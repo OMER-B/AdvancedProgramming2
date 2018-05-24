@@ -13,7 +13,7 @@ using Tools;
 
 namespace ImageService
 {
-    class ServerCommunication
+    class TcpServer : ITcpServer
     {
         private List<TcpClient> clients;
         private ILogger logger;
@@ -25,7 +25,11 @@ namespace ImageService
 
         public event EventHandler<ClientMessage> MessageFromClient;
 
-        public ServerCommunication(ILogger logger)
+        /// <summary>
+        /// Constructor for ServerCommuncation.
+        /// </summary>
+        /// <param name="logger">Logger to write to.</param>
+        public TcpServer(ILogger logger)
         {
             this.logger = logger;
             this.clients = new List<TcpClient>();

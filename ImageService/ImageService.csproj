@@ -53,7 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageService\server\ServerCommunication.cs" />
+    <Compile Include="ImageService\server\ITcpServer.cs" />
+    <Compile Include="ImageService\server\TcpServer.cs" />
     <Compile Include="Logic\commands\CloseHandlerCommand.cs" />
     <Compile Include="Logic\commands\GetConfigCommand.cs" />
     <Compile Include="Logic\commands\GetLogHistoryCommand.cs" />

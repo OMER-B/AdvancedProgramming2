@@ -19,7 +19,7 @@ namespace ImageService
         #endregion
 
         #region Members
-        private ServerCommunication communication;
+        private ITcpServer communication;
         private IController imageController;
         private IController serverController;
         private ILogger logger;
@@ -31,7 +31,7 @@ namespace ImageService
             this.logger = logger;
             this.imageController = new ImageController(imageModel);
 
-            this.communication = new ServerCommunication(logger);
+            this.communication = new TcpServer(logger);
             logger.MessageRecieved += communication.OnClientsLog;
             communication.Connect();
             communication.MessageFromClient += ExecCommandFromClient;
