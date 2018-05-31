@@ -14,7 +14,7 @@ namespace GUIProject.Tcp
     class TcpChannel
     {
         private TcpClient client;
-        private IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
+        private IPEndPoint ep;
         private NetworkStream netStream;
         private BinaryReader reader;
         private BinaryWriter writer;
@@ -46,6 +46,7 @@ namespace GUIProject.Tcp
         /// </summary>
         private TcpChannel()
         {
+            this.ep = ConnectionDetails.EndPoint;
             client = new TcpClient();
             connected = false;
             Connect();
@@ -70,8 +71,7 @@ namespace GUIProject.Tcp
             }
             catch (Exception e)
             {
-                // POP-UP window of the error message.
-                System.Windows.MessageBox.Show("Error in sending message: " + e.Message);
+                // Here debug
             }
         }
 
@@ -94,7 +94,7 @@ namespace GUIProject.Tcp
             }
             catch (Exception e)
             {
-                System.Windows.MessageBox.Show("Error in recieving message: " + e.Message);
+                // Here debug
             }
         }
 
@@ -116,7 +116,6 @@ namespace GUIProject.Tcp
             }
             catch (Exception e)
             {
-                System.Windows.MessageBox.Show("Error in Connection: " + e.Message);
                 connected = false;
             }
         }

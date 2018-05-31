@@ -55,7 +55,6 @@ namespace GUIProject.Model
             switch (tac.CommandID)
             {
                 case MessageTypeEnum.SEND_LOG:
-                    //System.Windows.MessageBox.Show("Recieved Log");
                     foreach (TitleAndContent t in tac.List)
                     {
                         App.Current.Dispatcher.Invoke((System.Action)delegate

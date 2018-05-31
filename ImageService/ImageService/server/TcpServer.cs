@@ -33,7 +33,7 @@ namespace ImageService
         {
             this.logger = logger;
             this.clients = new List<TcpClient>();
-            ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
+            ep = ConnectionDetails.EndPoint;
             listener = new TcpListener(ep);
             connected = false;
 
