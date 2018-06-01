@@ -1,0 +1,33 @@
+﻿@model ImageServiceWeb.Models.DetailsModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Image Web</h2>
+<p> Service is <span style="font-weight:bold;">@Model.ServerStatus</span>. Total number of images in output directory is <span style="font-weight:bold;">@Model.NumberOfImages</span>.</p>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="table table-striped-group">
+        <table>
+            <tr style="font-weight:bold;">
+                <td>Name</td>
+                <td>ID</td>
+            </tr>
+            @foreach (var item in Model.Students)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ID)</td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+}

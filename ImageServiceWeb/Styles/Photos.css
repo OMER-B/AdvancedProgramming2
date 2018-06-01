@@ -1,0 +1,54 @@
+﻿.album-container {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+}
+
+.photos-container {
+    display: inline-block;
+    width: 250px;
+    height: auto;
+    padding: 3px;
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+    word-wrap: break-word;
+    margin-bottom: 10px;
+}
+
+.circular-image {
+    border-radius: 50%;
+}
+
+.photos-container button {
+    background-color: #fafafa;
+    border: none;
+    color: white;
+    width: 120px;
+    padding: 5px 0 5px 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.photos-container #remove-button {
+    background-color: #f15b3f;
+    float: right;
+}
+
+.photos-container #view-button {
+    background-color: #2987f9;
+    float: left;
+}
+
+.photos-container #image-name {
+    font-family: 'Comic Sans MS';
+    font-size: 16px;
+    text-align: center;
+    display: block;
+    font-weight: bold;
+}
+
+#image-date {
+    display: block;
+}

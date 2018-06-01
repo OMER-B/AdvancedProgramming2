@@ -1,0 +1,26 @@
+﻿@model ImageServiceWeb.Models.PhotosModel
+@{
+    ViewBag.Title = "Photos";
+}
+
+<head>
+    <link href="@Url.Content("~/Styles/Photos.css")" rel="stylesheet" type="text/css" />
+</head>
+
+<h2>Photos</h2>
+<div class="album-container">
+    @{
+        foreach (var image in Model.Photos)
+        {
+            <div class="photos-container">
+                <span id="image-name">@image.Name</span>
+
+                <img src="@Url.Content("https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg")"
+                     width="242" height="200" alt="@image.Name" class="circular-image" />
+                <p>This image was taken on @image.Month, @image.Year</p>
+                @Html.ActionLink("View", "PhotoScreen", new { id = image.ID })
+                <button id="remove-button">Remove</button>
+            </div>
+        }
+    }
+</div>
