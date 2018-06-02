@@ -13,13 +13,17 @@
         foreach (var image in Model.Photos)
         {
             <div class="photos-container">
-                <span id="image-name">@image.Name</span>
-
-                <img src="@Url.Content("https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg")"
-                     width="242" height="200" alt="@image.Name" class="circular-image" />
-                <p>This image was taken on @image.Month, @image.Year</p>
-                @Html.ActionLink("View", "PhotoScreen", new { id = image.ID })
-                <button id="remove-button">Remove</button>
+                <a href="@Url.Action("PhotoScreen", "First", new { id = image.ID })">
+                    <img src="https://i.pinimg.com/originals/95/5d/42/955d4284905d149ea4967ff586e89b41.jpg" class="circular-image" />
+                </a>
+                <div class="image-name-container">@image.Name</div>
+                <span class="image-date">@image.Month, @image.Year</span>
+                <span class="btn btn-trash">
+                    @Html.ActionLink(" ", "DeletePhoto", new { id = image.ID }, new { @class = "icon trash" })
+                </span>
+                <span class="btn btn-expand">
+                    @Html.ActionLink(" ", "PhotoScreen", new { id = image.ID }, new { @class = "icon expand" })
+                </span>
             </div>
         }
     }

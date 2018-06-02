@@ -5,24 +5,29 @@
 }
 
 .photos-container {
+    width: 270px;
+    border: 1px solid #ededed;
+    padding: 10px;
     display: inline-block;
-    width: 250px;
     height: auto;
-    padding: 3px;
-    border: 1px solid #dcdcdc;
     border-radius: 3px;
     word-wrap: break-word;
-    margin-bottom: 10px;
+    margin: 5px;
 }
 
 .circular-image {
+    width: 242px;
+    height: 200px;
     border-radius: 50%;
 }
 
+    .circular-image:hover {
+    }
+
 .photos-container button {
-    background-color: #fafafa;
+    background-color: transparent;
     border: none;
-    color: white;
+    color: #b5b5b5;
     width: 120px;
     padding: 5px 0 5px 0;
     text-align: center;
@@ -31,24 +36,93 @@
     font-size: 16px;
 }
 
-.photos-container #remove-button {
-    background-color: #f15b3f;
-    float: right;
+.icon:before {
+    -webkit-transition: opacity 0.14s ease-in-out;
+    transition: opacity 0.14s ease-in-out;
+    content: "";
+    opacity: 0.5;
+    background-size: 20px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
 }
 
-.photos-container #view-button {
-    background-color: #2987f9;
+.trash:before {
+    background-image: url(/Styles/trash.png);
+}
+
+.trash:hover:before {
+    opacity: 1;
+}
+
+.trash:hover {
+    text-decoration: none;
+}
+
+.expand:before {
+    background-image: url(/Styles/expand.png);
+}
+
+.expand:hover {
+    text-decoration: none;
+}
+
+    .expand:hover:before {
+        opacity: 1;
+    }
+
+.photos-container .image-name-container {
+    padding: 15px 0 10px 0;
+    font-size: 12px;
+    text-align: left;
+    display: block;
+}
+
+.image-date {
+    font-size: 10px;
+    padding-bottom: 10px;
+    text-align: left;
+    display: block;
+}
+
+.btn {
     float: left;
-}
-
-.photos-container #image-name {
-    font-family: 'Comic Sans MS';
-    font-size: 16px;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-right: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
     text-align: center;
-    display: block;
-    font-weight: bold;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 2px
 }
 
-#image-date {
-    display: block;
+
+    .btn.focus {
+        color: #333;
+        text-decoration: none
+    }
+
+    .btn.active {
+        background-image: none;
+        outline: 0;
+        -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+        box-shadow: inset 0 3px 5px rgba(0,0,0,.125)
+    }
+
+.btn-trash, .btn-expand {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc
 }

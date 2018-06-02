@@ -8,20 +8,13 @@ namespace ImageServiceWeb.Models
 {
     public class Photo
     {
-        static int count = 0;
-        public void Reset()
+        public Photo(string name, string path, string month, string year, int id)
         {
-            count = 0;
-        }
-
-        public Photo(string name, string path, string month, string year)
-        {
-            this.id = count;
+            this.id = id;
             this.name = name;
             this.path = path;
             this.month = month;
             this.year = year;
-            count++;
         }
 
         private string path;

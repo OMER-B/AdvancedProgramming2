@@ -44,11 +44,23 @@ namespace ImageServiceWeb.Controllers
             }
             return null;
         }
+
+        public ActionResult DeletePhoto(int id)
+        {
+            foreach (Photo photo in photosModel.Photos)
+            {
+                if (photo.ID.Equals(id))
+                    return View(photo);
+            }
+            return null;
+        }
+
         /// <summary>
         /// Sends the photos to the photos model.
         /// </summary>
         public void sendPhotos()
         {
+            int id = 0;
             List<Photo> list = new List<Photo>();
             string path = configModel.OutputDir + "\\thumbnails\\";
             if (Directory.Exists(path))
@@ -59,7 +71,8 @@ namespace ImageServiceWeb.Controllers
                     list.Add(new Photo(Path.GetFileNameWithoutExtension(photo),
                         Path.GetFullPath(photo),
                         new DirectoryInfo(Path.GetDirectoryName(photo)).Name,
-                        new DirectoryInfo(Path.GetDirectoryName(photo)).Parent.Name));
+                        new DirectoryInfo(Path.GetDirectoryName(photo)).Parent.Name, id));
+                    id++;
                 }
             }
             photosModel.Photos = list;
