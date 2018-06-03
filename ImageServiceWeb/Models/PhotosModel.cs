@@ -16,7 +16,7 @@ namespace ImageServiceWeb.Models
         /// <param name="path">Path of the folder containing the images.</param>
         public PhotosModel(string path)
         {
-            this.ThumbPath = "C:\\advim1\\thumbnails"; //TODO change path to from App Config
+            this.ThumbPath = "//advim1"; //TODO change path to from App Config
         }
 
         private List<Photo> photos = new List<Photo>();

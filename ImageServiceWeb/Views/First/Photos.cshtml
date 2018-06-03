@@ -13,9 +13,7 @@
         foreach (var image in Model.Photos)
         {
             <div class="photos-container">
-                <a href="@Url.Action("PhotoScreen", "First", new { id = image.ID })">
-                    <img src="https://i.pinimg.com/originals/95/5d/42/955d4284905d149ea4967ff586e89b41.jpg" class="circular-image" />
-                </a>
+                <img src="https://pbs.twimg.com/profile_images/948761950363664385/Fpr2Oz35_400x400.jpg" class="circular-image" />
                 <div class="image-name-container">@image.Name</div>
                 <span class="image-date">@image.Month, @image.Year</span>
                 <span class="btn btn-trash">

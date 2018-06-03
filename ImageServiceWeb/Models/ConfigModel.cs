@@ -9,7 +9,7 @@ namespace ImageServiceWeb.Models
     {
         private string outputDir;
 
-        public string OutputDir { get => "C:\\advim1"; set => outputDir = value; }
+        public string OutputDir { get => "/advim1"; set => outputDir = value; }
     }
 
 }
