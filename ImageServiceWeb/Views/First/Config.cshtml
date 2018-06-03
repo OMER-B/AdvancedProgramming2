@@ -21,3 +21,20 @@
     }
 </table>
 
+<table>
+    @{ foreach (var v in Model.HandlersList)
+        {
+            <tr>
+                <td>
+                    @v.Title
+                </td>
+                <td>
+                    @v.Content
+                </td>
+                <td>
+                    @Html.ActionLink("Remove", "DeleteHandler", new { name = v.Content })
+                </td>
+            </tr>
+        }
+    }
+</table>

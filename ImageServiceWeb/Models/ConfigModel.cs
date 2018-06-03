@@ -10,7 +10,8 @@ namespace ImageServiceWeb.Models
     public class ConfigModel
     {
         private string outputDir;
-
+        private bool recievedConfig = false;
+        private bool recievedRemoved = false;
         public string OutputDir { get => outputDir; set => outputDir = value; }
 
         private List<TitleAndContent> handlersList;
@@ -20,7 +21,7 @@ namespace ImageServiceWeb.Models
         public event PropertyChangedEventHandler PropertyChanged;
 
         private TitleAndContent selectedHandler;
-        private bool recievedData = false;
+
 
         /// <summary>
         /// Constructor for SettingsModel.
@@ -31,9 +32,9 @@ namespace ImageServiceWeb.Models
             this.list = new List<TitleAndContent>();
             this.handlersList = new List<TitleAndContent>();
             Object locker = new Object();
-            recievedData = false;
+            recievedConfig = false;
             TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
-            while (!recievedData) { }
+            while (!recievedConfig) { }
         }
 
 
@@ -43,7 +44,7 @@ namespace ImageServiceWeb.Models
         /// <param name="selectedHandler">What to remove from list.</param>
         public void Remove(string name)
         {
-            recievedData = false;
+            recievedRemoved = false;
             TitleAndContent selectedHandler = new TitleAndContent("Path", name);
             TACHolder tac = new TACHolder(MessageTypeEnum.CLOSE_HANDLER, new List<TitleAndContent> { selectedHandler });
             string json = tac.ToJson();
@@ -51,8 +52,8 @@ namespace ImageServiceWeb.Models
             try
             {
                 TcpClientChannel.Instance.SendMessage(json);
-                while (!recievedData) { }
-                this.handlersList.Remove(selectedHandler);
+                while (!recievedRemoved) { }
+                
             }
             catch { }
         }
@@ -93,7 +94,7 @@ namespace ImageServiceWeb.Models
             switch (tac.CommandID)
             {
                 case MessageTypeEnum.APP_CONFIG:
-                    recievedData = true;
+                    recievedConfig = true;
                     foreach (TitleAndContent t in tac.List)
                     {
                         if (t.Title.ToLower() != "path")
@@ -112,7 +113,7 @@ namespace ImageServiceWeb.Models
                     }
                     break;
                 case MessageTypeEnum.CLOSE_HANDLER:
-                    recievedData = true;
+                    recievedRemoved = true;
                     TitleAndContent input = tac.List[0];
 
                     for (int i = 0; i < this.handlersList.Count; i++)
