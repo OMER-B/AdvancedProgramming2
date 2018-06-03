@@ -35,6 +35,13 @@ namespace ImageServiceWeb.Controllers
         // GET: First
         public ActionResult Photos() { return View(photosModel); }
 
+        public ActionResult DeleteHandler(string name)
+        {
+            configModel.Remove(name);
+            return RedirectToAction("Config");
+
+        }
+
         public ActionResult PhotoScreen(int id)
         {
             foreach (Photo photo in photosModel.Photos)

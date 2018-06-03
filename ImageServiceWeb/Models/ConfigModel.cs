@@ -31,22 +31,27 @@ namespace ImageServiceWeb.Models
             this.list = new List<TitleAndContent>();
             this.handlersList = new List<TitleAndContent>();
             Object locker = new Object();
+            recievedData = false;
             TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
             while (!recievedData) { }
         }
+
 
         /// <summary>
         /// Remove a path handler from the handlers list.
         /// </summary>
         /// <param name="selectedHandler">What to remove from list.</param>
-        public void Remove(TitleAndContent selectedHandler)
+        public void Remove(string name)
         {
+            recievedData = false;
+            TitleAndContent selectedHandler = new TitleAndContent("Path", name);
             TACHolder tac = new TACHolder(MessageTypeEnum.CLOSE_HANDLER, new List<TitleAndContent> { selectedHandler });
             string json = tac.ToJson();
 
             try
             {
                 TcpClientChannel.Instance.SendMessage(json);
+                while (!recievedData) { }
                 this.handlersList.Remove(selectedHandler);
             }
             catch { }
@@ -107,6 +112,7 @@ namespace ImageServiceWeb.Models
                     }
                     break;
                 case MessageTypeEnum.CLOSE_HANDLER:
+                    recievedData = true;
                     TitleAndContent input = tac.List[0];
 
                     for (int i = 0; i < this.handlersList.Count; i++)
