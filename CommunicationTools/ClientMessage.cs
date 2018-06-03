@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationTools
 {
-    class ClientMessage : EventArgs
+    public class ClientMessage : EventArgs
     {
         private string message;
 

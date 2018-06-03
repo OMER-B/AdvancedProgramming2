@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationTools
 {
-    class TitleAndContent
+    public class TitleAndContent
     {
         /// <summary>
         /// Constructor for the TitleAndContent holder class.

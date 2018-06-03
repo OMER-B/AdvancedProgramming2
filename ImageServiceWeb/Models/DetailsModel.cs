@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Web;
+using CommunicationTools;
 
 namespace ImageServiceWeb.Models
 {
@@ -27,13 +28,12 @@ namespace ImageServiceWeb.Models
         /// Returns status of the service.
         /// </summary>
         /// <returns>online if service is online, offline otherwise.</returns>
-        public string Status() { return serverStatus ? "online" : "offline"; }
-        private bool serverStatus;
+        private string Status() { return TcpClientChannel.Instance.Connected ? "online" : "offline"; }
         public String ServerStatus { get => Status(); }
 
         public void parse()
         {
-            using (StreamReader sr = File.OpenText("C:\\Users\\עומר\\source\\repos\\ImageService\\ImageServiceWeb\\Models\\details.txt"))
+            using (StreamReader sr = File.OpenText("C:\\Users\\H\\source\\repos\\AdvancedProgramming23\\ImageServiceWeb\\Models\\details.txt"))
             {
                 string s = String.Empty;
                 string name = String.Empty;

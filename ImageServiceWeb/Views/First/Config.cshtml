@@ -1,7 +1,23 @@
-﻿
+﻿@model ImageServiceWeb.Models.ConfigModel
+
 @{
     ViewBag.Title = "Config";
 }
 
 <h2>Config</h2>
+
+<table>
+    @{ foreach (var v in Model.List)
+        {
+            <tr>
+                <td>
+                    @v.Title
+                </td>
+                <td>
+                    @v.Content
+                </td>
+            </tr>
+        }
+    }
+</table>
 

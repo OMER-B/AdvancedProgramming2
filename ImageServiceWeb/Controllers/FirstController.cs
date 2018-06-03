@@ -69,7 +69,7 @@ namespace ImageServiceWeb.Controllers
                 foreach (string photo in photos)
                 {
                     list.Add(new Photo(Path.GetFileNameWithoutExtension(photo),
-                        photo,
+                        Path.GetFullPath(photo),
                         new DirectoryInfo(Path.GetDirectoryName(photo)).Name,
                         new DirectoryInfo(Path.GetDirectoryName(photo)).Parent.Name, id));
                     id++;
