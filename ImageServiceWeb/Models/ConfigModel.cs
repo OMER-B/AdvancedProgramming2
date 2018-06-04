@@ -31,10 +31,17 @@ namespace ImageServiceWeb.Models
             TcpClientChannel.Instance.DataRecieved += GetData;
             this.list = new List<TitleAndContent>();
             this.handlersList = new List<TitleAndContent>();
-            Object locker = new Object();
             recievedConfig = false;
+            //while (!recievedConfig) { }
+        }
+
+        public void Initialize()
+        {
+            if (!TcpClientChannel.Instance.Connected)
+            {
+                TcpClientChannel.Instance.Connect();
+            }
             TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
-            while (!recievedConfig) { }
         }
 
 
@@ -52,7 +59,7 @@ namespace ImageServiceWeb.Models
             try
             {
                 TcpClientChannel.Instance.SendMessage(json);
-                while (!recievedRemoved) { }
+                //while (!recievedRemoved) { }
                 
             }
             catch { }

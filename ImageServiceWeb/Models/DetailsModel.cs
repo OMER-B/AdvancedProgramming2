@@ -33,7 +33,7 @@ namespace ImageServiceWeb.Models
 
         public void parse()
         {
-            using (StreamReader sr = File.OpenText("C:\\Users\\H\\source\\repos\\AdvancedProgramming23\\ImageServiceWeb\\Models\\details.txt"))
+            using (StreamReader sr = File.OpenText(this.path))
             {
                 string s = String.Empty;
                 string name = String.Empty;

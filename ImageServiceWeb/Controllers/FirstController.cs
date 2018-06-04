@@ -31,7 +31,10 @@ namespace ImageServiceWeb.Controllers
         }
 
         // GET: First
-        public ActionResult Config() { return View(configModel); }
+        public ActionResult Config() {
+            configModel.Initialize();
+            return View(configModel);
+        }
 
         // GET: First
         public ActionResult Photos() { return View(photosModel); }
