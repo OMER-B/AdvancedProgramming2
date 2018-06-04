@@ -37,6 +37,7 @@ namespace ImageServiceWeb.Models
 
         public void Initialize()
         {
+            if (recievedConfig) return;
             if (!TcpClientChannel.Instance.Connected)
             {
                 TcpClientChannel.Instance.Connect();

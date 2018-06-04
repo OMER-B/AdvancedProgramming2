@@ -20,8 +20,17 @@ namespace ImageServiceWeb.Models
         {
             this.list = new List<TitleAndContent>();
             TcpClientChannel.Instance.DataRecieved += GetData;
+        }
+
+        public void Initialize()
+        {
+
+            if (!TcpClientChannel.Instance.Connected)
+            {
+                TcpClientChannel.Instance.Connect();
+            }
+            this.list.Clear();
             TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.LOG_HISTORY, null).ToJson());
-            while (!recievedHistory) { }
         }
 
         /// <summary>

@@ -138,6 +138,7 @@
     <Content Include="Views\First\PhotoScreen.cshtml" />
     <Content Include="Views\First\Error.cshtml" />
     <Content Include="Views\First\DeletePhoto.cshtml" />
+    <Content Include="Views\First\RemoveDir.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -160,7 +161,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54524</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

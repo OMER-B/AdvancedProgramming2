@@ -36,6 +36,8 @@ namespace ImageServiceWeb.Controllers
             return View(configModel);
         }
 
+        public ActionResult RemoveDir() { return View(configModel); }
+
         // GET: First
         public ActionResult Photos() { return View(photosModel); }
 
