@@ -1,0 +1,26 @@
+﻿@model ImageServiceWeb.Models.ConfigModel
+
+@{
+    ViewBag.Title = "SureToRemove";
+}
+<head>
+    <link href="@Url.Content("~/Styles/Photos.css")" rel="stylesheet" type="text/css" />
+</head>
+
+<h2>RemoveDir</h2>
+
+<table>
+    <tr>
+        <td>
+            <span class="btn btn-trash">
+                @Html.ActionLink("Return", "Config", new { @class = "icon trash" })
+            </span>
+        </td>
+        <td>
+            <span class="btn btn-trash">
+                @Html.ActionLink("OK", "AcceptDirRemoval", new { name = Model.SelectedHandler }, new { @class = "icon trash" })
+            </span>
+        </td>
+    </tr>
+</table>
+

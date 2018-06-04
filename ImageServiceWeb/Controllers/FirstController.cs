@@ -1,4 +1,5 @@
-﻿using ImageServiceWeb.Models;
+﻿using CommunicationTools;
+using ImageServiceWeb.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace ImageServiceWeb.Controllers
 
         public FirstController()
         {
+            configModel.Initialize();
             sendPhotos();
             numberOfImages();
         }
@@ -36,15 +38,18 @@ namespace ImageServiceWeb.Controllers
             return View(configModel);
         }
 
-        public ActionResult RemoveDir() { return View(configModel); }
+        public ActionResult SureToRemove(string handler) {
+            configModel.SelectedHandler = handler;
+            return View(configModel);
+        }
 
         // GET: First
         public ActionResult Photos() { return View(photosModel); }
 
-        public ActionResult DeleteHandler(string name)
+        public ActionResult AcceptDirRemoval(string name)
         {
             configModel.Remove(name);
-            return RedirectToAction("Config");
+            return RedirectToAction("SureToRemove");
 
         }
 
@@ -73,6 +78,10 @@ namespace ImageServiceWeb.Controllers
         /// </summary>
         public void sendPhotos()
         {
+            if(configModel.OutputDir == null)
+            {
+                System.Threading.Thread.Sleep(1000);
+            }
             int id = 0;
             List<Photo> list = new List<Photo>();
             string path = configModel.OutputDir + "\\thumbnails\\";
@@ -92,6 +101,8 @@ namespace ImageServiceWeb.Controllers
         }
 
         // GET: First
-        public ActionResult Logs() { return View(logModel); }
+        public ActionResult Logs() {
+            logModel.Initialize();
+            return View(logModel); }
     }
 }

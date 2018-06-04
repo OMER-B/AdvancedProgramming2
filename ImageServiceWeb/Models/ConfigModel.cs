@@ -12,16 +12,15 @@ namespace ImageServiceWeb.Models
         private string outputDir;
         private bool recievedConfig = false;
         private bool recievedRemoved = false;
-        public string OutputDir { get => outputDir; set => outputDir = value; }
+        public string OutputDir { get {  return outputDir; } set => outputDir = value; }
 
         private List<TitleAndContent> handlersList;
         public List<TitleAndContent> HandlersList { get { return this.handlersList; } }
         private List<TitleAndContent> list;
         public List<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private TitleAndContent selectedHandler;
-
+        
+        private string selectedHandler;
+        public string SelectedHandler { get { return selectedHandler; } set { selectedHandler = value; } }
 
         /// <summary>
         /// Constructor for SettingsModel.
@@ -60,34 +59,14 @@ namespace ImageServiceWeb.Models
             try
             {
                 TcpClientChannel.Instance.SendMessage(json);
-                //while (!recievedRemoved) { }
+                while (!recievedRemoved) { }
                 
             }
             catch { }
         }
 
-        /// <summary>
-        /// Property for Selected Handler.
-        /// </summary>
-        public TitleAndContent SelectedHandler
-        {
-            get { return selectedHandler; }
-            set
-            {
-                selectedHandler = value;
-                OnPropertyChanged("SelectedHandler");
-            }
-        }
+  
 
-
-        /// <summary>
-        /// OnPropertyChanged method to update when selection is not available.
-        /// </summary>
-        /// <param name="name">String changed.</param>
-        public void OnPropertyChanged(string name)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
 
         /// <summary>
         /// The function activated by the recieve data of the tcp-channel.

@@ -57,7 +57,11 @@ namespace ImageService
             foreach (TcpClient client in clients)
             {
                 if (!client.Connected)
+                {
+                    DisconnectClient(client);
                     continue;
+                }
+                
                 try
                 {
                     NetworkStream nwStream = client.GetStream();

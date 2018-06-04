@@ -138,7 +138,7 @@
     <Content Include="Views\First\PhotoScreen.cshtml" />
     <Content Include="Views\First\Error.cshtml" />
     <Content Include="Views\First\DeletePhoto.cshtml" />
-    <Content Include="Views\First\RemoveDir.cshtml" />
+    <Content Include="Views\First\SureToRemove.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
