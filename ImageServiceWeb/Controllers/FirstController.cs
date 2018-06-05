@@ -123,17 +123,17 @@ namespace ImageServiceWeb.Controllers
         [HttpPost]
         public JObject GetLogs(string type)
         {
+            JObject data = new JObject();
             foreach (var log in logModel.List)
             {
-                if (log.Title == type)
+                if (log.Title.ToLower().Equals(type))
                 {
-                    JObject data = new JObject();
                     data["Type"] = log.Title;
                     data["Log"] = log.Content;
                     return data;
                 }
             }
-            return null;
+            return data;
         }
     }
 }

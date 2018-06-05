@@ -11,8 +11,7 @@ namespace ImageServiceWeb.Models
     {
         private List<TitleAndContent> list;
         public List<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
-        private bool recievedHistory = false;
-
+        static bool called = false;
         /// <summary>
         /// Constructor for LogModel.
         /// </summary>
@@ -24,13 +23,17 @@ namespace ImageServiceWeb.Models
 
         public void Initialize()
         {
-
-            if (!TcpClientChannel.Instance.Connected)
+            if (called == false)
             {
-                TcpClientChannel.Instance.Connect();
+
+                if (!TcpClientChannel.Instance.Connected)
+                {
+                    TcpClientChannel.Instance.Connect();
+                }
+                this.list.Clear();
+                TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.LOG_HISTORY, null).ToJson());
             }
-            this.list.Clear();
-            TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.LOG_HISTORY, null).ToJson());
+            called = true;
         }
 
         /// <summary>
@@ -46,14 +49,7 @@ namespace ImageServiceWeb.Models
             TACHolder tac = MessageParser.ParseJsonToTAC(data.Message);
             switch (tac.CommandID)
             {
-                case MessageTypeEnum.SEND_LOG:
-                    foreach (TitleAndContent t in tac.List)
-                    {
-                        this.list.Add(t);
-                    }
-                    break;
                 case MessageTypeEnum.LOG_HISTORY:
-                    recievedHistory = true;
                     foreach (TitleAndContent t in tac.List)
                     {
                         this.list.Add(t);

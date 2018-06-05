@@ -45,7 +45,7 @@ namespace ImageService
         /// <param name="sender"></param>
         /// <param name="message"></param>
         public void MessageClients(object sender, ClientMessage message)
-        {;
+        {
             if (!connected)
             {
                 Connect();
@@ -133,7 +133,11 @@ namespace ImageService
             }
             catch (Exception e)
             {
-                logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
+                //logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
+                if (!client.Connected)
+                {
+                    DisconnectClient(client);
+                }
             }
         }
 

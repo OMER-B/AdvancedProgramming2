@@ -26,13 +26,7 @@
         {
             <tr>
                 <td>
-                    @v.Title
-                </td>
-                <td>
-                    @v.Content
-                </td>
-                <td>
-                    @Html.ActionLink("Remove", "SureToRemove", new { handler = v.Content })
+                    @Html.ActionLink(v.Content, "SureToRemove", new { handler = v.Content })
                 </td>
             </tr>
         }

@@ -32,7 +32,6 @@ namespace ImageServiceWeb.Models
             this.list = new List<TitleAndContent>();
             this.handlersList = new List<TitleAndContent>();
             recievedConfig = false;
-            //while (!recievedConfig) { }
         }
 
         public void Initialize()
@@ -60,7 +59,7 @@ namespace ImageServiceWeb.Models
             try
             {
                 TcpClientChannel.Instance.SendMessage(json);
-                while (!recievedRemoved) { }
+                while (!recievedRemoved) { System.Threading.Thread.Sleep(500); }
 
             }
             catch { }
@@ -91,10 +90,7 @@ namespace ImageServiceWeb.Models
                             {
                                 this.outputDir = t.Content;
                             }
-                            else
-                            {
                                 this.list.Add(t);
-                            }
                         }
                         else
                         {

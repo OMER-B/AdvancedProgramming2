@@ -6,38 +6,33 @@
 
 <h2>Logs</h2>
 
-<input type="text" id="txtLogsType" size="5" />
-<input type="button" id="btnSearch" value="Search" />
-
-<table>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+<ul id="myUL">
     @{ foreach (var v in Model.List)
         {
-            <tr>
-                <td>
-                    @v.Title
-                </td>
-                <td>
-                    @v.Content
-                </td>
-            </tr>
+            <li>
+                <a href="#">@v.Title</a> |@v.Content
+            </li>
         }
     }
-</table>
+
+</ul>
 
 <script>
-    $("#btnStart").click(function () {
-        $.getJSON("@Url.Action("GetLogs")", function (empl) {
-            $("#prodId").text(empl.FirstName);
-            $("#prodName").text(empl.LastName);
-        });
-    });
+    function myFunction() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
 
-    $("#btnSearch").click(function () {
-        var input = {
-            Type:$("#LogType").val(),
-        };
-        $.post("@Url.Action("GetLogs")", input, function (data) {
-            $("#lstLogs").append("<li>" + data.Log  + "</li>");
-        }, "json");
-    });
+            }
+        }
+    }
 </script>
