@@ -33,12 +33,14 @@ namespace ImageServiceWeb.Controllers
         }
 
         // GET: First
-        public ActionResult Config() {
+        public ActionResult Config()
+        {
             configModel.Initialize();
             return View(configModel);
         }
 
-        public ActionResult SureToRemove(string handler) {
+        public ActionResult SureToRemove(string handler)
+        {
             configModel.SelectedHandler = handler;
             return View(configModel);
         }
@@ -78,7 +80,7 @@ namespace ImageServiceWeb.Controllers
         /// </summary>
         public void sendPhotos()
         {
-            if(configModel.OutputDir == null)
+            if (configModel.OutputDir == null)
             {
                 System.Threading.Thread.Sleep(1000);
             }
@@ -101,8 +103,26 @@ namespace ImageServiceWeb.Controllers
         }
 
         // GET: First
-        public ActionResult Logs() {
+        public ActionResult Logs()
+        {
             logModel.Initialize();
-            return View(logModel); }
+            return View(logModel);
+        }
+
+        [HttpPost]
+        public JObject GetLogs(string type)
+        {
+            foreach (var log in logModel.List)
+            {
+                if (log.Title == type)
+                {
+                    JObject data = new JObject();
+                    data["Type"] = log.Title;
+                    data["Log"] = log.Content;
+                    return data;
+                }
+            }
+            return null;
+        }
     }
 }
