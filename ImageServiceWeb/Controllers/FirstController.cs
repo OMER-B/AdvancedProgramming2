@@ -78,7 +78,10 @@ namespace ImageServiceWeb.Controllers
             foreach (Photo photo in photosModel.Photos)
             {
                 if (photo.ID.Equals(id))
+                {
+                    System.IO.File.Delete(photo.Path);
                     return View(photo);
+                }
             }
             return null;
         }
