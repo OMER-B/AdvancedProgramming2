@@ -19,13 +19,15 @@ namespace ImageServiceWeb.Controllers
 
         public FirstController()
         {
-            configModel.Initialize();
             numberOfImages();
-            
         }
 
         // GET: First
-        public ActionResult Index() { return View(detailsModel); }
+        public ActionResult Index()
+        {
+            configModel.Initialize();
+            return View(detailsModel);
+        }
 
         public void numberOfImages()
         {
@@ -46,10 +48,13 @@ namespace ImageServiceWeb.Controllers
         }
 
         // GET: First
-        public ActionResult Photos() {
+        public ActionResult Photos()
+        {
+            configModel.Initialize();
             photosModel.ThumbPath = configModel.OutputDir;
             sendPhotos();
-            return View(photosModel); }
+            return View(photosModel);
+        }
 
         public ActionResult AcceptDirRemoval(string name)
         {

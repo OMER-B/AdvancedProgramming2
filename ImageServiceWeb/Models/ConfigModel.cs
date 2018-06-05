@@ -87,17 +87,19 @@ namespace ImageServiceWeb.Models
                     {
                         if (t.Title.ToLower() != "path")
                         {
-                            this.list.Add(t);
-                        }
-                        else
-                        {
                             if (t.Title.ToLower().Equals("OutputDir".ToLower()))
                             {
                                 this.outputDir = t.Content;
                             }
+                            else
+                            {
+                                this.list.Add(t);
+                            }
+                        }
+                        else
+                        {
                             this.handlersList.Add(t);
                         }
-
                     }
                     break;
                 case MessageTypeEnum.CLOSE_HANDLER:
