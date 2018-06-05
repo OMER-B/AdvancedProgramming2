@@ -14,14 +14,14 @@ namespace ImageServiceWeb.Controllers
     {
         static DetailsModel detailsModel = new DetailsModel("details.txt");
         static ConfigModel configModel = new ConfigModel();
-        static PhotosModel photosModel = new PhotosModel("TODO: Change this in FirstController photosModel");
+        static PhotosModel photosModel = new PhotosModel();
         static LogModel logModel = new LogModel();
 
         public FirstController()
         {
             configModel.Initialize();
-            sendPhotos();
             numberOfImages();
+            
         }
 
         // GET: First
@@ -46,7 +46,10 @@ namespace ImageServiceWeb.Controllers
         }
 
         // GET: First
-        public ActionResult Photos() { return View(photosModel); }
+        public ActionResult Photos() {
+            photosModel.ThumbPath = configModel.OutputDir;
+            sendPhotos();
+            return View(photosModel); }
 
         public ActionResult AcceptDirRemoval(string name)
         {

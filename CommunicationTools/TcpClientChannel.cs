@@ -14,7 +14,7 @@ namespace CommunicationTools
     class TcpClientChannel
     {
         private TcpClient client;
-        private IPEndPoint ep;
+        private IPEndPoint endPoint;
         private NetworkStream netStream;
         private BinaryReader reader;
         private BinaryWriter writer;
@@ -46,7 +46,7 @@ namespace CommunicationTools
         /// </summary>
         private TcpClientChannel()
         {
-            this.ep = ConnectionDetails.EndPoint;
+            this.endPoint = ConnectionDetails.EndPoint;
             client = new TcpClient();
             connected = false;
             Connect();
@@ -106,7 +106,7 @@ namespace CommunicationTools
         {
             try
             {
-                client.Connect(ep);
+                client.Connect(endPoint);
                 netStream = client.GetStream();
                 reader = new BinaryReader(netStream);
                 writer = new BinaryWriter(netStream);

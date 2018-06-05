@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Web;
 
 namespace ImageServiceWeb.Models
@@ -12,13 +13,13 @@ namespace ImageServiceWeb.Models
         private string outputDir;
         private bool recievedConfig = false;
         private bool recievedRemoved = false;
-        public string OutputDir { get {  return outputDir; } set => outputDir = value; }
+        public string OutputDir { get { return outputDir; } set => outputDir = value; }
 
         private List<TitleAndContent> handlersList;
         public List<TitleAndContent> HandlersList { get { return this.handlersList; } }
         private List<TitleAndContent> list;
         public List<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
-        
+
         private string selectedHandler;
         public string SelectedHandler { get { return selectedHandler; } set { selectedHandler = value; } }
 
@@ -60,12 +61,12 @@ namespace ImageServiceWeb.Models
             {
                 TcpClientChannel.Instance.SendMessage(json);
                 while (!recievedRemoved) { }
-                
+
             }
             catch { }
         }
 
-  
+
 
 
         /// <summary>

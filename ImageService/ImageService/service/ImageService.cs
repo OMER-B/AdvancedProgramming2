@@ -40,6 +40,7 @@ namespace ImageService
     {
         private EventLog eventLog;
         private ImageServer server;
+        private ILogger logger;
         public delegate List<string> GetLog();
 
         public ImageService(string[] args)
@@ -56,7 +57,7 @@ namespace ImageService
             eventLog.Log = reader.LogName;
 
             IImageModel imageModel = new ImageModel(reader.OutputDir, reader.ThumbnailSize);
-            ILogger logger = new Logger();
+            logger = new Logger();
             logger.MessageRecieved += OnMsg;
             DebugLogger.Instance.MessageRecieved += OnMsg;
 
@@ -81,9 +82,8 @@ namespace ImageService
 
         protected override void OnStart(string[] args)
         {
-
-            eventLog.WriteEntry("Service started.");
-
+            logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Service started."));
+            //eventLog.WriteEntry("Service started.");
             // Update the service state to Running.  
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;

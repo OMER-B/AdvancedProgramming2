@@ -38,14 +38,14 @@ namespace ImageService
             connected = false;
 
         }
-        
+
         /// <summary>
         /// Sending a message to all of the clients
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="message"></param>
         public void MessageClients(object sender, ClientMessage message)
-        {
+        {;
             if (!connected)
             {
                 Connect();
@@ -61,7 +61,7 @@ namespace ImageService
                     DisconnectClient(client);
                     continue;
                 }
-                
+
                 try
                 {
                     NetworkStream nwStream = client.GetStream();
@@ -152,7 +152,7 @@ namespace ImageService
                 {
                     TcpClient client = listener.AcceptTcpClient();
                     clients.Add(client);
-                    logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Connected to: " + client.Client.ToString()));
+                    logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Connected to a new client."));
                     Task t = new Task(() => ListenToClient(client));
                     t.Start();
                 }
@@ -166,6 +166,8 @@ namespace ImageService
         /// <param name="client"></param>
         public void DisconnectClient(TcpClient client)
         {
+            logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Disconnected from a client."));
+
             client.Close();
             if (clients.Contains(client))
             {
