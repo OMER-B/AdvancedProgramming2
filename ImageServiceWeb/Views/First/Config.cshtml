@@ -6,11 +6,11 @@
 
 <h2>Config</h2>
 
-<table>
+<table class="table">
     @{ foreach (var v in Model.List)
         {
             <tr>
-                <td>
+                <td style="font-weight:bold;">
                     @v.Title
                 </td>
                 <td>
@@ -21,14 +21,18 @@
     }
 </table>
 
-<table>
+<div class="list-group">
     @{ foreach (var v in Model.HandlersList)
         {
-            <tr>
-                <td>
-                    @Html.ActionLink(v.Content, "SureToRemove", new { handler = v.Content })
-                </td>
-            </tr>
+            <span class="list-group-item list-group-item-action">
+
+                <button type="button" class="btn btn-outline-secondary">
+                    @Html.ActionLink("Remove", "SureToRemove", new { handler = v.Content })
+                </button>
+                @v.Content
+            </span>
+
+
         }
     }
-</table>
+</div>

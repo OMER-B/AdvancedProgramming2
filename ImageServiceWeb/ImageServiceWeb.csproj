@@ -104,8 +104,6 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Styles\Photos.css" />
-    <Content Include="Styles\PhotoScreen.css" />
     <Content Include="Web.config" />
     <Content Include="Views\First\Config.cshtml" />
     <Content Include="Views\First\Logs.cshtml" />

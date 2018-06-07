@@ -59,20 +59,31 @@ namespace ImageService
                 if (!client.Connected)
                 {
                     DisconnectClient(client);
-                    continue;
-                }
-
-                try
+                } else
                 {
-                    NetworkStream nwStream = client.GetStream();
-                    BinaryWriter writer = new BinaryWriter(nwStream);
-                    mutex.WaitOne();
-                    writer.Write(message.Message);
-                    mutex.ReleaseMutex();
-                }
-                catch (Exception e)
-                {
-                    logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
+                    try
+                    {
+                        NetworkStream nwStream = client.GetStream();
+                        BinaryWriter writer = new BinaryWriter(nwStream);
+                        try
+                        {
+                            mutex.WaitOne();
+                            writer.Write(message.Message);
+                            mutex.ReleaseMutex();
+                        } catch (Exception io)
+                        {
+                            mutex.ReleaseMutex();
+                            throw io;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
+                        if (!client.Connected)
+                        {
+                            DisconnectClient(client);
+                        }
+                    }
                 }
             }
         }
@@ -123,7 +134,7 @@ namespace ImageService
             string line;
             try
             {
-                while (client.Connected)
+                while (client.Connected && reader.BaseStream.CanRead)
                 {
                     if ((line = reader.ReadString()) != null)
                     {
@@ -133,11 +144,7 @@ namespace ImageService
             }
             catch (Exception e)
             {
-                //logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
-                if (!client.Connected)
-                {
-                    DisconnectClient(client);
-                }
+                logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
             }
         }
 
@@ -152,13 +159,20 @@ namespace ImageService
             connected = true;
             Task task = new Task(() =>
             {
-                while (connected)
+                try
                 {
-                    TcpClient client = listener.AcceptTcpClient();
-                    clients.Add(client);
-                    logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Connected to a new client."));
-                    Task t = new Task(() => ListenToClient(client));
-                    t.Start();
+                    while (connected)
+                    {
+                        TcpClient client = listener.AcceptTcpClient();
+                        clients.Add(client);
+                        logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Connected to a new client."));
+                        Task t = new Task(() => ListenToClient(client));
+                        t.Start();
+                    }
+                }
+                catch (Exception e)
+                {
+                    logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
                 }
             });
             task.Start();
@@ -170,12 +184,18 @@ namespace ImageService
         /// <param name="client"></param>
         public void DisconnectClient(TcpClient client)
         {
-            logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Disconnected from a client."));
-
-            client.Close();
-            if (clients.Contains(client))
+            try
             {
-                clients.Remove(client);
+                client.Close();
+                if (clients.Contains(client))
+                {
+                    clients.Remove(client);
+                }
+                logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Disconnected from a client."));
+            }
+            catch (Exception e)
+            {
+                logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
             }
         }
 
@@ -191,6 +211,7 @@ namespace ImageService
                     client.Close();
                 }
             }
+            clients.Clear();
             listener.Stop();
             connected = false;
         }

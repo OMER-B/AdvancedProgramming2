@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using CommunicationTools;
 
 namespace ImageServiceWeb.Models
@@ -33,7 +34,7 @@ namespace ImageServiceWeb.Models
 
         public void parse()
         {
-            using (StreamReader sr = File.OpenText(this.path))
+            using (StreamReader sr = new StreamReader(HostingEnvironment.MapPath("~/" + this.path)))
             {
                 string s = String.Empty;
                 string name = String.Empty;

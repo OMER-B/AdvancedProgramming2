@@ -3,24 +3,29 @@
 @{
     ViewBag.Title = "SureToRemove";
 }
-<head>
-    <link href="@Url.Content("~/Styles/Photos.css")" rel="stylesheet" type="text/css" />
-</head>
 
-<h2>RemoveDir</h2>
+<h2>Remove Handler</h2>
+<p>Are you sure you want to remove the handler @Model.SelectedHandler?</p>
 
 <table>
     <tr>
         <td>
-            <span class="btn btn-trash">
-                @Html.ActionLink("Return", "Config", new { @class = "icon trash" })
-            </span>
+            <button type="button" class="btn btn-outline-secondary">
+                @Html.ActionLink("Return", "Config")
+            </button>
         </td>
         <td>
-            <span class="btn btn-trash">
-                @Html.ActionLink("OK", "AcceptDirRemoval", new { name = Model.SelectedHandler }, new { @class = "icon trash" })
-            </span>
+            <button type="button" class="btn btn-danger" id="diable_trash_button">
+                @Html.ActionLink("Remove", "AcceptDirRemoval", new { name = Model.SelectedHandler })
+            </button>
         </td>
     </tr>
 </table>
+<script>
 
+    var removeButton = document.getElementById("diable_trash_button");
+        removeButton.onclick = function () {
+            $(':button').prop('disabled', true);
+            location.href = '@Url.Action("OK", "AcceptDirRemoval", new { name = Model.SelectedHandler })';
+    };
+</script>

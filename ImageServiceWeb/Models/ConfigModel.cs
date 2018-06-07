@@ -11,9 +11,11 @@ namespace ImageServiceWeb.Models
     public class ConfigModel
     {
         private string outputDir;
+        private int thumbsize;
         private bool recievedConfig = false;
         private bool recievedRemoved = false;
         public string OutputDir { get { return outputDir; } set => outputDir = value; }
+        public int ThumbSize { get => thumbsize; }
 
         private List<TitleAndContent> handlersList;
         public List<TitleAndContent> HandlersList { get { return this.handlersList; } }
@@ -42,6 +44,10 @@ namespace ImageServiceWeb.Models
                 TcpClientChannel.Instance.Connect();
             }
             TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
+            while(!recievedConfig)
+            {
+                System.Threading.Thread.Sleep(500);
+            }
         }
 
 
@@ -59,7 +65,7 @@ namespace ImageServiceWeb.Models
             try
             {
                 TcpClientChannel.Instance.SendMessage(json);
-                while (!recievedRemoved) { System.Threading.Thread.Sleep(500); }
+                while (!recievedRemoved) { }
 
             }
             catch { }
@@ -86,11 +92,15 @@ namespace ImageServiceWeb.Models
                     {
                         if (t.Title.ToLower() != "path")
                         {
-                            if (t.Title.ToLower().Equals("OutputDir".ToLower()))
+                            if (t.Title.ToLower().Equals("outputdir"))
                             {
                                 this.outputDir = t.Content;
                             }
-                                this.list.Add(t);
+                            if (t.Title.ToLower().Equals("thumbnailsize"))
+                            {
+                                this.thumbsize = int.Parse(t.Content);
+                            }
+                            this.list.Add(t);
                         }
                         else
                         {

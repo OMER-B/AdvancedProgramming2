@@ -7,21 +7,30 @@
     <link href="@Url.Content("~/Styles/Photos.css")" rel="stylesheet" type="text/css" />
 </head>
 
+
 <h2>Photos</h2>
-<div class="album-container">
+
+<div class="row">
     @{
         foreach (var image in Model.Photos)
         {
-            <div class="photos-container">
-                <img src="https://pbs.twimg.com/profile_images/948761950363664385/Fpr2Oz35_400x400.jpg" class="circular-image" />
-                <div class="image-name-container">@image.Name</div>
-                <span class="image-date">@image.Month, @image.Year</span>
-                <span class="btn btn-trash">
-                    @Html.ActionLink(" ", "DeletePhoto", new { id = image.ID }, new { @class = "icon trash" })
-                </span>
-                <span class="btn btn-expand">
-                    @Html.ActionLink(" ", "PhotoScreen", new { id = image.ID }, new { @class = "icon expand" })
-                </span>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+
+                    <img src="@Url.Content("..\\"+@image.Path)" width="@image.Size" height="@image.Size" class="img-circle" />
+                    <div class="panel-body">
+                        <div class="caption">
+                            <h3>@image.Name</h3>
+                            <p>@image.Month, @image.Year</p>
+                            <button type="button" class="btn btn-outline-secondary">
+                                @Html.ActionLink(" ", "DeletePhoto", new { id = image.ID }, new { @class = "glyphicon glyphicon-trash" })
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary">
+                                @Html.ActionLink(" ", "PhotoScreen", new { id = image.ID }, new { @class = "glyphicon glyphicon-expand" })
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
     }

@@ -8,20 +8,34 @@ namespace ImageServiceWeb.Models
 {
     public class Photo
     {
-        public Photo(string name, string path, string month, string year, int id)
+        public Photo(string name, string path, string thumbPath, string year, string month, int size, int id)
         {
-            this.id = id;
             this.name = name;
             this.path = path;
-            this.month = month;
+            this.thumbPath = thumbPath;
             this.year = year;
+            this.month = month;
+            this.size = size;
+            this.id = id;
         }
 
+        private string name;
         private string path;
+        private string thumbPath;
         private string year;
         private string month;
-        private string name;
+        private int size;
         private int id;
+
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Name")]
+        public string Name { get => name; set => name = value; }
+
+        [Required]
+        [Display(Name = "Name")]
+        public int Size { get => size; set => size = value; }
 
         [Required]
         [Display(Name = "ID")]
@@ -44,7 +58,8 @@ namespace ImageServiceWeb.Models
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "Name")]
-        public string Name { get => name; set => name = value; }
+        [Display(Name = "ThumbPath")]
+        public string ThumbPath { get => thumbPath; set => thumbPath = value; }
+
     }
 }

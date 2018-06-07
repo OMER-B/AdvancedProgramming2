@@ -3,34 +3,42 @@
 @{
     ViewBag.Title = "Logs";
 }
-
+<head>
+    <link href="@Url.Content("~/Styles/Logs.css")" rel="stylesheet" type="text/css" />
+</head>
 <h2>Logs</h2>
 
-<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-<ul id="myUL">
-    @{ foreach (var v in Model.List)
-        {
-            <li>
-                <a href="#">@v.Title</a> |@v.Content
-            </li>
+<div class="input-group mb-3">
+    <input type="text" class="form-control" id="myInput" placeholder="Search for logs by type...">
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-secondary" for="myInput" onclick="myFunction()">Search</button>
+    </div>
+    <div class="list-group" id="myUL">
+        @{ foreach (var v in Model.List)
+            {
+                <a class="list-group-item list-group-item-@v.Title">
+                    <span style="font-weight:bold;">@v.Title</span>  @v.Content
+                </a>
+            }
         }
-    }
 
-</ul>
+    </div>
+</div>
+
 
 <script>
     function myFunction() {
-        var input, filter, ul, li, a, i;
+        var input, filter, div, a, span, i;
         input = document.getElementById("myInput");
         filter = input.value.toUpperCase();
-        ul = document.getElementById("myUL");
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
+        div = document.getElementById("myUL");
+        a = div.getElementsByTagName("a");
+        for (i = 0; i < a.length; i++) {
+            span = a[i].getElementsByTagName("span")[0];
+            if (span.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                a[i].style.display = "";
             } else {
-                li[i].style.display = "none";
+                a[i].style.display = "none";
 
             }
         }

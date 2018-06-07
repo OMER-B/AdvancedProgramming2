@@ -70,6 +70,7 @@ namespace Logic
         {
             string newFilePath = " ";
             string year = ImageProperties.GetDateTakenFromImage(filePath).Year.ToString();
+            //string month = ImageProperties.GetDateTakenFromImage(filePath).Month.ToString();
             string month = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(ImageProperties.GetDateTakenFromImage(filePath).Month).ToString();
             // create new photo directory
             string dateOutputFolder = outputFolder + "\\" + year + "\\" + month;

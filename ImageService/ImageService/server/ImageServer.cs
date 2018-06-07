@@ -32,7 +32,7 @@ namespace ImageService
             this.imageController = new ImageController(imageModel);
 
             this.communication = new TcpServer(logger);
-            //logger.MessageRecieved += communication.OnClientsLog;
+            logger.MessageRecieved += communication.OnClientsLog;
             communication.Connect();
             communication.MessageFromClient += ExecCommandFromClient;
             StopHandler += communication.OnClientRemoveHandler;

@@ -19,13 +19,14 @@ namespace ImageServiceWeb.Controllers
 
         public FirstController()
         {
+            configModel.Initialize();
+            photosModel.GetPhotos(configModel.OutputDir, configModel.ThumbSize);
             numberOfImages();
         }
 
         // GET: First
         public ActionResult Index()
         {
-            configModel.Initialize();
             return View(detailsModel);
         }
 
@@ -51,15 +52,15 @@ namespace ImageServiceWeb.Controllers
         public ActionResult Photos()
         {
             configModel.Initialize();
-            photosModel.ThumbPath = configModel.OutputDir;
-            sendPhotos();
+            photosModel.GetPhotos(configModel.OutputDir, configModel.ThumbSize);
             return View(photosModel);
         }
 
         public ActionResult AcceptDirRemoval(string name)
         {
             configModel.Remove(name);
-            return RedirectToAction("SureToRemove");
+            System.Threading.Thread.Sleep(2000);
+            return RedirectToAction("Config");
 
         }
 
@@ -80,38 +81,13 @@ namespace ImageServiceWeb.Controllers
                 if (photo.ID.Equals(id))
                 {
                     System.IO.File.Delete(photo.Path);
-                    return View(photo);
+                    System.IO.File.Delete(photo.ThumbPath);
+                    return View(photosModel);
                 }
             }
             return null;
         }
 
-        /// <summary>
-        /// Sends the photos to the photos model.
-        /// </summary>
-        public void sendPhotos()
-        {
-            if (configModel.OutputDir == null)
-            {
-                System.Threading.Thread.Sleep(1000);
-            }
-            int id = 0;
-            List<Photo> list = new List<Photo>();
-            string path = configModel.OutputDir + "\\thumbnails\\";
-            if (Directory.Exists(path))
-            {
-                string[] photos = Directory.GetFiles(path, "*.thumb", SearchOption.AllDirectories);
-                foreach (string photo in photos)
-                {
-                    list.Add(new Photo(Path.GetFileNameWithoutExtension(photo),
-                        Path.GetFullPath(photo),
-                        new DirectoryInfo(Path.GetDirectoryName(photo)).Name,
-                        new DirectoryInfo(Path.GetDirectoryName(photo)).Parent.Name, id));
-                    id++;
-                }
-            }
-            photosModel.Photos = list;
-        }
 
         // GET: First
         public ActionResult Logs()
@@ -123,17 +99,17 @@ namespace ImageServiceWeb.Controllers
         [HttpPost]
         public JObject GetLogs(string type)
         {
-            JObject data = new JObject();
             foreach (var log in logModel.List)
             {
-                if (log.Title.ToLower().Equals(type))
+                if (log.Title == type)
                 {
+                    JObject data = new JObject();
                     data["Type"] = log.Title;
                     data["Log"] = log.Content;
                     return data;
                 }
             }
-            return data;
+            return null;
         }
     }
 }
