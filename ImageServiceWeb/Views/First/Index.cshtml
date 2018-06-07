@@ -17,11 +17,15 @@
 {
     @Html.AntiForgeryToken()
     <div class="table table-striped-group">
-        <table>
-            <tr style="font-weight:bold;">
-                <td>Name</td>
-                <td>ID</td>
-            </tr>
+        <table class="table table-hover">
+            <thead>
+
+                <tr style="font-weight:bold;">
+                    <th scope="col">Name</th>
+                    <th scope="col">ID</th>
+                </tr>
+            </thead>
+
             @foreach (var item in Model.Students)
             {
                 <tr>

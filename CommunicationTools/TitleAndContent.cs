@@ -32,11 +32,11 @@ namespace CommunicationTools
             switch (this.title.ToLower())
             {
                 case "info":
-                    return "LawnGreen";
+                    return "#c3e6cb";
                 case "fail":
-                    return "OrangeRed";
+                    return "#f5c6cb";
                 case "warning":
-                    return "Yellow";
+                    return "#ffeeba";
                 default:
                     return "White";
             }
