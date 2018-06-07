@@ -3,14 +3,12 @@
 @{
     ViewBag.Title = "PhotoScreen";
 }
-<head>
-    <link href="@Url.Content("~/Styles/PhotoScreen.css")" rel="stylesheet" type="text/css" />
-</head>
+
 <h2>@Model.Name</h2>
 <h3>@Model.Month, @Model.Year</h3>
 <img src="@Url.Content("~\\"+Model.Path)" />
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Photos")
 </div>
 

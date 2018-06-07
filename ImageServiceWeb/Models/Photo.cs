@@ -8,11 +8,14 @@ namespace ImageServiceWeb.Models
 {
     public class Photo
     {
-        public Photo(string name, string path, string thumbPath, string year, string month, int size, int id)
+        public Photo(string name, string relPath, string relThumbPath, string fullPath,
+            string fullThumb, string year, string month, int size, int id)
         {
             this.name = name;
-            this.path = path;
-            this.thumbPath = thumbPath;
+            this.Path = relPath;
+            this.ThumbPath = relThumbPath;
+            this.FullPath = fullPath;
+            this.FullThumbPath = fullThumb;
             this.year = year;
             this.month = month;
             this.size = size;
@@ -22,6 +25,8 @@ namespace ImageServiceWeb.Models
         private string name;
         private string path;
         private string thumbPath;
+        private string fullPath;
+        private string fullThumbPath;
         private string year;
         private string month;
         private int size;
@@ -33,8 +38,6 @@ namespace ImageServiceWeb.Models
         [Display(Name = "Name")]
         public string Name { get => name; set => name = value; }
 
-        [Required]
-        [Display(Name = "Name")]
         public int Size { get => size; set => size = value; }
 
         [Required]
@@ -53,13 +56,15 @@ namespace ImageServiceWeb.Models
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "Path")]
-        public string Path { get => path; set => path = value; }
-
-        [Required]
-        [DataType(DataType.Text)]
         [Display(Name = "ThumbPath")]
         public string ThumbPath { get => thumbPath; set => thumbPath = value; }
 
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Path")]
+        public string Path { get => path; set => path = value; }
+
+        public string FullPath { get => fullPath; set => fullPath = value; }
+        public string FullThumbPath { get => fullThumbPath; set => fullThumbPath = value; }
     }
 }

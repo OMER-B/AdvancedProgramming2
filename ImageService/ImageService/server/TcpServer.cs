@@ -165,7 +165,6 @@ namespace ImageService
                     {
                         TcpClient client = listener.AcceptTcpClient();
                         clients.Add(client);
-                        logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Connected to a new client."));
                         Task t = new Task(() => ListenToClient(client));
                         t.Start();
                     }
@@ -191,7 +190,6 @@ namespace ImageService
                 {
                     clients.Remove(client);
                 }
-                logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Disconnected from a client."));
             }
             catch (Exception e)
             {

@@ -42,7 +42,7 @@ namespace ImageServiceWeb.Controllers
             return View(configModel);
         }
 
-        public ActionResult SureToRemove(string handler)
+        public ActionResult SureToRemoveDir(string handler)
         {
             configModel.SelectedHandler = handler;
             return View(configModel);
@@ -74,20 +74,31 @@ namespace ImageServiceWeb.Controllers
             return null;
         }
 
-        public ActionResult DeletePhoto(int id)
+        public ActionResult AcceptPhotoRemoval(int id)
         {
             foreach (Photo photo in photosModel.Photos)
             {
                 if (photo.ID.Equals(id))
                 {
-                    System.IO.File.Delete(photo.Path);
-                    System.IO.File.Delete(photo.ThumbPath);
-                    return View(photosModel);
+                    System.IO.File.Delete(photo.FullPath);
+                    System.IO.File.Delete(photo.FullThumbPath);
+                    return RedirectToAction("Photos");
                 }
             }
             return null;
         }
 
+        public ActionResult SureToRemovePhoto(int id)
+        {
+            foreach (Photo photo in photosModel.Photos)
+            {
+                if (photo.ID.Equals(id))
+                {
+                    return View(photo);
+                }
+            }
+            return null;
+        }
 
         // GET: First
         public ActionResult Logs()

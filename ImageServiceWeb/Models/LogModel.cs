@@ -11,7 +11,7 @@ namespace ImageServiceWeb.Models
     {
         private List<TitleAndContent> list;
         public List<TitleAndContent> List { get { return this.list; } set { this.list = value; } }
-        private bool recievedHistory = false;
+        private bool recieved;
 
         /// <summary>
         /// Constructor for LogModel.
@@ -29,8 +29,15 @@ namespace ImageServiceWeb.Models
             {
                 TcpClientChannel.Instance.Connect();
             }
-            this.list.Clear();
+            recieved = false;
             TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.LOG_HISTORY, null).ToJson());
+            int i = 0;
+            while (!recieved)
+            {
+                System.Threading.Thread.Sleep(500);
+                if (i++ == 4)
+                    break;
+            }
         }
 
         /// <summary>
@@ -53,7 +60,8 @@ namespace ImageServiceWeb.Models
                     }
                     break;
                 case MessageTypeEnum.LOG_HISTORY:
-                    recievedHistory = true;
+                    list.Clear();
+                    recieved = true;
                     foreach (TitleAndContent t in tac.List)
                     {
                         this.list.Add(t);

@@ -44,9 +44,12 @@ namespace ImageServiceWeb.Models
                 TcpClientChannel.Instance.Connect();
             }
             TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
-            while(!recievedConfig)
+            int i = 0;
+            while (!recievedConfig)
             {
                 System.Threading.Thread.Sleep(500);
+                if (i++ == 4)
+                    break;
             }
         }
 
@@ -65,8 +68,13 @@ namespace ImageServiceWeb.Models
             try
             {
                 TcpClientChannel.Instance.SendMessage(json);
-                while (!recievedRemoved) { }
-
+                int i = 0;
+                while (!recievedRemoved)
+                {
+                    System.Threading.Thread.Sleep(500);
+                    if (i++ == 6)
+                        break;
+                }
             }
             catch { }
         }

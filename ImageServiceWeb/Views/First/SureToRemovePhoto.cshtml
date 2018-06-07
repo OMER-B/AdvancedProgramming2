@@ -1,0 +1,28 @@
+﻿@model ImageServiceWeb.Models.Photo
+
+@{
+    ViewBag.Title = "SureToRemovePhoto";
+}
+
+<h2>@Model.Name</h2>
+<h3>@Model.ID, @Model.Month, @Model.Year</h3>
+
+<div class="text-center">
+    <img src="@Url.Content("~\\"+Model.Path)" />
+</div>
+
+<h4>Are you sure you want to remove this image?</h4>
+<table>
+    <tr>
+        <td>
+            <button type="button" class="btn btn-outline-secondary">
+                @Html.ActionLink("No", "Photos")
+            </button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger" id="diable_trash_button">
+                @Html.ActionLink("Yes", "AcceptPhotoRemoval", new { id = Model.ID })
+            </button>
+        </td>
+    </tr>
+</table>
