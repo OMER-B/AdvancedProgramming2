@@ -36,6 +36,9 @@ namespace ImageServiceWeb.Models
             recievedConfig = false;
         }
 
+        /// <summary>
+        /// Initalizes everything the config model needs.
+        /// </summary>
         public void Initialize()
         {
             if (recievedConfig) return;
@@ -52,7 +55,6 @@ namespace ImageServiceWeb.Models
                     break;
             }
         }
-
 
         /// <summary>
         /// Remove a path handler from the handlers list.
@@ -78,9 +80,6 @@ namespace ImageServiceWeb.Models
             }
             catch { }
         }
-
-
-
 
         /// <summary>
         /// The function activated by the recieve data of the tcp-channel.
@@ -133,7 +132,6 @@ namespace ImageServiceWeb.Models
                 default: break;
             }
         }
-
     }
 
 }

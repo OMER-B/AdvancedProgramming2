@@ -13,6 +13,11 @@ namespace ImageServiceWeb.Models
     {
         private List<Student> students;
         private string path;
+
+        /// <summary>
+        /// Constructor for details model.
+        /// </summary>
+        /// <param name="path">path of the details file.</param>
         public DetailsModel(string path)
         {
             this.path = path;
@@ -32,6 +37,9 @@ namespace ImageServiceWeb.Models
         private string Status() { return TcpClientChannel.Instance.Connected ? "online" : "offline"; }
         public String ServerStatus { get => Status(); }
 
+        /// <summary>
+        /// Parses the input from the server.
+        /// </summary>
         public void parse()
         {
             using (StreamReader sr = new StreamReader(HostingEnvironment.MapPath("~/" + this.path)))

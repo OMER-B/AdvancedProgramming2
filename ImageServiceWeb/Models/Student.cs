@@ -21,6 +21,11 @@ namespace ImageServiceWeb.Models
         [Display(Name = "Name")]
         public string Name { get => name; set => name = value; }
 
+        /// <summary>
+        /// Constructor for student.
+        /// </summary>
+        /// <param name="name">Student name.</param>
+        /// <param name="id">Student ID.</param>
         public Student(string name, string id)
         {
             this.name = name;

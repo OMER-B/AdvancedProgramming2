@@ -8,6 +8,18 @@ namespace ImageServiceWeb.Models
 {
     public class Photo
     {
+        /// <summary>
+        /// Constructor for photo.
+        /// </summary>
+        /// <param name="name">Name of the photo.</param>
+        /// <param name="relPath">Relative path of the photo.</param>
+        /// <param name="relThumbPath">Relative of the thumbnail photo.</param>
+        /// <param name="fullPath">Full path of the photo.</param>
+        /// <param name="fullThumb">Full path of the thumbnail photo.</param>
+        /// <param name="year">Year the photo was taken.</param>
+        /// <param name="month">Month the photo was taken.</param>
+        /// <param name="size">Size of the photo.</param>
+        /// <param name="id">ID of the photo.</param>
         public Photo(string name, string relPath, string relThumbPath, string fullPath,
             string fullThumb, string year, string month, int size, int id)
         {

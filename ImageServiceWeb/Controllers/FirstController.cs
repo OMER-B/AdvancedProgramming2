@@ -24,31 +24,47 @@ namespace ImageServiceWeb.Controllers
             numberOfImages();
         }
 
-        // GET: First
+        /// <summary>
+        /// Main page.
+        /// </summary>
         public ActionResult Index()
         {
             return View(detailsModel);
         }
 
+        /// <summary>
+        /// Returns the number of images for the image gallery.
+        /// </summary>
         public void numberOfImages()
         {
             detailsModel.NumberOfImages = photosModel.Photos.Count;
         }
 
-        // GET: First
+        /// <summary>
+        /// Config page.
+        /// </summary>
+        /// <returns>view of the config page.</returns>
         public ActionResult Config()
         {
             configModel.Initialize();
             return View(configModel);
         }
 
+        /// <summary>
+        /// Handler removal confirmation screen.
+        /// </summary>
+        /// <param name="handler">Handler to remove.</param>
+        /// <returns>view of the hander removal.</returns>
         public ActionResult SureToRemoveDir(string handler)
         {
             configModel.SelectedHandler = handler;
             return View(configModel);
         }
 
-        // GET: First
+        /// <summary>
+        /// Photos page.
+        /// </summary>
+        /// <returns>view of the photo gallery page.</returns>
         public ActionResult Photos()
         {
             configModel.Initialize();
@@ -56,6 +72,11 @@ namespace ImageServiceWeb.Controllers
             return View(photosModel);
         }
 
+        /// <summary>
+        /// Accept the dir removal button
+        /// </summary>
+        /// <param name="name">name of handler to remove.</param>
+        /// <returns>redirect to config screen.</returns>
         public ActionResult AcceptDirRemoval(string name)
         {
             configModel.Remove(name);
@@ -64,6 +85,11 @@ namespace ImageServiceWeb.Controllers
 
         }
 
+        /// <summary>
+        /// Big photo screen.
+        /// </summary>
+        /// <param name="id">ID of photo to display.</param>
+        /// <returns>view of the photo</returns>
         public ActionResult PhotoScreen(int id)
         {
             foreach (Photo photo in photosModel.Photos)
@@ -74,6 +100,11 @@ namespace ImageServiceWeb.Controllers
             return null;
         }
 
+        /// <summary>
+        /// Accept the photo removal button
+        /// </summary>
+        /// <param name="id">ID of photo to remove.</param>
+        /// <returns>redirects to gallery page.</returns>
         public ActionResult AcceptPhotoRemoval(int id)
         {
             foreach (Photo photo in photosModel.Photos)
@@ -88,6 +119,11 @@ namespace ImageServiceWeb.Controllers
             return null;
         }
 
+        /// <summary>
+        /// Photo removal confimation screen.
+        /// </summary>
+        /// <param name="id">ID of image to remove.</param>
+        /// <returns>view of the image confimration screen.</returns>
         public ActionResult SureToRemovePhoto(int id)
         {
             foreach (Photo photo in photosModel.Photos)
@@ -100,13 +136,21 @@ namespace ImageServiceWeb.Controllers
             return null;
         }
 
-        // GET: First
+        /// <summary>
+        /// Logs screen.
+        /// </summary>
+        /// <returns>view of the logs.</returns>
         public ActionResult Logs()
         {
             logModel.Initialize();
             return View(logModel);
         }
 
+        /// <summary>
+        /// Get list of logs for filter.
+        /// </summary>
+        /// <param name="type">type to filter by.</param>
+        /// <returns>list of logs for filter.</returns>
         [HttpPost]
         public JObject GetLogs(string type)
         {

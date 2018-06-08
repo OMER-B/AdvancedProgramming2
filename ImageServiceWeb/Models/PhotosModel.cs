@@ -14,6 +14,11 @@ namespace ImageServiceWeb.Models
         [Display(Name = "Photos")]
         public List<Photo> Photos { get => photosList; set => photosList = value; }
 
+        /// <summary>
+        /// Fills the list with photos from the directory.
+        /// </summary>
+        /// <param name="path">Path of parent directory.</param>
+        /// <param name="size">size of thumbnails.</param>
         public void GetPhotos(string path, int size)
         {
             photosList.Clear();

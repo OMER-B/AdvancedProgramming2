@@ -22,6 +22,9 @@ namespace ImageServiceWeb.Models
             TcpClientChannel.Instance.DataRecieved += GetData;
         }
 
+        /// <summary>
+        /// Initialize everything the log model needs.
+        /// </summary>
         public void Initialize()
         {
 
