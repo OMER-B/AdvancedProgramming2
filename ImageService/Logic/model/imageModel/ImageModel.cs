@@ -95,9 +95,9 @@ namespace Logic
             File.Move(filePath, newFilePath);
 
             Image image = Image.FromFile(newFilePath);
-            Image thumb = image.GetThumbnailImage(thumbnailSize, thumbnailSize, () => false, IntPtr.Zero);
+            Image thumb = new Bitmap(image, thumbnailSize, thumbnailSize); ;
 
-            thumb.Save(Path.ChangeExtension(thumbPath, "thumb"));
+            thumb.Save(thumbPath);
 
             result = true;
             string statusResult = "Image " + fileName + " was added to " + year + ", " + month + ".";

@@ -3,28 +3,31 @@
 @{
     ViewBag.Title = "SureToRemovePhoto";
 }
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Styles/Photo.css">
+</head>
 
 <h2>@Model.Name</h2>
-<h3>@Model.Month, @Model.Year</h3>
+<table>
+    <tr>
+        <td>
+            <h3 style="float: left;">@Model.Month, @Model.Year</h3>
+            <button type="button" class="btn btn-outline-secondary">
+                @Html.ActionLink("Back to gallery", "Gallery", new { @class = "glyphicon glyphicon-arrow-left" })
+            </button>
+            <button type="button" class="btn btn-danger" id="diable_trash_button">
+                @Html.ActionLink("Yes", "AcceptPhotoRemoval", new { id = Model.ID })
+            </button>
+            <button type="button" class="btn btn-outline-secondary">
+                @Html.ActionLink("No", "PhotoScreen", new { id = Model.ID })
+            </button>
+            <h4>Are you sure you want to remove this image?</h4>
+        </td>
+    </tr>
+</table>
 
 <div class="text-center">
     <a href="@Url.Content("~\\"+Model.Path)">
         <img src="@Url.Content("~\\"+Model.Path)" />
     </a>
 </div>
-
-<h4>Are you sure you want to remove this image?</h4>
-<table>
-    <tr>
-        <td>
-            <button type="button" class="btn btn-outline-secondary">
-                @Html.ActionLink("No", "PhotoScreen", new { id = Model.ID })
-            </button>
-        </td>
-        <td>
-            <button type="button" class="btn btn-danger" id="diable_trash_button">
-                @Html.ActionLink("Yes", "AcceptPhotoRemoval", new { id = Model.ID })
-            </button>
-        </td>
-    </tr>
-</table>

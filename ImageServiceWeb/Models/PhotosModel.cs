@@ -42,9 +42,8 @@ namespace ImageServiceWeb.Models
                             "\\" + yearString + "\\" + monthString + "\\" + photo.Name;
                         string thumbRelPath = year.Parent.Name +
                             "\\thumbnails\\" + yearString + "\\" + monthString + "\\" + photo.Name;
-                        thumbRelPath = thumbRelPath.Replace(photo.Extension, ".thumb");
                         string fullPath = photo.FullName;
-                        string fullThumbPath = fullPath.Replace(photo.Extension, ".thumb").Replace(yearString, "\\thumbnails\\" + yearString);
+                        string fullThumbPath = fullPath.Replace(relativePath, thumbRelPath);
 
                         photosList.Add(new Photo(photo.Name, relativePath, thumbRelPath, fullPath, fullThumbPath, yearString, monthString, size, id++));
                     }

@@ -59,7 +59,7 @@ namespace Logic
                 {
                     watcher.EnableRaisingEvents = false;
                 }
-                logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.INFO, "Closed directory " + this.dirPath));
+                logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.WARNING, "Closed directory " + this.dirPath));
                 DirectoryClose.Invoke(this, new DirectoryCloseEventArgs(this.dirPath, "Recieved close message"));
             }
         }

@@ -80,7 +80,7 @@ namespace ImageServiceWeb.Controllers
         public ActionResult AcceptDirRemoval(string name)
         {
             configModel.Remove(name);
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(1000);
             return RedirectToAction("Config");
 
         }
