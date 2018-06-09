@@ -8,7 +8,9 @@
 <h3>@Model.Month, @Model.Year</h3>
 
 <div class="text-center">
-    <img src="@Url.Content("~\\"+Model.Path)" />
+    <a href="@Url.Content("~\\"+Model.Path)">
+        <img src="@Url.Content("~\\"+Model.Path)" />
+    </a>
 </div>
 
 <h4>Are you sure you want to remove this image?</h4>
@@ -16,7 +18,7 @@
     <tr>
         <td>
             <button type="button" class="btn btn-outline-secondary">
-                @Html.ActionLink("No", "Photos")
+                @Html.ActionLink("No", "PhotoScreen", new { id = Model.ID })
             </button>
         </td>
         <td>

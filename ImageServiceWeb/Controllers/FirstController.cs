@@ -62,10 +62,10 @@ namespace ImageServiceWeb.Controllers
         }
 
         /// <summary>
-        /// Photos page.
+        /// Gallery page.
         /// </summary>
         /// <returns>view of the photo gallery page.</returns>
-        public ActionResult Photos()
+        public ActionResult Gallery()
         {
             configModel.Initialize();
             photosModel.GetPhotos(configModel.OutputDir, configModel.ThumbSize);
@@ -113,7 +113,7 @@ namespace ImageServiceWeb.Controllers
                 {
                     System.IO.File.Delete(photo.FullPath);
                     System.IO.File.Delete(photo.FullThumbPath);
-                    return RedirectToAction("Photos");
+                    return RedirectToAction("Gallery");
                 }
             }
             return null;
