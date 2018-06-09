@@ -77,7 +77,6 @@
     <Compile Include="Model\ISettingsModel.cs" />
     <Compile Include="Model\LogModel.cs" />
     <Compile Include="Model\SettingsModel.cs" />
-    <Compile Include="Tcp\TcpChannel.cs" />
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\DelegateCommandBase.cs" />
     <Compile Include="ViewModel\LogVM.cs" />

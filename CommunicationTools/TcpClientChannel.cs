@@ -69,7 +69,7 @@ namespace CommunicationTools
                 writer.Write(message);
                 mutex.ReleaseMutex();
             }
-            catch (Exception e)
+            catch
             {
                 // Here debug
             }
@@ -92,7 +92,7 @@ namespace CommunicationTools
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 // Here debug
             }
@@ -114,7 +114,7 @@ namespace CommunicationTools
                 Task t = new Task(() => ListenToServer());
                 t.Start();
             }
-            catch (Exception e)
+            catch
             {
                 connected = false;
             }

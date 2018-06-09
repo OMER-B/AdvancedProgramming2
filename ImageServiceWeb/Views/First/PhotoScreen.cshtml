@@ -6,9 +6,23 @@
 
 <h2>@Model.Name</h2>
 <h3>@Model.Month, @Model.Year</h3>
-<img src="@Url.Content("~\\"+Model.Path)" />
 
-<div>
-    @Html.ActionLink("Back to List", "Photos")
+<div class="text-center">
+    <img src="@Url.Content("~\\"+Model.Path)" />
 </div>
 
+
+<table>
+    <tr>
+        <td>
+            <button type="button" class="btn btn-outline-secondary">
+                @Html.ActionLink("Back to gallery", "Photos", new { @class = "glyphicon glyphicon-arrow-left" })
+            </button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-outline-secondary">
+                @Html.ActionLink(" ", "SureToRemovePhoto", new { id = Model.ID }, new { @class = "glyphicon glyphicon-trash" })
+            </button>
+        </td>
+    </tr>
+</table>

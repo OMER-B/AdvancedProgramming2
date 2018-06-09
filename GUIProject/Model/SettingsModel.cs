@@ -1,5 +1,4 @@
 ﻿using CommunicationTools;
-using GUIProject.Tcp;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -28,12 +27,12 @@ namespace GUIProject.Model
         /// </summary>
         public SettingsModel()
         {
-            TcpChannel.Instance.DataRecieved += GetData;
+            TcpClientChannel.Instance.DataRecieved += GetData;
             this.list = new ObservableCollection<TitleAndContent>();
             this.handlersList = new ObservableCollection<TitleAndContent>();
             Object locker = new Object();
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(handlersList, locker);
-            TcpChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
+            TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.APP_CONFIG, null).ToJson());
         }
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace GUIProject.Model
 
             try
             {
-                TcpChannel.Instance.SendMessage(json);
+                TcpClientChannel.Instance.SendMessage(json);
                 App.Current.Dispatcher.Invoke((System.Action)delegate
                 {
                     this.handlersList.Remove(selectedHandler);

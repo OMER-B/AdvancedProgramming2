@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunicationTools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace GUIProject.ViewModel
         public string isConnected()
         {
 
-            if (Tcp.TcpChannel.Instance.Connected)
+            if (TcpClientChannel.Instance.Connected)
             {
                 return "White";
             }
@@ -32,7 +33,7 @@ namespace GUIProject.ViewModel
         /// <param name="e">event args</param>
         void DataWindow_Closing(object sender, EventArgs e)
         {
-            Tcp.TcpChannel.Instance.Disconnect();
+            TcpClientChannel.Instance.Disconnect();
         }
     }
 }

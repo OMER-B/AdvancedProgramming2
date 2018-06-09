@@ -3,28 +3,82 @@
     ViewBag.Title = "Photos";
 }
 
+<head>
+    <title>Page Title</title>
+    <style>
+        .view {
+            overflow: hidden;
+            width: 120px;
+            border-radius: 50%;
+            margin: auto;
+        }
+
+        .zoom img {
+            -webkit-transition: all .2s linear;
+            -o-transition: all .2s linear;
+            transition: all .2s linear
+        }
+
+        .zoom:hover img {
+            -webkit-transform: scale(1.4);
+            -ms-transform: scale(1.4);
+            transform: scale(1.4)
+        }
+
+        .img-fluid {
+            display: inline;
+        }
+
+        .td-width {
+            width: 33.33333333333333%;
+            float: left;
+        }
+
+        .table-width {
+            width: 100%;
+            max-width: 100%;
+        }
+    </style>
+</head>
 
 <h2>Photos</h2>
 
-<div class="list-group">
+<table class="table-width">
     @{
+        var itemcount = 0;
         foreach (var image in Model.Photos)
         {
-            <div class="list-group-item col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <div class="text-center">
-                    <img src="@Url.Content("..\\"+@image.Path)" width="@image.Size" height="@image.Size" class="img-circle" />
-                </div>
-                   
-                            <h3>@image.Name</h3>
-                            <p>@image.Month, @image.Year</p>
-                            <button type="button" class="btn btn-outline-secondary">
-                                @Html.ActionLink(" ", "SureToRemovePhoto", new { id = image.ID }, new { @class = "glyphicon glyphicon-trash" })
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary">
-                                @Html.ActionLink(" ", "PhotoScreen", new { id = image.ID }, new { @class = "glyphicon glyphicon-expand" })
-                            </button>
-            </div>
+            if (itemcount == 0)
+            {
+                @:<tr>
+                }
+                <td class="td-width">
+                    <div class="text-center  view zoom">
+                        <img src="@Url.Content("..\\"+@image.Path)" width="@image.Size" height="@image.Size" class="img-fluid" />
+
+                    </div>
+
+                    <h3>@image.Name</h3>
+                    <p>@image.Month, @image.Year</p>
+                    <button type="button" class="btn btn-outline-secondary">
+                        @Html.ActionLink(" ", "PhotoScreen", new { id = image.ID }, new { @class = "glyphicon glyphicon-fullscreen" })
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary">
+                        @Html.ActionLink(" ", "SureToRemovePhoto", new { id = image.ID }, new { @class = "glyphicon glyphicon-trash" })
+                    </button>
+
+                </td>
+
+                if (itemcount == 2)
+                {
+                    itemcount = 0;
+                @:</tr>
+            }
+            else
+            {
+                itemcount++;
+            }
         }
     }
-</div>
+</table>
 <br />

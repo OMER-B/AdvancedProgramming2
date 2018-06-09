@@ -1,5 +1,4 @@
 ﻿using CommunicationTools;
-using GUIProject.Tcp;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -27,9 +26,9 @@ namespace GUIProject.Model
             this.list = new ObservableCollection<TitleAndContent>();
             Object locker = new Object();
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(list, locker);
-            TcpChannel.Instance.DataRecieved += GetData;
+            TcpClientChannel.Instance.DataRecieved += GetData;
             System.Threading.Thread.Sleep(500);
-            TcpChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.LOG_HISTORY, null).ToJson());
+            TcpClientChannel.Instance.SendMessage(new TACHolder(MessageTypeEnum.LOG_HISTORY, null).ToJson());
         }
         
         /// <summary>
