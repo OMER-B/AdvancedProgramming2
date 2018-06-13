@@ -13,7 +13,7 @@ namespace Logic
     public class DirectoyHandler : IDirectoryHandler
     {
         #region Members
-        private IController imageController;
+        private IController<string> imageController;
         private ILogger logger;
         private List<FileSystemWatcher> dirWatchers;
         private string dirPath;
@@ -23,7 +23,7 @@ namespace Logic
         // The Path of directory
         #endregion
 
-        public DirectoyHandler(string path, IController controller, ILogger logger, string[] extensions)
+        public DirectoyHandler(string path, IController<string> controller, ILogger logger, string[] extensions)
         {
             this.dirPath = path;
             this.imageController = controller;

@@ -56,7 +56,7 @@ namespace ImageService
             eventLog.Source = reader.SourceName;
             eventLog.Log = reader.LogName;
 
-            IImageModel imageModel = new ImageModel(reader.OutputDir, reader.ThumbnailSize);
+            IImageModel imageModel = new ImageModel(reader.Handler[0], reader.OutputDir, reader.ThumbnailSize);
             logger = new Logger();
             logger.MessageRecieved += OnMsg;
             DebugLogger.Instance.MessageRecieved += OnMsg;

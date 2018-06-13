@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tools;
 using ImageService;
+using System.Drawing;
 
 namespace Logic
 {
@@ -16,5 +17,9 @@ namespace Logic
         /// <param name="path">The Path of the Image from the file</param>
         /// <returns>Indication if the Addition Was Successful</returns>
         string AddFile(string[] args, out bool result);
+
+        Image FromByteToPhoto(byte[] bytes);
+
+        void SaveToInputFolder(Image image);
     }
 }

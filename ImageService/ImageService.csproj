@@ -53,16 +53,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageService\server\ITcpServer.cs" />
-    <Compile Include="ImageService\server\TcpServer.cs" />
-    <Compile Include="Logic\commands\CloseHandlerCommand.cs" />
-    <Compile Include="Logic\commands\GetConfigCommand.cs" />
-    <Compile Include="Logic\commands\GetLogHistoryCommand.cs" />
-    <Compile Include="Logic\commands\ICommand.cs" />
-    <Compile Include="Logic\commands\NewFileCommand.cs" />
+    <Compile Include="CommunicationTools\ClientMessage.cs" />
+    <Compile Include="CommunicationTools\ConnectionDetails.cs" />
+    <Compile Include="CommunicationTools\LogMessageTypeEnum.cs" />
+    <Compile Include="CommunicationTools\MessageTypeEnum.cs" />
+    <Compile Include="ImageService\server\BinaryTcp.cs" />
+    <Compile Include="ImageService\server\ITCP.cs" />
+    <Compile Include="Logic\Commands\BytesToImageCommand.cs" />
+    <Compile Include="Logic\Commands\ICommand.cs" />
+    <Compile Include="Logic\Commands\NewFileCommand.cs" />
+    <Compile Include="Logic\controller\ApplicationController.cs" />
     <Compile Include="Logic\controller\IController.cs" />
     <Compile Include="Logic\controller\ImageController.cs" />
-    <Compile Include="Logic\controller\ServerController.cs" />
     <Compile Include="Logic\handlers\DirectoyHandler.cs" />
     <Compile Include="Logic\handlers\IDirectoryHandler.cs" />
     <Compile Include="Logic\model\imageModel\IImageModel.cs" />
@@ -107,6 +109,5 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
-  <Import Project="..\CommunicationTools\CommunicationTools.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

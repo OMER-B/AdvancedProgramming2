@@ -9,10 +9,10 @@ using ImageService;
 
 namespace Logic
 {
-    public class ImageController : IController
+    public class ImageController : IController<string>
     {
         private IImageModel model;
-        private Dictionary<int, ICommand> commands;
+        private Dictionary<int, ICommand<string>> commands;
         private class TaskResult
         {
             public TaskResult(string result, bool boolean)
@@ -26,11 +26,10 @@ namespace Logic
         public ImageController(IImageModel model)
         {
             this.model = model;
-            commands = new Dictionary<int, ICommand>
-            {
-                { (int)ImageCommandTypeEnum.ADD_FILE, new NewFileCommand(model) }
-            };
+            commands = new Dictionary<int, ICommand<string> >();
+            this.commands.Add((int)ImageCommandTypeEnum.ADD_FILE, new NewFileCommand(model));
         }
+
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
         {
             if (commands.ContainsKey(commandID))
@@ -38,7 +37,7 @@ namespace Logic
                 Task<TaskResult> task = new Task<TaskResult>(() =>
                 {
                     bool boolean;
-                    ICommand command = commands[commandID];
+                    ICommand<string> command = commands[commandID];
 
                     string result = command.Execute(args, out boolean);
                     return new TaskResult(result, boolean);

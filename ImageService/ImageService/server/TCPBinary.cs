@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tools
+namespace ImageService.ImageService.server
 {
-    public enum ImageCommandTypeEnum : int
+    class TCPBinary
     {
-        ADD_FILE,
-        RECIEVED_PHOTO
     }
 }

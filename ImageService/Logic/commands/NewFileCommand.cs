@@ -8,7 +8,7 @@ using ImageService;
 
 namespace Logic
 {
-    public class NewFileCommand : ICommand
+    public class NewFileCommand : ICommand<string>
     {
         private IImageModel imageModel;
 

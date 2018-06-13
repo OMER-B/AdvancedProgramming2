@@ -8,8 +8,8 @@ using ImageService;
 
 namespace Logic
 {
-    public interface IController
+    public interface IController<T>
     {
-        string ExecuteCommand(int commandID, string[] args, out bool result);
+        string ExecuteCommand(int commandID, T[] args, out bool result);
     }
 }

@@ -15,10 +15,12 @@ namespace Logic
         #region Members
         private string outputFolder;            // The Output Folder
         private int thumbnailSize;              // The Size Of The Thumbnail Size
+        private string inputFolder;
         #endregion
 
-        public ImageModel(string output, int size)
+        public ImageModel(string input, string output, int size)
         {
+            this.inputFolder = input;
             this.outputFolder = output;
             this.thumbnailSize = size;
         }
@@ -106,5 +108,16 @@ namespace Logic
             return statusResult;
         }
 
+        public Image FromByteToPhoto(byte[] bytes)
+        {
+            MemoryStream memstr = new MemoryStream(bytes);
+            Image img = Image.FromStream(memstr);
+            return img;
+        }
+
+        public void SaveToInputFolder(Image image)
+        {
+            image.Save(this.inputFolder + "//" + image.ToString());
+        }
     }
 }
