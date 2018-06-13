@@ -96,11 +96,24 @@ namespace ImageService
             {
                 while (client.Connected && nwStream.CanRead)
                 {
-                    byte[] bytes = new byte[client.ReceiveBufferSize];
+                    List<byte> input = new List<byte>();
+                    int bytesRead;
                     if (nwStream.CanRead)
                     {
-                        nwStream.Read(bytes, 0, bytes.Length);
-                        MessageFromClient.Invoke(this, new ClientMessage(bytes));
+                        BinaryReader r = new BinaryReader(nwStream);
+                        double read = r.ReadDouble();
+
+                        do
+                        {
+                            byte[] bytes = new byte[client.ReceiveBufferSize];
+                            bytesRead = nwStream.Read(bytes, 0, bytes.Length);
+                            input.AddRange(bytes.ToList());
+                        } while (bytesRead > 0);
+                        if (input.Count > 0)
+                        {
+                            MessageFromClient.Invoke(this, new ClientMessage(input.ToArray()));
+                        }
+
                     }
                 }
             }
