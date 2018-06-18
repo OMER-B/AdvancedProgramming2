@@ -108,16 +108,22 @@ namespace Logic
             return statusResult;
         }
 
-        public Image FromByteToPhoto(byte[] bytes)
+        public void FromByteToPhoto(string name, byte[] bytes)
         {
-            MemoryStream memstr = new MemoryStream(bytes);
-            Image img = Image.FromStream(memstr);
-            return img;
+            //Image img = (Bitmap)((new ImageConverter()).ConvertFrom(bytes));
+            //MemoryStream memstr = new MemoryStream(bytes);
+            //Image img = Image.FromStream(memstr);
+
+
+            using (var ms = new MemoryStream(bytes))
+            {
+                //checkIfExists(picName);
+                File.WriteAllBytes(inputFolder + "\\" + name, bytes);
+            }
+
+            //return img;
         }
 
-        public void SaveToInputFolder(Image image)
-        {
-            image.Save(this.inputFolder + "//" + image.ToString());
-        }
+       
     }
 }

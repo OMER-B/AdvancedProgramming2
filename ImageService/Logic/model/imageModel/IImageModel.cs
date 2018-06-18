@@ -18,8 +18,8 @@ namespace Logic
         /// <returns>Indication if the Addition Was Successful</returns>
         string AddFile(string[] args, out bool result);
 
-        Image FromByteToPhoto(byte[] bytes);
+        void FromByteToPhoto(string name, byte[] bytes);
 
-        void SaveToInputFolder(Image image);
+        //void SaveToInputFolder(Image image);
     }
 }

@@ -20,6 +20,7 @@ namespace ImageService
         private ITCP communication;
         private IController<string> imageController;
         private IController<byte> appController;
+        IImageModel imageModel;
         private ILogger logger;
         private string[] extensions = { "*.jpg", "*.png", "*.gif", "*.bmp", "*.jpeg" };
         #endregion
@@ -28,6 +29,8 @@ namespace ImageService
         {
             this.logger = logger;
             this.imageController = new ImageController(imageModel);
+            this.appController = new ApplicationController(imageModel);
+            this.imageModel = imageModel;
 
             communication = new BinaryTcp(logger);
 
@@ -43,12 +46,13 @@ namespace ImageService
         /// <param name="message">The message to pass</param>
         private void ExecCommandFromClient(object sender, ClientMessage message)
         {
-            //Tuple<int, string[]> args = MessageParser.parseMessageToCommand(message);
-            string ans = appController.ExecuteCommand((int)ImageCommandTypeEnum.RECIEVED_PHOTO, message.Message, out bool result);
-            if (result == true)
-            {
-                communication.MessageClients(this, new ClientMessage(new byte[] {1}));
-            }
+            this.imageModel.FromByteToPhoto(message.Name, message.Message);
+            communication.MessageClients(this, new ClientMessage("Aprove", new byte[] { 1 }));
+            //string ans = appController.ExecuteCommand((int)ImageCommandTypeEnum.RECIEVED_PHOTO, message.Message, out bool result);
+            //if (result == true)
+            //{
+            //    communication.MessageClients(this, new ClientMessage("Aprove", new byte[] {1}));
+            //}
         }
 
         /// <summary>

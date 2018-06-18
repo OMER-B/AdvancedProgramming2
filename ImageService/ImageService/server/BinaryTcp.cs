@@ -96,50 +96,50 @@ namespace ImageService
             stream.Flush();
             try
             {
+                int bufferSize = client.ReceiveBufferSize;
+                byte[] buffer = new byte[bufferSize];
+
                 while (client.Connected && stream.CanRead)
                 {
-                    byte[] buffer = new byte[client.ReceiveBufferSize];
+                    
+                    int bytesRead = stream.Read(buffer, 0, client.ReceiveBufferSize);
+                    byte[] nameSizeArray = new byte[bytesRead];
+                    Array.Copy(buffer, 0, nameSizeArray, 0, bytesRead);
 
-                    int numBytesReadForNameSize = stream.Read(buffer, 0, client.ReceiveBufferSize);
-                    int size;
-                    if (numBytesReadForNameSize == 1)
-                    {
-                        size = Convert.ToInt32(buffer[0]);
-                    }
-                    else
-                    {
-                        byte[] realSize = new byte[numBytesReadForNameSize];
-                        Array.Copy(buffer, 0, realSize, 0, numBytesReadForNameSize);
-                        size = BitConverter.ToInt32(realSize, 0);
-                    }
-
+                    int nameSize = Int32.Parse(Encoding.Default.GetString(nameSizeArray));
+                    
                     stream.Write(approve, 0, 1);
 
-                    byte[] imageName = new byte[size];
-                    int numBytesReadForName = stream.Read(imageName, 0, size);
-
-                    string name = System.Text.Encoding.Default.GetString(imageName);
-
+                    byte[] imageName = new byte[nameSize];
+                    int numBytesReadForName = stream.Read(imageName, 0, nameSize);
+                    string name = Encoding.Default.GetString(imageName);
                     stream.Write(approve, 0, 1);
 
-                    int numBytesReadForImageSize = stream.Read(buffer, 0, client.ReceiveBufferSize);
-                    if (numBytesReadForImageSize == 1)
-                    {
-                        size = Convert.ToInt32(buffer[0]);
-                    }
-                    else
-                    {
-                        byte[] realSize = new byte[numBytesReadForImageSize];
-                        Array.Copy(buffer, 0, realSize, 0, numBytesReadForImageSize);
-                        size = BitConverter.ToInt32(realSize, 0);
-                    }
+
+                    //********* Get image size
+
+                    bytesRead = stream.Read(buffer, 0, client.ReceiveBufferSize);
+                    byte[] imageSizeArray = new byte[bytesRead];
+                    Array.Copy(buffer, 0, imageSizeArray, 0, bytesRead);
+
+                    int imageSize = Int32.Parse(Encoding.Default.GetString(imageSizeArray));
 
                     stream.Write(approve, 0, 1);
+                    
+                    List<byte> imageList = new List<byte>();
+                    int totalRead = 0;
+                    int currentRead = 0;
+                    while(totalRead < imageSize)
+                    {
+                        currentRead = stream.Read(buffer, 0, bufferSize);
+                        byte[] readBytes = new byte[currentRead];
+                        Array.Copy(buffer, readBytes, currentRead);
 
-                    byte[] image = new byte[size];
-                    int numBytesReadForImage = stream.Read(image, 0, size);
-
-                    MessageFromClient.Invoke(this, new ClientMessage(image));
+                        imageList.AddRange(readBytes.ToList());
+                        totalRead += currentRead;
+                    }
+                    byte[] image = imageList.ToArray();
+                    MessageFromClient.Invoke(this, new ClientMessage(name, image));
 
                     stream.Write(approve, 0, 1);
                 }

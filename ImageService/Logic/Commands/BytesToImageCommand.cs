@@ -21,8 +21,9 @@ namespace Logic
         {
             try
             {
-                Image img = this.model.FromByteToPhoto(args);
-                this.model.SaveToInputFolder(img);
+                // TODO organize
+                //this.model.FromByteToPhoto(args);
+                //this.model.SaveToInputFolder(img);
                 result = true;
                 return "Recived photo.";
             }
