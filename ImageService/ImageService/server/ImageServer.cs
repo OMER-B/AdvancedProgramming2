@@ -34,7 +34,7 @@ namespace ImageService
             this.appController = new ApplicationController(imageModel);
             this.imageModel = imageModel;
             this.clientHandler = new AndroidHandler(imageModel);
-            communication = new BinaryTcp(logger);
+            communication = new AndroidTcp(logger);
 
             communication.Connect();
             communication.MessageFromClient += this.clientHandler.HandleRequest;

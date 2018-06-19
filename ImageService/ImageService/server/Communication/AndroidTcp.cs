@@ -14,7 +14,7 @@ using Tools;
 
 namespace ImageService
 {
-    class BinaryTcp : ITCP
+    class AndroidTcp : ITCP
     {
         private List<TcpClient> clients;
         private IPEndPoint ep;
@@ -26,7 +26,7 @@ namespace ImageService
 
         public event EventHandler<ClientMessage> MessageFromClient;
 
-        public BinaryTcp(ILogger logger)
+        public AndroidTcp(ILogger logger)
         {
             this.logger = logger;
             this.clients = new List<TcpClient>();
@@ -35,6 +35,9 @@ namespace ImageService
             connected = false;
         }
 
+        /// <summary>
+        /// Create a Tcp connection and accept clients
+        /// </summary>
         public void Connect()
         {
             listener.Start();
@@ -54,11 +57,16 @@ namespace ImageService
                 catch (Exception e)
                 {
                     logger.Log(this, new LogMessageArgs(LogMessageTypeEnum.FAIL, e.Message));
+                    DisconnectAll();
                 }
             });
             task.Start();
         }
 
+        /// <summary>
+        /// Cloase a certain tcp client
+        /// </summary>
+        /// <param name="client">the client to dosconnect</param>
         public void DisconnectClient(TcpClient client)
         {
             try
@@ -75,6 +83,9 @@ namespace ImageService
             }
         }
 
+        /// <summary>
+        /// Close all open client sockets
+        /// </summary>
         public void DisconnectAll()
         {
             if (clients.Count != 0)
@@ -89,6 +100,10 @@ namespace ImageService
             connected = false;
         }
 
+        /// <summary>
+        /// Wait for messages from the client and notify for each new message.
+        /// </summary>
+        /// <param name="client">The tcp client</param>
         public void ListenToClient(TcpClient client)
         {
             byte[] approve = { 1 };
@@ -151,6 +166,11 @@ namespace ImageService
             }
         }
 
+        /// <summary>
+        /// Send a message to all clients
+        /// </summary>
+        /// <param name="sender">The object that send the notification</param>
+        /// <param name="message">The client message</param>
         public void MessageClients(object sender, ClientMessage message)
         {
             if (!connected)

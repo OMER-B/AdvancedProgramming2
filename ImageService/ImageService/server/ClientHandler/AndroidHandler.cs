@@ -17,6 +17,11 @@ namespace server
             this.imageModel = model;
         }
 
+        /// <summary>
+        /// Execute the appropriate functionality with the image model
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
         public void HandleRequest(object sender, ClientMessage message)
         {
             this.imageModel.FromByteToPhoto(message.Name, message.Message);
