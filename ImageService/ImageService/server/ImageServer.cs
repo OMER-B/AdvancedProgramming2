@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Tools;
 using Logic;
 using CommunicationTools;
+using server;
 
 namespace ImageService
 {
@@ -20,6 +21,7 @@ namespace ImageService
         private ITCP communication;
         private IController<string> imageController;
         private IController<byte> appController;
+        private IClientHandler clientHandler;
         IImageModel imageModel;
         private ILogger logger;
         private string[] extensions = { "*.jpg", "*.png", "*.gif", "*.bmp", "*.jpeg" };
@@ -31,29 +33,14 @@ namespace ImageService
             this.imageController = new ImageController(imageModel);
             this.appController = new ApplicationController(imageModel);
             this.imageModel = imageModel;
-
+            this.clientHandler = new AndroidHandler(imageModel);
             communication = new BinaryTcp(logger);
 
             communication.Connect();
-            communication.MessageFromClient += ExecCommandFromClient;
+            communication.MessageFromClient += this.clientHandler.HandleRequest;
 
         }
 
-        /// <summary>
-        /// pass a command from the client to the controller.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="message">The message to pass</param>
-        private void ExecCommandFromClient(object sender, ClientMessage message)
-        {
-            this.imageModel.FromByteToPhoto(message.Name, message.Message);
-            communication.MessageClients(this, new ClientMessage("Aprove", new byte[] { 1 }));
-            //string ans = appController.ExecuteCommand((int)ImageCommandTypeEnum.RECIEVED_PHOTO, message.Message, out bool result);
-            //if (result == true)
-            //{
-            //    communication.MessageClients(this, new ClientMessage("Aprove", new byte[] {1}));
-            //}
-        }
 
         /// <summary>
         /// Add a new Direcotry handler and register the apropriate events.
